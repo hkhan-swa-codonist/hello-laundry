@@ -1,0 +1,48 @@
+//
+// backtohome.scss
+//
+//Back to top
+.back-to-top {
+    z-index: 99; 
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    i {
+        width: 30px;
+        height: 30px;
+        line-height: 28px;
+        display: none;
+        text-align: center;
+        font-size: 15px;
+        display: block;
+        color: $text-color;
+        background-color: $white;
+        border: 1px solid $text-color;
+        transition: all 0.8s ease; 
+        border-radius: 30px;
+    }
+    &:hover {
+        i {
+            background-color: $text-color;
+            color: $white;
+        }
+    }
+}
+//back to home
+.back-to-home {
+    position: absolute;
+    top: 4%;
+    right: 2%;
+    z-index: 1;
+    a {
+        i {
+            font-size: 22px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: $custom;
+            border-radius: 4px;
+            text-align: center;
+        }
+    }
+}

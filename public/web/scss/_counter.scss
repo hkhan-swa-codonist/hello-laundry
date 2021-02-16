@@ -1,0 +1,33 @@
+//
+// .scss
+//
+.counter {
+    &.bg-counter {
+        background: url("../images/bg-counter.jpg") fixed center center;
+    }
+    .counter-content {
+        .icon {
+            i {
+                font-size: 50px;
+            }
+        }
+        .content {
+            overflow: hidden;
+            display: block;
+            .count-data {
+                font-size: 24px;
+            }
+        }
+    }
+}
+@media (min-width: 200px) and (max-width: 767px) {
+    .counter {
+        .counter-content {
+            text-align: center;
+            .icon {
+                float: none !important;
+                padding-bottom: 10px;
+            }
+        }
+    }
+}

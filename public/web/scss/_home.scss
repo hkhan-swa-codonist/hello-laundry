@@ -1,0 +1,304 @@
+//
+// home.scss
+//
+@mixin home-common {
+    background-size: cover;
+    align-self: center;
+    position: relative;
+    background-position: center center;
+}
+
+.home-center {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+.home-desc-center {
+    display: table-cell;
+    vertical-align: middle;
+}
+.bg-home {
+    height: 100vh;    
+    @include home-common();
+}
+
+.bg-pages {
+    padding: 219px 0 110px;
+    @include home-common();
+}
+
+.bg-default {
+    padding: 148px 0 80px;
+    @include home-common();
+}
+
+.bg-half {
+    height: 85vh;
+    @include home-common();
+}
+//Home portfolio
+.bg-portfolio {
+    padding: 309px 0 200px;
+    position: relative;
+}
+// OWL CAROSEL
+.home-slider, .blog-slider {
+    .carousel-control-next,
+    .carousel-control-prev {
+        width: 5%;
+    }
+    .carousel-item,
+    .carousel {
+        height: 100vh;
+        width: 100%;
+    }
+    .carousel-item {
+        background-position: center center;
+        background-size: cover;
+    }
+}
+//Blog home 
+.blog-slider {
+    .carousel-item,
+    .carousel {
+        height: 80vh;
+        width: 100%;
+    }
+    .blog-home-post-title {
+        border: 3px solid $gray-300;
+        background: rgba(27, 27, 27, 0.4);
+        .heading a {
+            font-size: 24px;
+        }
+        .heading, .post-meta {
+            a {
+                transition: all 0.5s ease;
+                &:hover {
+                    color: $custom !important;
+                }
+            }
+        } 
+    }
+}
+//Parallax
+.section-perallax {
+    height: 100vh;    
+    @include home-common();
+}
+// BOXED HOME
+#sThemes-layout {
+    background-image: url('../images/home/boxed.png');
+    .sThemesbox {
+        background: $white;
+        box-shadow: $box-shadow;
+        max-width: 1170px;
+        margin: 0 auto;
+    }
+}
+
+// flex slider (slider home)
+.main-slider{
+    .slides {
+        .bg-slider {
+            background-size: cover;
+            height: 100vh;
+            position: relative;
+            @include home-common(); 
+            &.shopping {
+                height: 75vh;
+            }
+        }
+    }
+}        
+.flex-control-paging li a{
+    background: $white;
+    box-shadow: none;
+    &.flex-active {
+        background: $custom;
+        cursor: default;
+        font-size: 17px;
+        width: 15px;
+        height: 15px;
+        box-shadow: none;
+    }
+}
+.flex-control-nav {
+    display: none;
+}
+//clip home
+.clip-home {
+    clip-path: polygon(0 0, 100% 0, 100% 83%, 50% 100%, 0 83%);
+}
+// BLOG HOME 
+.logo-box {
+    text-align: center;
+    padding: 15px 0 30px;
+    line-height: 70px;
+    margin-top: 70px;
+    background-color: $white;
+}
+//interior
+.swiper-slider-interior {
+    height: 100vh;
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        .swiper-slide {
+            .slide-inner {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                z-index: 1;
+                background-size: cover;
+                background-position: center;
+                display: flex;
+                align-items: center;
+                text-align: left;
+            }
+        }
+        .swiper-button-prev, .swiper-button-next {
+            background: $transparent;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            margin-top: -30px;
+            text-align: center;
+            transition: all 0.3s;
+            &:before {
+                font-family: "Font Awesome 5 Free";
+                font-weight: 900;
+                color: $white;
+            }
+            &:hover {
+                background: $gray-700;
+            }
+        }
+        .swiper-button-prev {
+            left: 25px;
+            &:before {
+                content: "\f053";
+            }
+        }
+        .swiper-button-next {
+            right: 25px;
+            &:before {
+                content: "\f054";
+            }
+        }
+    }
+    .swiper-pagination-bullet {
+        font-size: 15px;
+        color: $gray-300;
+        margin: 0 5px;
+        opacity: 1;
+        background: transparent;
+        position: relative;
+        &:before {
+            content: "";
+            background: $white;
+            width: 1px;
+            height: 15px;
+            position: absolute;
+            left: 3px;
+            top: 0;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+    }
+    .swiper-pagination-bullet-active {
+        color: $white;
+        &:before {
+            opacity: 1;
+            top: -20px;
+        }
+    }
+    .swiper-container-horizontal > .swiper-pagination-bullets,
+    .swiper-pagination-custom, .swiper-pagination-fraction {
+        bottom: 45px;
+    } 
+    .swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet {
+        margin: 0 13px;
+    }
+}
+//App landing 
+.home-app-pic {
+    img {
+        height: 480px;
+    }
+}
+// Tour
+.home-registration-form {
+    // background: rgba(161, 161, 161, 0.5);
+    background: $white;
+    padding-top: 28px !important;
+}
+.registration-form-box {
+    i {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 12px;
+        z-index: 2;
+        background: $custom;
+        -webkit-text-fill-color: transparent;
+    }
+    .selectize-input {
+        height: 37px;
+    }
+}
+.datepicker td, .datepicker th {
+    padding: 4px 6.5px;
+    border-radius: 30px;
+}
+
+.datepicker table tr td.today, .datepicker table tr td.today.disabled, .datepicker table tr td.today.disabled:hover, .datepicker table tr td.today:hover {
+    background-image: linear-gradient(to bottom, $custom, $custom);
+    color: $white;
+}
+.bg-video-cta {
+    height: 50vh;
+    overflow: hidden;
+}
+
+//Responsive
+@media (max-width: 1200px) {
+    .sThemesbox {
+        width: 100%;
+        overflow: hidden;
+    }
+}
+@media (max-width: 991px) {
+    .swiper-slider-interior {
+        height: 600px;
+        .swiper-button-prev, .swiper-button-next {
+            display: none;
+        }
+    }    
+    .logo-box {
+        display: none;
+    }
+}
+@media (min-width: 200px) and (max-width: 767px) {
+    .registration-form-box {
+        margin-bottom: 10px;
+    }
+    .bg-slider, .bg-home, .bg-portfolio, .swiper-slider-interior .swiper-container .swiper-slide, .bg-half, .bg-video {        
+        padding: 150px 0;
+        height: auto;
+    }
+    .bg-video-cta {
+        height: auto;
+    }
+    .bg-agency{
+        padding: 100px 0;
+    }
+    .bg-boxed-home {
+        padding: 180px 0 120px;
+    }    
+}

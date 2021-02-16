@@ -1,0 +1,495 @@
+//
+// components.scss
+//
+/***************Buttons*****************/
+.btn {
+    padding: 10px 24px;
+    outline: none;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.7px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-weight: 500;
+    &:focus{
+        box-shadow: none !important;
+    }
+    &.btn-sm{
+        padding: 7px 16px;
+        font-size: 10px;
+    }
+    &.btn-lg{
+        padding: 14px 30px;
+        font-size: 16px;
+    } 
+    &.btn-primary {
+        background-color: $primary;
+        border: 1px solid $primary !important;
+        &:hover {
+            background-color: $primary;
+            opacity: 0.8;
+        }
+    }    
+    &.btn-primary-outline {
+        border: 1px solid $primary;
+        color: $primary;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $primary;
+            border-color: $primary;
+            color: $white;
+        }
+    }
+    &.btn-secondary {
+        background-color: $secondary;
+        border: 1px solid $secondary !important;
+        &:hover {
+            background-color: $secondary;
+            opacity: 0.8;
+        }
+    }    
+    &.btn-secondary-outline {
+        border: 1px solid $secondary;
+        color: $secondary;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $secondary;
+            border-color: $secondary;
+            color: $white;
+        }
+    }
+    &.btn-success {
+        background-color: $success;
+        border: 1px solid $success !important;
+        &:hover {
+            background-color: $success;
+            opacity: 0.8;
+        }
+    }    
+    &.btn-success-outline {
+        border: 1px solid $success;
+        color: $success;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $success;
+            border-color: $success;
+            color: $white;
+        }
+    }
+    &.btn-danger {
+        background-color: $danger;
+        border: 1px solid $danger !important;
+        &:hover {
+            background-color: $danger;
+            opacity: 0.8;
+        }
+    }        
+    &.btn-danger-outline {
+        border: 1px solid $danger;
+        color: $danger;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $danger;
+            border-color: $danger;
+            color: $white;
+        }
+    }
+    &.btn-warning {
+        background-color: $warning;
+        color: $white !important;
+        border: 1px solid $warning !important;
+        &:hover {
+            background-color: $warning;
+            opacity: 0.8;
+        }
+    }    
+    &.btn-warning-outline {
+        border: 1px solid $warning;
+        color: $warning;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $warning;
+            border-color: $warning;
+            color: $white;
+        }
+    }
+    &.btn-info {
+        background-color: $info;
+        border: 1px solid $info !important;
+        &:hover {
+            background-color: $info;
+            opacity: 0.8;
+        }
+    }    
+    &.btn-info-outline {
+        border: 1px solid $info;
+        color: $info;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $info;
+            border-color: $info;
+            color: $white;
+        }
+    }
+    &.btn-light {
+        background-color: $light;
+        border: 1px solid $light !important;
+        &:hover {
+            background-color: $light;
+            opacity: 0.8;
+        }
+    }    
+    &.btn-light-outline {
+        border: 1px solid $light;
+        color: $text-color;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $light;
+            border-color: $light;
+            color: $text-color;
+        }
+    }
+    &.btn-dark {
+        background-color: $dark;
+        border: 1px solid $dark !important;
+        &:hover {
+            background-color: $dark;
+            opacity: 0.8;
+        }
+    }    
+    &.btn-dark-outline {
+        border: 1px solid $dark;
+        color: $dark;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $dark;
+            border-color: $dark;
+            color: $white;
+        }
+    }
+    &.btn-custom {
+        color: $white;
+        background: $custom;
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $text-color;
+            color: $white;
+        }
+    }    
+    &.btn-custom-outline {
+        border: 1px solid $custom;
+        color: $custom;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $custom;
+            border-color: $custom;
+            color: $white;
+        }
+    }    
+    &.btn-outline-white {
+        border: 1px solid $white !important;
+        color: $white;
+        background-color: transparent;    
+        &:hover, &:focus, &:active, &.active, &.focus{
+            background-color: $custom;
+            border: 1px solid $custom !important;
+            color: $white;
+        }
+    }
+}
+
+/**************Alert & Badges******************/
+.alert {
+    border: 1px solid transparent;
+    color: $white;
+}
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 2px;
+}
+.alert, .badge {    
+    &.alert-primary, &.badge-primary {
+        background: $primary;
+    }
+    &.alert-secondary, &.badge-secondary {
+        background: $secondary;
+    }
+    &.alert-warning, &.badge-warning {
+        background: $warning;
+    }
+    &.alert-info, &.badge-info {
+        background: $info;
+    }
+    &.alert-success, &.badge-success {
+        background: $success;
+    }
+    &.alert-danger, &.badge-danger {
+        background: $danger;
+    }
+    &.alert-dark, &.badge-dark {
+        background: $dark;
+    }
+    &.alert-light, &.badge-light {
+        background: $light;
+        color: $text-color;
+    }
+}
+
+/**************Accordion******************/
+.faq-content {
+    .card {
+        .faq {           
+            .card-header {
+                &.card-header-2 {
+                    background-color: rgba(255, 255, 255, 0);
+                    border-bottom: 0;
+                    .faq-question {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }  
+        a.faq[data-toggle=collapse]{
+            background-color: $white;
+            color: $text-color;
+            transition: all 0.5s;
+            &:before {
+                content: '\f068';
+                display: block;
+                font-family: 'Font Awesome 5 Free';
+                font-size: 12px;
+                color: $text-color;
+                position: absolute;
+                font-weight: 900;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            &.collapsed {
+                background-color: $white;
+                color: $text-color;
+                transition: all 0.5s;
+                &:before {
+                    content: '\f067';
+                    color: $text-color;
+                    transition: all 0.5s ease;
+                }
+            }
+        }
+        .title {
+            font-size: 18px;
+        }
+    }
+}
+
+/**************Progressbar******************/
+.progressbox {
+    .progress-value {
+        display: inline-block;
+    }    
+    .progress {
+        height: 6px;
+        .progress-bar {
+            background: $text-color;
+            border-radius: 0px;
+        }
+    }
+}
+
+/****Skill*******/
+.skills{
+    &.chart {
+        display: inline-block;
+        width: 130px;
+        height: 130px;
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 130px;
+            height: 130px;
+        }
+    }
+    .pie-chart-value {
+        display: inline-block;
+        line-height: 130px;
+        font-size: 24px;
+    }
+}
+/***************Dropcaps*****************/
+.dropcap {
+    line-height: 40px;
+    font-size: 40px;
+    &.d-boxed, &.d-rounded {
+        height: 60px;
+        width: 60px;
+        line-height: 60px;
+    }
+}
+
+/**************Divider******************/
+.divider {
+    width: 100%;
+    i {
+        position: relative;
+        width: 18px;
+        height: 18px;
+        line-height: 1;
+        font-size: 22px!important;
+        text-align: center;
+    }
+    &.divider-right {
+        text-align: right;
+        &:after {
+            left: auto;
+            right: 30px;
+        }
+    }
+    &.divider-center {
+        text-align: center;
+        &:before {
+            left: -50%!important;
+            right: 0;
+            margin-left: -30px;
+        }
+        &:after {
+            left: 50%!important;
+            right: 0;
+            margin-left: 30px;
+        }
+    }
+    &:after, &.divider-center:before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        top: 10px;
+        left: 30px;
+        height: 0;
+        border-top: 1.5px solid;
+    }
+}
+.divider-half-left:after, .divider-half-right:after {
+    width: 50% !important;
+}
+
+/***************Blockquotes*****************/
+.blockquote {
+    color: $text-color;
+    border-left: 5px solid $custom;
+    font-size: 16px;
+    border-radius: 5px;
+    &.block-icon {
+        position: relative;
+        font-size: 20px;
+    }
+    &.block-icon, &.icon-footer {        
+        &:before {
+            content: '"';
+            position: absolute;
+            top: -30%;
+            left: 15px;
+            color: $gray-200;
+            font-size: 160px;
+            z-index: -1;
+            opacity: 0.7;
+        }
+    }
+    &.icon-footer {
+        position: relative;
+        footer {
+            font-size: 16px;
+            font-weight: 700;
+            color: $custom;
+            float: right;
+        }
+    }
+}
+
+/***************Icons*****************/
+.icon-list-demo {
+    div {
+        cursor: pointer;
+        line-height: 50px;
+        white-space: nowrap;
+        color: $text-color;
+        i {
+            display: inline-block;
+            font-size: 20px;
+            margin: 0;
+            transition: all 0.2s;
+            width: 40px;
+        }
+        &:hover {            
+            color: $custom;
+            i {
+                transform: scale(1.5);
+            }
+        }
+    }
+}
+
+/***************BRADCUMBS*************/
+.page-next-level{    
+    .title-pager {
+        font-size: 24px;
+        color: $white;
+        letter-spacing: 1px;
+    }
+    .page-two {
+        padding-left: 0;
+        a {
+            color: $white !important;
+        }
+    }
+    .page-next {
+        letter-spacing: 0.5px;
+        li {
+            display: inline-block;
+            margin-right: 5px;
+            &:after {
+                content: "\f105";
+                font-size: 13px;
+                color: $white; 
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 600;
+                // padding: 0 15px 0 5px;
+            }     
+            &:last-child {
+                &:after {
+                    display: none;
+                }
+            }       
+            a {        
+                font-size: 16px;
+                display: inline-block;
+                font-weight: 500;
+                padding-right: 8px;
+                text-transform: capitalize;            
+                transition: all 0.5s ease;
+                color: $white;
+                &:hover {
+                    color: $custom !important;
+                }
+            }
+        }
+        span {
+            font-size: 15px;
+            display: inline-block;
+            font-weight: 500;
+            padding-right: 8px;
+            text-transform: capitalize;
+            color: $custom;
+        }
+    
+    }
+}
+@media (max-width: 767px) {    
+    .page-next-level {
+        text-align: center;
+        .page-two {
+            margin-top: 15px;
+        }
+    }
+}

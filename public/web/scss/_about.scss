@@ -1,0 +1,50 @@
+//
+// about.scss
+//
+.about{
+    .container-fluid{
+        max-width: 100%;
+        .padding-less.img {
+            background: scroll center no-repeat;
+            background-size: cover;
+            position: absolute;
+            height: 100%;
+        }
+    }    
+    .about-img-box{
+        padding: 12% 10%;
+    }       
+    .about-head {
+        font-size: 22px;    
+        letter-spacing: 0.8px;
+    }
+    .about-feature {
+        .image {
+            img {
+                width: 34px;
+            }
+        }
+        .content {
+            .title {
+                font-size: 18px;
+            }
+        }
+    }
+}
+// construction
+.construct-about {
+    img {
+        box-shadow: 30px 30px 0px -5px $warning;
+    }
+}
+@media (max-width: 768px) {
+    .about {
+        .padding-less {
+            position: relative !important;
+            height: 300px !important;
+        }
+        .about-content {
+            text-align: left !important;
+        }
+    }
+}

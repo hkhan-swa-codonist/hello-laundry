@@ -1,0 +1,49 @@
+//
+// shop.css
+//
+.shopping-product { 
+    .favourite {
+        a {
+            i {
+                position: absolute;
+                right: 8%;
+                top: 5%;
+                transition: all 0.5s ease;
+                opacity: 0;
+                z-index: 1;
+                font-size: 18px;
+                -webkit-text-stroke: 2px $danger;
+                -webkit-text-fill-color: transparent;                
+                &:focus, &:active, &.active, &.focus {
+                    -webkit-text-stroke: 0px $danger;
+                    -webkit-text-fill-color: $danger;
+                }
+            }
+        }
+    }
+    &:hover {
+        .favourite {
+            a {
+                i {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+//Cart
+.cart {
+    td {
+        vertical-align: middle!important;
+        border-color: $gray-300 !important;
+        .remove {
+            color: $danger;
+        }
+    }    
+    .cart-product-thumbnail {
+        a {
+            display: block;
+            width: 68px;
+        }
+    }
+}

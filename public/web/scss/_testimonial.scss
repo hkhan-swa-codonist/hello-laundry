@@ -1,0 +1,78 @@
+//
+// testimonial.scss
+//
+.testi-review {
+    .name {
+        font-size: 14px;
+        letter-spacing: 0.8px;
+    }
+    .designation {
+        font-size: 13px;
+    }
+    &.bg-testi {
+        background: url("../images/bg-testi.jpg") fixed center center;
+    }
+    .testimonial {
+        cursor: w-resize;        
+        .image {
+            img {
+                width: 80px;
+                border: 1px solid $gray-300;
+            }
+        }
+        .content-review {
+            .review {
+                font-size: 18px;
+                color: $gray-400;
+            }
+        }
+    }    
+    .review-star {
+        li {
+            i {
+                font-size: 13px;    
+            }
+        }
+    }
+    .testimonial-three {
+        cursor: w-resize;   
+        .image {
+            width: 120px;
+        }
+        .content {
+            .review {
+                font-size: 17px;
+            }
+        }
+        .quote-icon {
+            font-size: 150px;
+            position: absolute;
+            top: -30px;
+            opacity: 0.08;
+            z-index: -1;
+        }
+    }
+}
+.owl-theme {
+    .owl-controls {
+        margin-top: -15px;
+        .owl-page {
+            span {
+                display: none;
+            }
+        }
+    }
+}
+.slick-slider {
+    overflow-x: hidden !important;
+    cursor: pointer;
+}
+@media (max-width: 574px) {
+    .testi-review {
+        .testimonial-three {
+            .image{
+                float: none !important;
+            }
+        }
+    }
+}

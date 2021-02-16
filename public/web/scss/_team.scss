@@ -1,0 +1,105 @@
+//
+// team.scss
+//
+.team {
+    .team-content {
+        .content {
+            .discription {
+                line-height: 25px;
+            }
+        }
+    }
+    .team-content, .team-wrapper, .member-detail {
+        .content {
+            .designation {
+                color: $custom;
+                font-size: 16px;
+            }
+            .name {
+                a {
+                    font-size: 16px;
+                    letter-spacing: 0.5px;
+                    color: $text-color;
+                }
+                &:hover {
+                    a {
+                        color: $custom;
+                    }
+                }
+            }
+            a {
+                color: $dark;
+                &:hover {
+                    color: $custom;
+                }
+            }
+        }
+    }
+    .team-wrapper {
+        position: relative;
+        .team-image {
+            transition: all 0.5s ease;
+        }
+        .team-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            transition: all 0.5s ease;
+            background-color: rgba(255, 255, 255, 0.95);
+            transform: scale(0.2);
+            .content {
+                position: absolute;
+                top: 50%;
+                left: 0px;
+                right: 0px;
+                transform: translateY(-50%);
+            }
+        }
+        &:hover {
+            .team-overlay {
+                opacity: 0.9;
+                transform: scale(1);
+            }
+            .team-image{
+                padding: 8px;
+                &:before, &:after {
+                    position: absolute;
+                    content: '';
+                    width: 0;
+                    height: 0;
+                    z-index: -1;
+                }
+                &:before {            
+                    border-bottom: 100px solid $dark;
+                    border-left: 100px solid transparent;
+                    right: 0;
+                    bottom: 0px;
+                }
+                &:after {
+                    border-top: 100px solid $dark;
+                    border-right: 100px solid transparent;
+                    left: 0;
+                    top: 0px;
+                }
+            }
+        }
+    }
+    .member-detail {
+        .details-title {
+            .title {
+                font-size: 15px;
+            }
+        }
+        .content {            
+            .title {
+                font-size: 26px;
+            }
+            .feature-title {
+                font-size: 18px;
+            }
+        }
+    }
+}

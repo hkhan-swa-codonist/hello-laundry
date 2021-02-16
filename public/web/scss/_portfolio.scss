@@ -1,0 +1,149 @@
+//
+// portfolio.scss
+//
+.container-filter {
+    li {
+        a {
+            display: block;
+            font-size: 14px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            line-height: 30px;
+            transition: all 0.5s ease;
+            &:hover, &.active {
+                color: $white !important;
+                background-color: $custom;
+                border-color: $custom !important;
+            }
+        }
+    }
+}
+.portfolio-box {
+    .work-img {
+        &.main-box {
+            transition: all 0.5s ease;
+        }
+        .overlay-work {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0; 
+            transition: all 0.9s ease;
+            transform: scale(1);
+            background-color: rgba(27, 27, 27, .8);
+            z-index: 1;
+            .icon {
+                position: absolute;
+                bottom: 50%;
+                transform: translateY(0%);
+                transition: all 0.5s ease;
+                right: 0;
+                left: 0;
+                i {
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    font-size: 20px;
+                    &:hover {
+                        color: $custom !important;
+                        background: $white;
+                    }
+                }
+            }
+            .work-content {
+                position: absolute;
+                bottom: 5%;
+                left: 5%;
+                transform: translateY(100px);
+                transition: all 0.5s ease;
+                .title {
+                    a {
+                        font-size: 17px;
+                    }
+                    &:hover a {
+                        color: $custom !important;
+                    }
+                }
+            }
+        }
+    }
+    
+    .gallary-title {
+        background: $light;
+        .title {
+            a {
+                color: $text-color;
+                font-size: 17px;
+            }
+            &:hover a {
+                color: $custom !important;
+            }
+        }
+        &.work-description{
+            display: none;
+            transition: all 0.5s ease;
+        }
+    }    
+    .thumb {
+        img {
+            width: 80px;
+        }
+    }
+    .menu-content {
+        overflow: hidden; 
+        h4 {
+            font-size: 15px; 
+            a {
+                transition: all 0.5s ease;
+                &:hover {
+                    color: $custom !important;
+                }
+            }
+            &:hover {
+                color: $custom !important; 
+            }
+            span {
+                float: right;
+                display: block;
+                transition: all 0.5s ease;
+            }
+        }
+    }
+    &:hover {
+        .work-img {
+            &.main-box {
+                transform: translateY(-105px);
+            }
+        }
+        .work-description {
+            transform: translateY(0%);
+            display: block;
+        }
+        .overlay-work {
+            opacity: 1;
+            transform: translateY(0px);
+            .icon{
+                transform: translateY(50%); 
+            }
+            .work-content {
+                transform: translateY(0px);                
+            }
+        }
+    }
+}
+.work-details, .personal-detail {
+    .title {
+        font-size: 18px;
+    }
+    ul {
+        li {
+            b {
+                max-width: 90px;
+                width: 100%;
+                display: inline-block;
+            }
+        }
+    }
+}

@@ -1,0 +1,71 @@
+//
+// cta.scss
+//
+
+.contact-cta {
+    .intro-text {
+        .title {
+            font-size: 34px;
+            letter-spacing: 1px;
+        }
+    }
+}
+.project-video {
+    .play-icon {
+        height: 80px;
+        width: 80px;
+        line-height: 60px;
+        text-align: center;
+        border-radius: 50%;
+        display: inline-block;
+        margin-top: 20px;
+        border: 8px solid $custom;
+    }
+}
+//home video button
+.watch-video a {
+    font-size: 14px;
+    letter-spacing: 1px;
+    .play-icon-circle {
+        height: 50px;
+        width: 50px;
+        background-color: $custom;
+        line-height: 50px;
+        &.play-iconbar {
+            font-size: 17px;
+        }
+        &.play {
+            top: 77%;
+        }
+    }
+}
+//barber
+.shop-time {
+    li {
+        width: 120px;
+        height: 120px;
+        line-height: 95px;
+        .days {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .times {
+            margin-top: -65px;
+        }
+    }
+}
+//app landoing 
+.app-download {
+    li {
+        a {
+            img {
+                height: 58px;
+            }
+        }
+    }
+}
+@media (min-width: 200px) and (max-width: 767px) {
+    .contact-cta, .contact-cta-button {
+        text-align: center !important;
+    }
+} 

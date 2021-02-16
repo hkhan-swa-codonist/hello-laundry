@@ -1,0 +1,26 @@
+//
+// triangle.scss
+//
+.page-triangle {
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border: 20px solid transparent;
+        border-top-color: $white;
+        margin-left: -20px;
+    }
+    &.triangle-light {
+        &:after {
+            border-top-color: $light;
+        }
+    }
+    &.triangle-custom {
+        &:after {
+            border-top-color: $custom;
+        }
+    }
+}

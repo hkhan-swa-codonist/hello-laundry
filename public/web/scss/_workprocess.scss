@@ -1,0 +1,38 @@
+//
+// workprocess.scss
+//
+.work-process {
+    display: block;
+    &.process-arrow {
+        &:after {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 32px;
+            left: 70%;
+            top: 40px;
+            background: url("../images/process.png") center center no-repeat;
+            transition: all 0.3s ease 0s;
+        }
+    }
+    i {
+        height: 70px;
+        width: 70px;
+        line-height: 70px;
+        border-radius: 50%;
+        text-align: center;
+        background-color: $gray-100;
+        font-size: 25px;
+    }
+    a {
+        .title {
+            font-size: 18px;
+            color: $custom;
+        }
+    }
+} 
+@media (max-width: 768px) {
+    .process-arrow:after {
+        display: none;
+    }
+}

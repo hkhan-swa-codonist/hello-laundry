@@ -1,0 +1,80 @@
+//
+// tagline.scss
+//
+
+.tagline {
+    background: $navy;
+    font-size: 13px;
+    color: $white !important;
+    position: absolute;
+    width: 100%;
+    z-index: 99;
+    .pull-left i {
+        font-weight: 400;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    >.container-fluid {
+        width: 90%;
+    }
+}
+.login {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+    padding: 11px 0;
+    font-size: 13px;
+    a{
+        color: $white;
+        transition: all 0.3s ease;
+        padding-right: 10px;
+        &:hover {
+            color: $custom;
+        }
+    }
+    i {
+        margin-right: 8px;
+    }
+}
+.modal-open {
+    padding-right: 0 !important;
+}
+.top_socials {
+    margin-bottom: 0;
+    li {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 0;
+        padding: 0;
+        text-align: right;
+        a {
+            display: inline-block;
+            line-height: 40px;
+            transition: all 0.3s ease;
+            color: $white;
+            background-color: transparent;
+            font-size: 13px;
+            font-weight: 400;
+            padding: 0px 10px;
+            i{
+                &:hover {
+                    color: $custom;
+                }
+            }
+        } 
+        &:last-child {
+            a{
+                padding-right: 0;
+            }
+        }
+    }   
+}
+.defaultscroll .container-fluid {
+    width: 90% !important;
+}
+
+@media screen and (max-width: 425px) {
+    .tagline {
+        display: none;
+    }
+}

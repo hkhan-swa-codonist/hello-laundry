@@ -1,0 +1,66 @@
+//
+// footer.scss
+//
+.footer {
+    padding: 30px 0 30px;
+    position: relative;
+    &.footer-two {
+        padding: 30px 0;
+    }
+    .footer-contact {
+        color: $gray-500;
+        .icon {
+            font-size: 40px;
+            float: left;
+        }
+        .title {
+            font-size: 15px;
+            letter-spacing: 1px;
+        }
+    }
+    p {
+        color: $gray-500 !important;
+    }
+    .footer-head {
+        font-size: 18px;
+        letter-spacing: 0.8px;
+    }
+    .footer-list {
+        margin: 0;
+        li {
+            list-style-type: none;
+            padding: 7px 0;
+            color: $gray-500;
+            a {
+                color: $gray-500;
+                &:hover{
+                    color: $custom;
+                }            
+            }
+            &:first-child {
+                padding-top: 0;
+            }
+        }
+    }
+    .twitter-post {
+        .icon i, .review p {
+            color: $gray-500;
+        }
+    }
+    hr {
+        margin: 30px 0;
+        border-top-color: #4a4a4a;
+    }
+    .footer-bar {
+        p {
+            color: $gray-500;
+        }
+    }
+}
+@media (min-width: 200px) and (max-width: 767px) {
+    .footer {
+        .footer-bar {
+            text-align: center;
+        }
+    }
+}

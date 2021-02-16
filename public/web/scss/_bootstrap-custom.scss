@@ -1,0 +1,80 @@
+//
+// Bootstrap-custom.scss
+//
+
+//Backgrounds
+.bg-primary {
+    background-color: $primary !important;
+}
+.bg-secondary {
+    background-color: $secondary !important;
+}
+.bg-success {
+    background-color: $success !important;
+}
+.bg-info {
+    background-color: $info !important;
+}
+.bg-warning {
+    background-color: $warning !important;
+}
+.bg-light {
+    background-color: $light !important;
+}
+.bg-dark {
+    background-color: $dark !important;
+}
+.bg-custom {
+    background-color: $custom !important;
+}
+//Texts
+.text-primary {
+    color: $primary !important;
+}
+.text-secondary {
+    color: $secondary !important;
+}
+.text-success {
+    color: $success !important;
+}
+.text-info {
+    color: $info !important;
+}
+.text-warning {
+    color: $warning !important;
+}
+.text-light {
+    color: $light !important;
+}
+.text-dark {
+    color: $dark !important;
+}
+.text-custom {
+    color: $custom !important;
+}
+//card(background colors)
+.card-width {
+    max-width: 100%;
+}
+
+//li (list inline item)
+.list-inline-item:not(:last-child) {
+    margin-right: 5px;
+}
+
+//modal
+.modal-open {
+    padding-right: 0 !important;
+}
+.custom-control-input:checked~.custom-control-label::before {
+    color: $white;
+    border-color: $custom;
+    background-color: $custom;
+}
+
+// table
+.table {  
+    td {
+        padding: 15px;
+    }
+}

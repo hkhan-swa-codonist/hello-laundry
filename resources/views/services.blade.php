@@ -234,13 +234,15 @@
         box-shadow: 0 0 20px rgb(219 224 234 / 60%) !important;
         border: none !important;
     }
-    .services-container .service-box{
+
+    .services-container .service-box {
         padding: 25px;
-        margin: 15px 0;
+        margin: 20px 0;
         transition: all 0.2s linear;
         position: relative;
     }
-    .services-container .service-box:hover{
+
+    .services-container .service-box:hover {
         transform: translateY(-10px);
     }
 
@@ -248,9 +250,54 @@
         width: 120px;
         margin-right: 30px;
     }
+
+    .service-box i.fa {
+        padding: 10px 11px;
+        background: #09285b;
+        border-radius: 50%;
+        transition: all 0.2s linear;
+        color: white;
+        box-shadow: 2px 4px 8px 0px rgb(205 213 230);
+        position: absolute;
+        top: -18px;
+        right: -18px;
+        cursor: pointer;
+    }
+
+    .service-box i.fa:hover {
+        background: #409EFF;
+    }
+
+    i.fa-minus{
+        display: none;
+    }
     .shadow-box {
         box-shadow: 0 0 20px rgb(219 224 234 / 60%);
     }
+
+    .service-box .media-body p {
+        width: 90%;
+    }
+
+    .added {
+        display: none;
+    }
+
+    .added.active {
+        display: block;
+        color: white;
+        background: #409EFF;
+        padding: 2px 12px;
+        width: max-content;
+        position: absolute;
+        top: 41%;
+        right: -20px;
+    }
+
+    i.fa-minus.show {
+        display: block;
+    }
+
 </style>
 <!-- HOME START-->
 <section class="bg-pages" data-jarallax='{"speed": 0.5}'
@@ -440,6 +487,9 @@
                                                 kg) </p>
                                         </div>
                                     </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus"></i>
+                                    <i class="fa fa-minus"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -448,10 +498,14 @@
                                                  class="media-object">
                                         </div>
                                         <div class="media-body">
-                                            <h4 class="media-heading">Wash & Iron </h4>
-                                            <p> All items will be machine washed, ironed, and deliver on hangers (Priced per item) </p>
+                                            <h4 class="media-heading">Wash & Iron</h4>
+                                            <p> All items will be machine washed, ironed, and deliver on hangers (Priced
+                                                per item) </p>
                                         </div>
                                     </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -461,9 +515,13 @@
                                         </div>
                                         <div class="media-body">
                                             <h4 class="media-heading">Dry cleaning </h4>
-                                            <p>Cleaned, ironed, and returned to you on a hanger by default (Priced per item) </p>
+                                            <p>Cleaned, ironed, and returned to you on a hanger by default (Priced per
+                                                item) </p>
                                         </div>
                                     </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -473,9 +531,61 @@
                                         </div>
                                         <div class="media-body">
                                             <h4 class="media-heading">Duvets & Bulk Items </h4>
-                                            <p> Larger items that require different cleaning process(Up to 72 hours) </p>
+                                            <p> Larger items that require different cleaning process(Up to 72
+                                                hours) </p>
                                         </div>
                                     </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
+                                </div>
+                                <div class="service-box shadow-box">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
+                                                 class="media-object">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">Ironing Only </h4>
+                                            <p> This items are already washed , we just iron them for you(Priced per
+                                                item) </p>
+                                        </div>
+                                    </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
+                                </div>
+                                <div class="service-box shadow-box">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
+                                                 class="media-object">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">Clothing Alterations </h4>
+                                            <p> We offer a range of services including Trouser, Dress, Skirt, Suit,
+                                                Jacket and Children’s Clothing. Up to 72 Hours. </p>
+                                        </div>
+                                    </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
+                                </div>
+                                <div class="service-box shadow-box">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
+                                                 class="media-object">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">Shoe Repairs </h4>
+                                            <p> Shoe and boot repair services including zip repairs and rubber sole
+                                                replacement (resoling) as well as boot re-heeling.</p>
+                                        </div>
+                                    </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
                                 </div>
                             </div>
 
@@ -1327,6 +1437,7 @@
         el: '#laundryForm',
         data: {
             step: 1,
+            services: [],
         },
         filters: {},
         computed: {},
@@ -1348,6 +1459,23 @@
                 var self = this;
                 e.preventDefault();
                 self.step = step;
+            },
+            clickService: function (e, action, service) {
+                var self = this;
+                if (action == 'add') {
+                    jQuery(e.target).siblings('.added').addClass('active');
+                    jQuery(e.target).siblings('i.fa-minus').addClass('show');
+                    self.services.push(service);
+                }
+                if (action == 'remove') {
+                    jQuery(e.target).removeClass('show');
+                    jQuery(e.target).siblings('.added').removeClass('active');
+                    var ind = self.services.indexOf(service);
+                    if(ind > -1){
+                        self.services.splice(ind,1);
+                    }
+                }
+
             }
 //            validateEmail: function (value) {
 //                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {

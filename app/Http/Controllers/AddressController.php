@@ -18,6 +18,25 @@ class AddressController extends Controller
         
     }
 
+    public function getAddressByPostCode(Request $request)
+    {
+        $input = $request->all();
+
+        $addresses = Address::where('postcode',$input['postcode'])->orderBy('created_at', 'desc')->get();
+
+        if ($addresses) {
+            return response()->json([
+                "result" => $addresses,
+                "message" => 'Success',
+                "status" => 1
+            ]);
+        } else {
+            return response()->json([
+                "message" => 'Sorry, something went wrong !',
+                "status" => 0
+            ]);
+        }    }
+
     /**
      * Show the form for creating a new resource.
      *

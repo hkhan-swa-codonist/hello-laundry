@@ -16,7 +16,10 @@
     .btn.btn-blue:hover {
         background: #09285b;
     }
-
+    .btn.verify{
+        height: 48px;
+        margin-top: 8px;
+    }
     input.largerCheckbox {
         width: 30px;
         height: 30px;
@@ -217,6 +220,7 @@
     .form-buttons {
         justify-content: space-between;
         display: flex;
+        margin-bottom: 15px;
     }
 
     input#postCode {
@@ -345,6 +349,19 @@
         font-size: 1.999em;
         margin: auto;
     }
+
+    .order-step p {
+        color: #212529;
+        font-size: 16px;
+    }
+
+    p.note-box {
+        color: #6c757d;
+        background-color: rgb(235, 237, 239);
+        box-shadow: 0 0 20px rgb(219 224 234 / 60%);
+        padding: 15px;
+    }
+
 </style>
 <!-- HOME START-->
 <section class="bg-pages" data-jarallax='{"speed": 0.5}'
@@ -639,6 +656,12 @@
                                     <i class="fa fa-plus show" @click="clickService($event,'add','Shoe Repairs')"></i>
                                     <i class="fa fa-minus" @click="clickService($event,'remove','Shoe Repairs' )"></i>
                                 </div>
+                                <div class="form-group">
+                                    <label for="extraDetails">Any Other Request?</label>
+                                    <textarea class="form-control" id="extraRequest" name="extraRequest"
+                                              rows="3"
+                                              placeholder="Add any special cleaning instructions or request"></textarea>
+                                </div>
                             </div>
 
                             <div class="form-buttons">
@@ -652,31 +675,101 @@
                         </div>
                         <!--TAB Collection-->
                         <div class="address-form" v-show="step == 3">
-                            <div class="step-title">
+                            <div class="step-title  mt-4 mb-3">
                                 <h1 class="first">Collection</h1>
                                 <h1 class="last">Details</h1>
                             </div>
-                            <div class="collection-form">
+                            <div class="sub-form">
                                 <div class="form-row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="colOption">Collection Option*</label>
-                                            <select class="marital-select" id="colOption" name="colOption" required
-                                                    v-model="colOption">
-                                                <option value="address0" selected>Address of The Post Code City 1</option>
-                                                <option value="address1">Address of The Post Code City 2</option>
-                                                <option value="address2">Address of The Post Code City 3</option>
+                                            <label for="colDate">Collection Date*</label>
+                                            <select id="colDate" name="colDate" required
+                                                    v-model="colDate">
+                                                <option value="17-02-2021" selected>17-02-2021</option>
+                                                <option value="18-02-2021">18-02-2021</option>
+                                                <option value="19-02-2021">19-02-2021</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-
+                                            <label for="colTime">Collection Time*</label>
+                                            <select id="colTime" name="colTime" required
+                                                    v-model="colTime">
+                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
+                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
+                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="colOption">Collection Option*</label>
+                                            <select id="colOption" name="colOption" required
+                                                    v-model="colOption">
+                                                <option value="Driver Collects From You" selected>Driver Collects From
+                                                    You
+                                                </option>
+                                                <option value="Driver Collects from Reception/Porter">Driver Collects
+                                                    from Reception/Porter
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="step-title mt-4 mb-3">
+                                <h1 class="first">Delivery</h1>
+                                <h1 class="last">Time</h1>
+                            </div>
+                            <div class="sub-form">
+                                <div class="form-row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="delDate">Delivery Date*</label>
+                                            <select class="marital-select" id="delDate" name="delDate" required
+                                                    v-model="delDate">
+                                                <option value="17-02-2021" selected>17-02-2021</option>
+                                                <option value="18-02-2021">18-02-2021</option>
+                                                <option value="19-02-2021">19-02-2021</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="delTime">Delivery Time*</label>
+                                            <select class="marital-select" id="delTime" name="delTime" required
+                                                    v-model="delTime">
+                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
+                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
+                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="delOption">Delivery Option*</label>
+                                            <select class="marital-select" id="delOption" name="delOption" required
+                                                    v-model="delOption">
+                                                <option value="Driver Delivers To You" selected>Driver Delivers To You
+                                                </option>
+                                                <option value="Driver Delivers To Reception/Porter">Driver Delivers To
+                                                    Reception/Porter
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="delInstruction">Delivery Instruction?</label>
+                                            <textarea class="form-control" id="delInstruction" name="delInstruction"
+                                                      rows="3"
+                                                      placeholder="Enter Delivery Instruction"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-buttons">
                                 <a class="btn btn-blue" @click="prevStep($event,2)">
                                     Back
@@ -689,19 +782,84 @@
                         <!--TAB Payment-->
                         <div class="address-form" v-show="step == 4">
                             <div class="step-title">
-                                <h1 class="first">Payment</h1>
+                                <h1 class="first">Personal</h1>
                                 <h1 class="last">Details</h1>
                             </div>
-
-
+                            <div class="form-row">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="fName">First Name*</label>
+                                        <input type="text" class="form-control" id="fName"
+                                               name="fName">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="lName">Last Name*</label>
+                                        <input type="text" class="form-control" id="lName"
+                                               name="lName">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="cEmail">Email Id*</label>
+                                        <input type="email" class="form-control" id="cEmail"
+                                               name="cEmail">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="pCode">Postcode*</label>
+                                        <input type="text" class="form-control" id="pCode"
+                                               name="pCode">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="addLine">Address Line*</label>
+                                        <input type="text" class="form-control" id="addLine"
+                                               name="addLine">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="extAdd">Extra Address Details</label>
+                                        <input type="text" class="form-control" id="extAdd"
+                                               name="extAdd">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mobNo">Mobile No*</label>
+                                        <input type="text" class="form-control" id="mobNo" placeholder="+44"
+                                               name="mobNo">
+                                    </div>
+                                </div>
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6 col-12 d-flex align-items-center">
+                                    <div class="form-group">
+                                        <label for="vocherCode">Vocher Code</label>
+                                        <input type="text" class="form-control" id="vocherCode"
+                                               placeholder="Please Enter Vocher Code"
+                                               name="vocherCode">
+                                    </div>
+                                    <button class="btn btn-blue verify">Verify</button>
+                                </div>
+                            </div>
+                            <p class="note-box"><b>Note:</b>We will authorise your card with a pre-payment of £20. The
+                                final
+                                value is calculated after we count / weigh your order. You can calculate the approximate
+                                price using our price list. Our minimum order is £20.</p>
                             <div class="form-buttons">
                                 <a class="btn btn-blue" @click="prevStep($event,3)">
-                                    Back
+                                    Previous
                                 </a>
                                 <button class="btn btn-blue" @click="nextStep($event,1)">
-                                    Next Step
+                                    Check Out
                                 </button>
                             </div>
+                            <p>By continuing you agree to our <a href="">Terms & Conditions</a> and <a href="">Privacy
+                                    Policy</a>. We will authorize your card with a pre payment of £20</p>
                         </div>
 
                     </form>
@@ -715,7 +873,7 @@
                         <div class="v-order-box">
                             <div class="order-step">
                                 <h4 @click="toStep($event,1)">Address</h4>
-                                {{--<p>Dynamic</p>--}}
+                                <p v-if="laAddress || laPostcode">${laAddress} <br>${laPostcode}</p>
                             </div>
                             <div class="order-edit" @click="toStep($event,1)"><i class="fa fa-edit"></i></div>
                         </div>
@@ -723,8 +881,7 @@
                         <div class="v-order-box">
                             <div class="order-step">
                                 <h4 @click="toStep($event,2)">Services</h4>
-                                {{--<p>Dynamic</p>--}}
-                                <ul class="services-list">
+                                <ul class="services-list" v-if="services.length">
                                     <li v-for="service in services"><p>${service}</p></li>
                                 </ul>
                             </div>
@@ -734,15 +891,15 @@
                         <div class="v-order-box">
                             <div class="order-step">
                                 <h4 @click="toStep($event,3)">Collection</h4>
-                                {{--<p>Dynamic</p>--}}
+                                <p v-if="colDate || colTime">${colDate } ${ colTime}</p>
                             </div>
                             <div class="order-edit" @click="toStep($event,3)"><i class="fa fa-edit"></i></div>
                         </div>
                         <hr class="dashed">
                         <div class="v-order-box">
                             <div class="order-step">
-                                <h4>Delivery</h4>
-                                {{--<p>Dynamic</p>--}}
+                                <h4 @click="toStep($event,3)">Delivery</h4>
+                                <p v-if="delDate || delTime">${delDate } ${ delTime}</p>
                             </div>
                             <div class="order-edit"><i class="fa fa-edit"></i></div>
                         </div>
@@ -857,7 +1014,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="new_address_model" role="dialog"
      style="overflow: scroll;overflow-y: scroll;overflow-x:hidden">
@@ -985,8 +1141,6 @@
 
     </div>
 </div>
-
-
 <!-- Modal -->
 <div id="exampleModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -1008,7 +1162,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="success" role="dialog" style="overflow: scroll;overflow-y: scroll;overflow-x:hidden">
     <div class="modal-dialog modal-md">
@@ -1587,6 +1740,12 @@
             preferance: 'Mixed',
             laPostcode: '',
             laAddress: '',
+            colDate: '',
+            colTime: '',
+            colOption: '',
+            delDate: '',
+            delTime: '',
+            delOption: '',
 
 
         },

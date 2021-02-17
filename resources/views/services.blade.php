@@ -268,9 +268,10 @@
         background: #409EFF;
     }
 
-    i.fa-minus{
+    i.fa-minus {
         display: none;
     }
+
     .shadow-box {
         box-shadow: 0 0 20px rgb(219 224 234 / 60%);
     }
@@ -298,6 +299,49 @@
         display: block;
     }
 
+    i.wash {
+        display: none;
+    }
+
+    i.wash.show {
+        display: block;
+    }
+
+    .wash-modal .modal-footer {
+        justify-content: flex-start;
+        border: none;
+    }
+
+    .wash-modal .close {
+        background: #409EFF;
+        color: white;
+        width: 36px;
+        padding: 6px;
+        border-radius: 50%;
+        opacity: 1;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    .modal-dialog {
+        max-width: 800px;
+    }
+    ul.services-list {
+        list-style: none;
+        padding: 0;
+    }
+    .services-list p{
+        color: #6c757d;
+        border: 2px dashed #ddd;
+        padding: 5px 10px;
+        margin-bottom: 8px;
+        width: max-content;
+    }
+    .wash-modal .modal-title {
+        font-size: 1.999em;
+        margin: auto;
+    }
 </style>
 <!-- HOME START-->
 <section class="bg-pages" data-jarallax='{"speed": 0.5}'
@@ -488,8 +532,9 @@
                                         </div>
                                     </div>
                                     <div class="added">Added</div>
-                                    <i class="fa fa-plus"></i>
-                                    <i class="fa fa-minus"></i>
+                                    <i class="fa fa-plus" data-toggle="modal" data-target="#washModal"
+                                       @click="washService($event,'add')"></i>
+                                    <i class="fa fa-minus" @click="washService($event,'remove')"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -520,8 +565,8 @@
                                         </div>
                                     </div>
                                     <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Dry cleaning')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Dry cleaning' )"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -536,8 +581,8 @@
                                         </div>
                                     </div>
                                     <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Duvets & Bulk Items')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Duvets & Bulk Items' )"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -552,8 +597,8 @@
                                         </div>
                                     </div>
                                     <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Ironing Only')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Ironing Only' )"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -568,8 +613,8 @@
                                         </div>
                                     </div>
                                     <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Clothing Alterations')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Clothing Alterations' )"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -584,8 +629,8 @@
                                         </div>
                                     </div>
                                     <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','Shoe Repairs')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','Shoe Repairs' )"></i>
                                 </div>
                             </div>
 
@@ -653,6 +698,9 @@
                             <div class="order-step">
                                 <h4 @click="toStep($event,2)">Services</h4>
                                 {{--<p>Dynamic</p>--}}
+                                <ul class="services-list">
+                                    <li v-for="service in services"><p>${service}</p></li>
+                                </ul>
                             </div>
                             <div class="order-edit" @click="toStep($event,2)"><i class="fa fa-edit"></i></div>
                         </div>
@@ -684,6 +732,62 @@
                 </div>
             </div>
 
+            <!-- Modal Area Start-->
+            {{--Wash Modal--}}
+            <div class="modal fade wash-modal" id="washModal" tabindex="-1" role="dialog"
+                 aria-labelledby="washModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Please select your preference for wash</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="services-container">
+                                <div class="service-box shadow-box default">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
+                                                 class="media-object">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">Mixed Wash & Tumble Dry – Up To 6 Kg</h4>
+                                            <p> One wash / No color separate (Each 6kg £14.00) </p>
+                                        </div>
+                                    </div>
+                                    <div class="added active">Added</div>
+                                    <i class="fa fa-plus wash" @click="washServicePrefer($event,'Mixed','-')"></i>
+                                </div>
+                                <div class="service-box shadow-box">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
+                                                 class="media-object">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">Separate Wash & Tumble Dry – Up To 12 Kg</h4>
+                                            <p>Requires two washes for dark and light colors (up to 12kg of light and
+                                                dark clothes £28.00)</p>
+                                        </div>
+                                    </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus wash show"
+                                       @click="washServicePrefer($event,'Separate','-')"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')" data-dismiss="modal">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{--Modal Area End--}}
         </div>
     </div>
     <!--end container-->
@@ -862,7 +966,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Please Select Your Reference for Wash</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1438,6 +1542,11 @@
         data: {
             step: 1,
             services: [],
+            preferance: 'Mixed',
+            laPostcode: '',
+            laAddress: '',
+
+
         },
         filters: {},
         computed: {},
@@ -1471,9 +1580,67 @@
                     jQuery(e.target).removeClass('show');
                     jQuery(e.target).siblings('.added').removeClass('active');
                     var ind = self.services.indexOf(service);
-                    if(ind > -1){
-                        self.services.splice(ind,1);
+                    if (ind > -1) {
+                        self.services.splice(ind, 1);
                     }
+                }
+
+
+            },
+            washService: function (e, action) {
+                var self = this;
+                var text = 'Wash, Dry and Fold - ';
+                if (action == "add") {
+                    jQuery(e.target).siblings('.added').addClass('active');
+                    jQuery(e.target).siblings('i.fa-minus').addClass('show');
+                }
+                if (action == "remove") {
+                    jQuery(e.target).removeClass('show');
+                    jQuery(e.target).siblings('.added').removeClass('active');
+                    text = text + self.preferance;
+                    var ind = self.services.indexOf(text);
+                    if (ind > -1) {
+                        self.services.splice(ind, 1);
+                    }
+//                    self.preferance = 'Mixed';
+//                    jQuery('#washModal').children('.service-box.default').children('.added').addClass('active');
+//                    jQuery('#washModal').children('.service-box.default').children('.added').siblings('.wash').removeClass('show');
+//                    jQuery('#washModal').children('.service-box.default').siblings('.service-box').children('.added').removeClass('active');
+//                    jQuery('#washModal').children('.service-box.default').siblings('.service-box').children('.added').siblings('.wash').addClass('show');
+
+                }
+
+            },
+            washServicePrefer: function (e, prefer, action) {
+                var self = this;
+                var text = 'Wash, Dry and Fold - ';
+                if (prefer == 'Separate') {
+                    jQuery(e.target).removeClass('show');
+                    jQuery(e.target).siblings('.added').addClass('active');
+                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
+                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
+                    text = text + self.preferance;
+                    self.preferance = prefer;
+                    var ind = self.services.indexOf(text);
+                    if (ind > -1) {
+                        self.services.splice(ind, 1);
+                    }
+                }
+                if (prefer == 'Mixed') {
+                    jQuery(e.target).removeClass('show');
+                    jQuery(e.target).siblings('.added').addClass('active');
+                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
+                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
+                    text = text + self.preferance;
+                    self.preferance = prefer;
+                    var ind = self.services.indexOf(text);
+                    if (ind > -1) {
+                        self.services.splice(ind, 1);
+                    }
+                }
+                if (action == 'add') {
+                    text = text + self.preferance;
+                    self.services.push(text);
                 }
 
             }

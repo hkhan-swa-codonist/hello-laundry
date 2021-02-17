@@ -327,17 +327,20 @@
     .modal-dialog {
         max-width: 800px;
     }
+
     ul.services-list {
         list-style: none;
         padding: 0;
     }
-    .services-list p{
+
+    .services-list p {
         color: #6c757d;
         border: 2px dashed #ddd;
         padding: 5px 10px;
         margin-bottom: 8px;
         width: max-content;
     }
+
     .wash-modal .modal-title {
         font-size: 1.999em;
         margin: auto;
@@ -581,8 +584,10 @@
                                         </div>
                                     </div>
                                     <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Duvets & Bulk Items')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Duvets & Bulk Items' )"></i>
+                                    <i class="fa fa-plus show"
+                                       @click="clickService($event,'add','Duvets & Bulk Items')"></i>
+                                    <i class="fa fa-minus"
+                                       @click="clickService($event,'remove','Duvets & Bulk Items' )"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -613,8 +618,10 @@
                                         </div>
                                     </div>
                                     <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Clothing Alterations')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Clothing Alterations' )"></i>
+                                    <i class="fa fa-plus show"
+                                       @click="clickService($event,'add','Clothing Alterations')"></i>
+                                    <i class="fa fa-minus"
+                                       @click="clickService($event,'remove','Clothing Alterations' )"></i>
                                 </div>
                                 <div class="service-box shadow-box">
                                     <div class="media">
@@ -649,7 +656,26 @@
                                 <h1 class="first">Collection</h1>
                                 <h1 class="last">Details</h1>
                             </div>
+                            <div class="collection-form">
+                                <div class="form-row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="colOption">Collection Option*</label>
+                                            <select class="marital-select" id="colOption" name="colOption" required
+                                                    v-model="colOption">
+                                                <option value="address0" selected>Address of The Post Code City 1</option>
+                                                <option value="address1">Address of The Post Code City 2</option>
+                                                <option value="address2">Address of The Post Code City 3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-buttons">
                                 <a class="btn btn-blue" @click="prevStep($event,2)">
@@ -780,7 +806,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')" data-dismiss="modal">
+                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
+                                    data-dismiss="modal">
                                 Add
                             </button>
                         </div>
@@ -1062,20 +1089,19 @@
 
         });
 
-        $('#get_address_button').click(function(){
-        $.ajax(
-            {
-                type:"POST",
-                url: "api/address/bypostcode", 
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    postcode:$("#postCode").val(),
-                },
-                success: function(result)
+        $('#get_address_button').click(function () {
+            $.ajax(
                 {
-                   conosle.log("hello");
-                }
-            });
+                    type: "POST",
+                    url: "api/address/bypostcode",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        postcode: $("#postCode").val(),
+                    },
+                    success: function (result) {
+                        conosle.log("hello");
+                    }
+                });
         });
 
         $('.userinfo').click(function () {

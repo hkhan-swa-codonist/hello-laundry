@@ -364,7 +364,43 @@
         box-shadow: 0 0 20px rgb(219 224 234 / 60%);
         padding: 15px;
     }
+    @media screen and (max-width: 767px) {
+        .vue_laundry_form .step h3:before {
+            width: 80px;
+        }
+        .vue_laundry_form .step {
+            padding-right: 10px;
+        }
+        .vue_laundry_form .step.active h4 {
+            font-size: 15px;
+        }
+        .vue_laundry_form .step h4 {
+            font-size: 15px;
+        }
+        .btn-blue.height {
+            height: 48px;
+            margin-right: 0;
+            margin-top: 31px;
+        }
+        input#postCode {
+            width: 95%;
+        }
+        .service-box .media {
+            flex-wrap: wrap;
+        }
+        .services-container .service-box .media-body {
+            flex: auto;
+        }
+    }
+    @media (min-width: 768px) and (max-width: 991px) {
+        .vue_laundry_form .step {
+            padding-right: 50px;
+        }
+        .vue_laundry_form .step h3:before {
+            width: 120px;
+        }
 
+    }
 </style>
 <!-- HOME START-->
 <section class="bg-pages" data-jarallax='{"speed": 0.5}'
@@ -678,7 +714,7 @@
 
                             <div class="form-buttons">
                                 <a class="btn btn-blue" @click="prevStep($event,1)">
-                                    Back
+                                    Previous
                                 </a>
                                 <button class="btn btn-blue" @click="nextStep($event,3)">
                                     Next Step
@@ -784,7 +820,7 @@
                             </div>
                             <div class="form-buttons">
                                 <a class="btn btn-blue" @click="prevStep($event,2)">
-                                    Back
+                                    Previous
                                 </a>
                                 <button class="btn btn-blue" @click="nextStep($event,4)">
                                     Next Step
@@ -1264,7 +1300,7 @@
                         postcode: $("#postCode").val(),
                     },
                     success: function (result) {
-                        conosle.log("hello");
+                        console.log("hello");
                     }
                 });
         });

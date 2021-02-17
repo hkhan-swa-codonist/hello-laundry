@@ -35,7 +35,8 @@ class AddressController extends Controller
                 "message" => 'Sorry, something went wrong !',
                 "status" => 0
             ]);
-        }    }
+        }    
+    }
 
     /**
      * Show the form for creating a new resource.

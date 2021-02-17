@@ -328,10 +328,16 @@
         right: 20px;
     }
 
-    .modal-dialog {
+    .wash-modal .modal-dialog {
         max-width: 800px;
     }
-
+    .wash-modal .modal-body {
+        padding: 35px;
+    }
+    .wash-modal .modal-title {
+        font-size: 1.999em;
+        margin: auto;
+    }
     ul.services-list {
         list-style: none;
         padding: 0;
@@ -345,10 +351,7 @@
         width: max-content;
     }
 
-    .wash-modal .modal-title {
-        font-size: 1.999em;
-        margin: auto;
-    }
+
 
     .order-step p {
         color: #212529;

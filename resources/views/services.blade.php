@@ -509,11 +509,20 @@
                                           rows="3"></textarea>
                             </div>
 
+                            @if(isset($user))
                             <div class="form-buttons">
                                 <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
                                     Next Step
                                 </button>
                             </div>
+                            @else 
+                            <div class="form-buttons">
+                                <button class="btn btn-blue" @click="showLogin()"  style="margin-left: auto">
+                                    Next Step
+                                </button>
+                            </div>
+                            @endif
+                            
                         </div>
                         <!--TAB Services-->
                         <div class="address-form" v-show="step == 2">
@@ -1593,6 +1602,10 @@
         filters: {},
         computed: {},
         methods: {
+            showLogin: function(){
+                alert("User is not login! Show Popup Model for login. ToDo")
+                e.preventDefault();
+            },
             nextStep: function (e, step) {
                 var self = this;
                 e.preventDefault();

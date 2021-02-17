@@ -63,7 +63,7 @@ class WebController extends Controller
             }
          $payment_modes = PaymentMethod::where('status',1)->get();
        $currency = AppSetting::where('id',1)->value('default_currency');
-       $addresses = Address::where('customer_id',Auth::user()->id)->get();
+       $addresses = Address::all();
 
         return view('services',[ 'data' => $type,'payment_modes' => $payment_modes, 'currency' => $currency, 'addresses' => $addresses]);
     }

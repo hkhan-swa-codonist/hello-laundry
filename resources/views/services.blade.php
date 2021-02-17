@@ -486,9 +486,9 @@
                                            name="postCode">
                                     {{--<div class="invalid-feedback">Please fill out this field.</div>--}}
                                 </div>
-                                <button class="btn btn-blue height">
+                                <span id="get_address_button" class="btn btn-blue height">
                                     Get Address
-                                </button>
+                                </span>
                             </div>
                             <div class="form-group">
                                 <label for="address1">Select Your Address*</label>
@@ -1060,6 +1060,22 @@
                 $("#unique_id").val(postcode);
             }
 
+        });
+
+        $('#get_address_button').click(function(){
+        $.ajax(
+            {
+                type:"POST",
+                url: "api/address/bypostcode", 
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    postcode:$("#postCode").val(),
+                },
+                success: function(result)
+                {
+                   conosle.log("hello");
+                }
+            });
         });
 
         $('.userinfo').click(function () {

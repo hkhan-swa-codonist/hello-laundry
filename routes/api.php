@@ -23,6 +23,7 @@ Route::resource('customer', 'CustomerController');
 Route::post('customer/profile_picture', 'CustomerController@profile_picture');
 Route::resource('address', 'AddressController');
 Route::post('address/all', 'AddressController@all_addresses');
+Route::post('address/bypostcode', 'AddressController@getAddressByPostCode');
 Route::post('address/delete', 'AddressController@delete');
 Route::post('customer/login', 'CustomerController@login');
 Route::post('customer/forgot_password', 'CustomerController@forgot_password');

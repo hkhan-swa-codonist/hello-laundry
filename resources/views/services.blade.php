@@ -364,6 +364,9 @@
         box-shadow: 0 0 20px rgb(219 224 234 / 60%);
         padding: 15px;
     }
+    .fixposition {
+        /*padding-top: 122px;*/
+    }
     @media screen and (max-width: 767px) {
         .vue_laundry_form .step h3:before {
             width: 80px;
@@ -391,6 +394,26 @@
         .services-container .service-box .media-body {
             flex: auto;
         }
+        .step-title .first , .step-title .last{
+            font-size: 30px;
+        }
+        .added.active {
+            padding: 2px 5px;
+            right: -10px;
+        }
+        .service-box i.fa {
+            padding: 6px 7px;
+            top: -4px;
+            right: -10px;
+        }
+        .wash-modal .modal-title {
+            font-size: 16px;
+        }
+        .wash-modal .close {
+            width: 28px;
+            padding: 2px;
+        }
+
     }
     @media (min-width: 768px) and (max-width: 991px) {
         .vue_laundry_form .step {
@@ -915,7 +938,7 @@
 
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 fixposition">
                     <div class="vue-sidebar">
                         <h5 class="sidebar-title text-center">Summary</h5>
                         <div class="v-order-box">
@@ -971,7 +994,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Please select your preference for wash</h5>
+                            <h5 class="modal-title">Please select your preference for wash</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -1777,6 +1800,26 @@
         /*document.getElementById("address_btn").style.display = "none";
         document.getElementById("checkout_btn").style.display = "block";*/
     }
+    //form fixed code
+    var pos = $('.fixposition');
+    var postarget = $('.footer');
+    var sectiontop = pos.offset().top - 130;
+    var postar = postarget.offset().top;
+    postar = postar - 2000;
+    $(window).scroll(function() {
+        var windowscroll = $(this).scrollTop();
+        if(windowscroll >= sectiontop) {
+            $('.vue-sidebar').css({
+                "position": "sticky",
+                "top"     : "137px"
+            });
+        }if(windowscroll > postar || windowscroll < sectiontop){
+            $('.vue-sidebar').css({
+                "position": "sticky",
+                "margin-bottom": "15px"
+            });
+        }
+    });
 </script>
 <script>
     var app = new Vue({

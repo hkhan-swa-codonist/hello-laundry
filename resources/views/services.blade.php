@@ -364,6 +364,9 @@
         box-shadow: 0 0 20px rgb(219 224 234 / 60%);
         padding: 15px;
     }
+    .fixposition {
+        /*padding-top: 122px;*/
+    }
     @media screen and (max-width: 767px) {
         .vue_laundry_form .step h3:before {
             width: 80px;
@@ -391,6 +394,26 @@
         .services-container .service-box .media-body {
             flex: auto;
         }
+        .step-title .first , .step-title .last{
+            font-size: 30px;
+        }
+        .added.active {
+            padding: 2px 5px;
+            right: -10px;
+        }
+        .service-box i.fa {
+            padding: 6px 7px;
+            top: -4px;
+            right: -10px;
+        }
+        .wash-modal .modal-title {
+            font-size: 16px;
+        }
+        .wash-modal .close {
+            width: 28px;
+            padding: 2px;
+        }
+
     }
     @media (min-width: 768px) and (max-width: 991px) {
         .vue_laundry_form .step {
@@ -573,7 +596,7 @@
                             </div>
                             @else 
                             <div class="form-buttons">
-                                <button class="btn btn-blue" @click="showLogin()"  style="margin-left: auto">
+                                <button class="btn btn-blue" @click="showLogin()"  style="margin-left: auto" data-toggle="modal" data-target="#loginModal">
                                     Next Step
                                 </button>
                             </div>
@@ -891,7 +914,7 @@
 
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 fixposition">
                     <div class="vue-sidebar">
                         <h5 class="sidebar-title text-center">Summary</h5>
                         <div class="v-order-box">
@@ -939,7 +962,117 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
            
+=======
+            <!-- Modal Area Start-->
+            {{--Wash Modal--}}
+            <div class="modal fade wash-modal" id="washModal" tabindex="-1" role="dialog"
+                 aria-labelledby="washModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Please select your preference for wash</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="services-container">
+                                <div class="service-box shadow-box">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
+                                                 class="media-object">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">Mixed Wash & Tumble Dry – Up To 6 Kg</h4>
+                                            <p> One wash / No color separate (Each 6kg £14.00) </p>
+                                        </div>
+                                    </div>
+                                    <div class="added active">Added</div>
+                                    <i class="fa fa-plus wash" @click="washServicePrefer($event,'Mixed','-')"></i>
+                                </div>
+                                <div class="service-box shadow-box">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
+                                                 class="media-object">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">Separate Wash & Tumble Dry – Up To 12 Kg</h4>
+                                            <p>Requires two washes for dark and light colors (up to 12kg of light and
+                                                dark clothes £28.00)</p>
+                                        </div>
+                                    </div>
+                                    <div class="added">Added</div>
+                                    <i class="fa fa-plus wash show"
+                                       @click="washServicePrefer($event,'Separate','-')"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
+                                    data-dismiss="modal">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{--Login Modal--}}
+            <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog"
+                 aria-labelledby="loginModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Login</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="login_page bg-white rounded p-4">
+                                <form class="login-form" method="post" action="login">
+                                    <input type="hidden" name="_token" value="3PiFBH5BvaQJfgq1Hd8AF5Cujzjf2hjK7C0ZfnEs">                        <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Email address <span class="text-danger">*</span></label>
+                                                <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="" required="" autocomplete="email">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Password <span class="text-danger">*</span></label>
+                                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required="" autocomplete="new-password">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 mb-0">
+                                            <button type="submit" class="btn btn-custom w-100">Sign in</button>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="mb-0 mt-3"><a href="/forgot_password" class="text-dark font-weight-bold">Forgot your password ?</a></p>
+                                            <p class="mb-0"><small class="text-dark mr-2">Don't have an account ?</small> <a href="/register" class="text-dark font-weight-bold">Sign Up</a></p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
+                                    data-dismiss="modal">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{--Modal Area End--}}
+>>>>>>> bab57a99112e0c0659449b5e7c9ce2addb6fda81
         </div>
     </div>
     <!--end container-->
@@ -1715,6 +1848,26 @@
         /*document.getElementById("address_btn").style.display = "none";
         document.getElementById("checkout_btn").style.display = "block";*/
     }
+    //form fixed code
+    var pos = $('.fixposition');
+    var postarget = $('.footer');
+    var sectiontop = pos.offset().top - 130;
+    var postar = postarget.offset().top;
+    postar = postar - 2000;
+    $(window).scroll(function() {
+        var windowscroll = $(this).scrollTop();
+        if(windowscroll >= sectiontop) {
+            $('.vue-sidebar').css({
+                "position": "sticky",
+                "top"     : "137px"
+            });
+        }if(windowscroll > postar || windowscroll < sectiontop){
+            $('.vue-sidebar').css({
+                "position": "sticky",
+                "margin-bottom": "15px"
+            });
+        }
+    });
 </script>
 <script>
     var app = new Vue({
@@ -1739,7 +1892,6 @@
         computed: {},
         methods: {
             showLogin: function(){
-                alert("User is not login! Show Popup Model for login. ToDo")
                 e.preventDefault();
             },
             nextStep: function (e, step) {

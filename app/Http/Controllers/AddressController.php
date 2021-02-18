@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Address;
+use App\Location;
 use Illuminate\Support\Facades\DB;
 class AddressController extends Controller
 {
@@ -22,14 +23,23 @@ class AddressController extends Controller
     {
         $input = $request->all();
 
-        $addresses = Address::where('postcode',$input['postcode'])->orderBy('created_at', 'desc')->get();
 
-        if ($addresses) {
+        $location = Location::where('pin_code',$input['postcode'])->orderBy('created_at')->get();
+
+        if ($location) {
+            if(count($location))
+            return response(json_encode([
+                "result" => $location,
+                "message" => 'Success',
+                "status" => 1
+            ]));
+            else
             return response()->json([
-                "result" => $addresses,
+                "result" => "No Location Found",
                 "message" => 'Success',
                 "status" => 1
             ]);
+
         } else {
             return response()->json([
                 "message" => 'Sorry, something went wrong !',

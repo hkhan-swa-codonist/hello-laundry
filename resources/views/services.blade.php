@@ -596,7 +596,7 @@
                             </div>
                             @else 
                             <div class="form-buttons">
-                                <button class="btn btn-blue" @click="showLogin()"  style="margin-left: auto">
+                                <button class="btn btn-blue" @click="showLogin()"  style="margin-left: auto" data-toggle="modal" data-target="#loginModal">
                                     Next Step
                                 </button>
                             </div>
@@ -1001,7 +1001,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="services-container">
-                                <div class="service-box shadow-box default">
+                                <div class="service-box shadow-box">
                                     <div class="media">
                                         <div class="media-left">
                                             <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
@@ -1031,6 +1031,56 @@
                                     <i class="fa fa-plus wash show"
                                        @click="washServicePrefer($event,'Separate','-')"></i>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
+                                    data-dismiss="modal">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{--Login Modal--}}
+            <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog"
+                 aria-labelledby="loginModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Login</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="login_page bg-white rounded p-4">
+                                <form class="login-form" method="post" action="login">
+                                    <input type="hidden" name="_token" value="3PiFBH5BvaQJfgq1Hd8AF5Cujzjf2hjK7C0ZfnEs">                        <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Email address <span class="text-danger">*</span></label>
+                                                <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="" required="" autocomplete="email">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Password <span class="text-danger">*</span></label>
+                                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required="" autocomplete="new-password">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 mb-0">
+                                            <button type="submit" class="btn btn-custom w-100">Sign in</button>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="mb-0 mt-3"><a href="/forgot_password" class="text-dark font-weight-bold">Forgot your password ?</a></p>
+                                            <p class="mb-0"><small class="text-dark mr-2">Don't have an account ?</small> <a href="/register" class="text-dark font-weight-bold">Sign Up</a></p>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -1862,7 +1912,6 @@
         computed: {},
         methods: {
             showLogin: function(){
-                alert("User is not login! Show Popup Model for login. ToDo")
                 e.preventDefault();
             },
             nextStep: function (e, step) {

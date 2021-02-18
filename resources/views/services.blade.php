@@ -1322,8 +1322,26 @@
                         _token: "{{ csrf_token() }}",
                         postcode: $("#postCode").val(),
                     },
-                    success: function (result) {
-                        console.log("hello");
+                    success: function (res) {
+                        response = JSON.parse(res);
+                        address1=$("#address1");
+                        api_url="https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967";
+                        if(response['result'].length>0){
+                            $.get(api_url, function (res) {                         
+                            if (res.addresses.length) {
+                                address1.html("");
+                                for (var i = 0, len = res.addresses.length; i < len; i++) {
+                                    value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
+                                    var option = $('<option></option>', {
+                                        "text":value,
+                                        "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
+                                        "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
+                                    });
+                                    address1.append(option);
+                                }
+                            }
+                        });                        
+                    }
                     }
                 });
         });

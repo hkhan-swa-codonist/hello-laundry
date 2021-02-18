@@ -539,7 +539,6 @@
       $("#search_address").on("input", function(e) {
         var val = $(this).val();
       if(val === "") return;
-      console.log(val);
       var opt = ($("#address_description option[value='" + $('#search_address').val() + "']").attr('id'));
       if(opt === '' || opt === undefined){
                 $.get("https://api.getaddress.io/find/"+val+"?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967", function(res) {

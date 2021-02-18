@@ -587,123 +587,99 @@
                                 <h1 class="last">Details</h1>
                             </div>
                             <div class="services-container">
+                                @foreach($data as $key => $value)
+                                @php
+                                {{ $image = env('IMG_URL').$value->image; }}
+                                @endphp
+                           
                                 <div class="service-box shadow-box">
                                     <div class="media">
                                         <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
+
+                                            <img src="{{ $image }}"
                                                  class="media-object">
                                         </div>
                                         <div class="media-body">
-                                            <h4 class="media-heading">Wash, Dry and Fold</h4>
-                                            <p> 30 ° wash, tumble dried at medium heat, not ironed (priced per load of 6
-                                                kg) </p>
+                                            <h4 class="media-heading">{{ $value->service_name }}</h4>
+                                            <p> {{ $value->description }} </p>
                                         </div>
                                     </div>
-                                    <div class="added">Added</div>
+                                    <div class="added">Added</div>                                    
+                                    @if($value['is_category'] == 1)
                                     <i class="fa fa-plus" data-toggle="modal" data-target="#washModal"
-                                       @click="washService($event,'add')"></i>
+                                    @click="washService($event,'add')"></i>
                                     <i class="fa fa-minus" @click="washService($event,'remove')"></i>
+                                    @else 
+                                    <i class="fa fa-plus show" @click="clickService($event,'add','{{ $value->service_name }}')"></i>
+                                    <i class="fa fa-minus" @click="clickService($event,'remove','{{ $value->service_name }}' )"></i>
+                                    @endif
                                 </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Wash & Iron</h4>
-                                            <p> All items will be machine washed, ironed, and deliver on hangers (Priced
-                                                per item) </p>
+                                @if($value['is_category']==1)
+                                @php 
+                                $categories = $value->categories()->get();
+                                $active="active";
+                                $show="";                                
+                                @endphp
+
+                                     <!-- Modal Area Start-->
+                                        {{--Wash Modal--}}
+                                        <div class="modal fade wash-modal" id="washModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="washModalLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Please select your preference for wash</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="services-container">
+                                                        @foreach($categories as $category)
+                                                        @php
+                                                           if(isset($category->image))
+                                                            $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
+                                                            else 
+                                                            $cat_image=$image;                               
+                                                             
+                                                        @endphp
+                                                        <div class="service-box shadow-box default">
+                                                            <div class="media">
+                                                                <div class="media-left">
+                                                                    <img src="{{$cat_image}}"
+                                                                            class="media-object">
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <h4 class="media-heading">{{$category->category_name}}</h4>
+                                                                    <p> {{$category->description}} </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="added {{$active}}">Added</div>
+                                                            <i class="fa fa-plus wash {{$show}}" @click="washServicePrefer($event,'{{$category->category_name}}','-')"></i>
+                                                        </div>
+                                                        <?php 
+                                                        $active="";
+                                                        $show="show";
+                                                        ?>
+                                                        @endforeach
+                                                       
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
+                                                            data-dismiss="modal">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Wash & Iron')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Wash & Iron' )"></i>
-                                </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Dry cleaning </h4>
-                                            <p>Cleaned, ironed, and returned to you on a hanger by default (Priced per
-                                                item) </p>
-                                        </div>
-                                    </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Dry cleaning')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Dry cleaning' )"></i>
-                                </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Duvets & Bulk Items </h4>
-                                            <p> Larger items that require different cleaning process(Up to 72
-                                                hours) </p>
-                                        </div>
-                                    </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus show"
-                                       @click="clickService($event,'add','Duvets & Bulk Items')"></i>
-                                    <i class="fa fa-minus"
-                                       @click="clickService($event,'remove','Duvets & Bulk Items' )"></i>
-                                </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Ironing Only </h4>
-                                            <p> This items are already washed , we just iron them for you(Priced per
-                                                item) </p>
-                                        </div>
-                                    </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Ironing Only')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Ironing Only' )"></i>
-                                </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Clothing Alterations </h4>
-                                            <p> We offer a range of services including Trouser, Dress, Skirt, Suit,
-                                                Jacket and Children’s Clothing. Up to 72 Hours. </p>
-                                        </div>
-                                    </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus show"
-                                       @click="clickService($event,'add','Clothing Alterations')"></i>
-                                    <i class="fa fa-minus"
-                                       @click="clickService($event,'remove','Clothing Alterations' )"></i>
-                                </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Shoe Repairs </h4>
-                                            <p> Shoe and boot repair services including zip repairs and rubber sole
-                                                replacement (resoling) as well as boot re-heeling.</p>
-                                        </div>
-                                    </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','Shoe Repairs')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','Shoe Repairs' )"></i>
-                                </div>
+                                {{--Modal Area End--}}
+                                @endif 
+                                
+                                @endforeach
+                                
                                 <div class="form-group">
                                     <label for="extraDetails">Any Other Request?</label>
                                     <textarea class="form-control" id="extraRequest" name="extraRequest"
@@ -963,63 +939,7 @@
                 </div>
             </div>
 
-            <!-- Modal Area Start-->
-            {{--Wash Modal--}}
-            <div class="modal fade wash-modal" id="washModal" tabindex="-1" role="dialog"
-                 aria-labelledby="washModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Please select your preference for wash</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="services-container">
-                                <div class="service-box shadow-box default">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Mixed Wash & Tumble Dry – Up To 6 Kg</h4>
-                                            <p> One wash / No color separate (Each 6kg £14.00) </p>
-                                        </div>
-                                    </div>
-                                    <div class="added active">Added</div>
-                                    <i class="fa fa-plus wash" @click="washServicePrefer($event,'Mixed','-')"></i>
-                                </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Separate Wash & Tumble Dry – Up To 12 Kg</h4>
-                                            <p>Requires two washes for dark and light colors (up to 12kg of light and
-                                                dark clothes £28.00)</p>
-                                        </div>
-                                    </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus wash show"
-                                       @click="washServicePrefer($event,'Separate','-')"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
-                                    data-dismiss="modal">
-                                Add
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{--Modal Area End--}}
+           
         </div>
     </div>
     <!--end container-->
@@ -1885,34 +1805,23 @@
             washServicePrefer: function (e, prefer, action) {
                 var self = this;
                 var text = 'Wash, Dry and Fold - ';
-                if (prefer == 'Separate') {
-                    jQuery(e.target).removeClass('show');
-                    jQuery(e.target).siblings('.added').addClass('active');
-                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
-                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
-                    text = text + self.preferance;
-                    self.preferance = prefer;
-                    var ind = self.services.indexOf(text);
-                    if (ind > -1) {
-                        self.services.splice(ind, 1);
-                    }
-                }
-                if (prefer == 'Mixed') {
-                    jQuery(e.target).removeClass('show');
-                    jQuery(e.target).siblings('.added').addClass('active');
-                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
-                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
-                    text = text + self.preferance;
-                    self.preferance = prefer;
-                    var ind = self.services.indexOf(text);
-                    if (ind > -1) {
-                        self.services.splice(ind, 1);
-                    }
-                }
                 if (action == 'add') {
                     text = text + self.preferance;
                     self.services.push(text);
                 }
+                else {
+                    jQuery(e.target).removeClass('show');
+                    jQuery(e.target).siblings('.added').addClass('active');
+                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
+                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
+                    text = text + self.preferance;
+                    self.preferance = prefer;
+                    var ind = self.services.indexOf(text);
+                    if (ind > -1) {
+                        self.services.splice(ind, 1);
+                    }
+                }
+                
 
             }
 //            validateEmail: function (value) {

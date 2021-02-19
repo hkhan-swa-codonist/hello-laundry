@@ -16,10 +16,12 @@
     .btn.btn-blue:hover {
         background: #09285b;
     }
-    .btn.verify{
+
+    .btn.verify {
         height: 48px;
         margin-top: 8px;
     }
+
     input.largerCheckbox {
         width: 30px;
         height: 30px;
@@ -331,13 +333,16 @@
     .wash-modal .modal-dialog {
         max-width: 800px;
     }
+
     .wash-modal .modal-body {
         padding: 35px;
     }
+
     .wash-modal .modal-title {
         font-size: 1.999em;
         margin: auto;
     }
+
     ul.services-list {
         list-style: none;
         padding: 0;
@@ -351,8 +356,6 @@
         width: max-content;
     }
 
-
-
     .order-step p {
         color: #212529;
         font-size: 16px;
@@ -364,61 +367,77 @@
         box-shadow: 0 0 20px rgb(219 224 234 / 60%);
         padding: 15px;
     }
+
     .fixposition {
         /*padding-top: 122px;*/
     }
+
     @media screen and (max-width: 767px) {
         .vue_laundry_form .step h3:before {
             width: 80px;
         }
+
         .vue_laundry_form .step {
             padding-right: 10px;
         }
+
         .vue_laundry_form .step.active h4 {
             font-size: 15px;
         }
+
         .vue_laundry_form .step h4 {
             font-size: 15px;
         }
+
         .btn-blue.height {
             height: 48px;
             margin-right: 0;
             margin-top: 31px;
         }
+
         input#postCode {
             width: 95%;
         }
+
         .service-box .media {
             flex-wrap: wrap;
         }
+
         .services-container .service-box .media-body {
             flex: auto;
         }
-        .step-title .first , .step-title .last{
+
+        .step-title .first, .step-title .last {
             font-size: 30px;
         }
+
         .added.active {
             padding: 2px 5px;
             right: -10px;
         }
+
         .service-box i.fa {
             padding: 6px 7px;
             top: -4px;
             right: -10px;
         }
+
         .wash-modal .modal-title {
             font-size: 16px;
         }
+
         .wash-modal .close {
             width: 28px;
             padding: 2px;
         }
 
     }
+
     @media (min-width: 768px) and (max-width: 991px) {
         .vue_laundry_form .step {
             padding-right: 50px;
         }
+
         .vue_laundry_form .step h3:before {
             width: 120px;
         }
@@ -574,7 +593,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="address1">Select Your Address*</label>
-                                <select class="marital-select" id="address1" name="address1" required
+                                <select id="address1" name="address1" required
                                         v-model="laAddress">
                                     <option value="address0" selected>Address of The Post Code City 1</option>
                                     <option value="address1">Address of The Post Code City 2</option>
@@ -588,6 +607,7 @@
                                           rows="3"></textarea>
                             </div>
 
+<<<<<<< HEAD
                             @if (Auth::check())
                             <div class="form-buttons">
                                 <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
@@ -604,6 +624,23 @@
                             
                             
                             
+=======
+                            @if(isset($user))
+                                <div class="form-buttons">
+                                    <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
+                                        Next Step
+                                    </button>
+                                </div>
+                            @else
+                                <div class="form-buttons">
+                                    <button class="btn btn-blue" @click="showLogin()" style="margin-left: auto"
+                                            data-toggle="modal" data-target="#loginModal">
+                                        Next Step
+                                    </button>
+                                </div>
+                            @endif
+
+>>>>>>> 7079d72a515efbd8fc01913ab07b2664355fbe1f
                         </div>
                         <!--TAB Services-->
                         <div class="address-form" v-show="step == 2">
@@ -613,98 +650,104 @@
                             </div>
                             <div class="services-container">
                                 @foreach($data as $key => $value)
-                                @php
-                                {{ $image = env('IMG_URL').$value->image; }}
-                                @endphp
-                           
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
+                                    @php
+                                        {{ $image = env('IMG_URL').$value->image; }}
+                                    @endphp
 
-                                            <img src="{{ $image }}"
-                                                 class="media-object">
+                                    <div class="service-box shadow-box">
+                                        <div class="media">
+                                            <div class="media-left">
+
+                                                <img src="{{ $image }}"
+                                                     class="media-object">
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading">{{ $value->service_name }}</h4>
+                                                <p> {{ $value->description }} </p>
+                                            </div>
                                         </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">{{ $value->service_name }}</h4>
-                                            <p> {{ $value->description }} </p>
-                                        </div>
+                                        <div class="added">Added</div>
+                                        @if($value['is_category'] == 1)
+                                            <i class="fa fa-plus" data-toggle="modal" data-target="#washModal"
+                                               @click="washService($event,'add')"></i>
+                                            <i class="fa fa-minus" @click="washService($event,'remove')"></i>
+                                        @else
+                                            <i class="fa fa-plus show"
+                                               @click="clickService($event,'add','{{ $value->service_name }}')"></i>
+                                            <i class="fa fa-minus"
+                                               @click="clickService($event,'remove','{{ $value->service_name }}' )"></i>
+                                        @endif
                                     </div>
-                                    <div class="added">Added</div>                                    
-                                    @if($value['is_category'] == 1)
-                                    <i class="fa fa-plus" data-toggle="modal" data-target="#washModal"
-                                    @click="washService($event,'add')"></i>
-                                    <i class="fa fa-minus" @click="washService($event,'remove')"></i>
-                                    @else 
-                                    <i class="fa fa-plus show" @click="clickService($event,'add','{{ $value->service_name }}')"></i>
-                                    <i class="fa fa-minus" @click="clickService($event,'remove','{{ $value->service_name }}' )"></i>
-                                    @endif
-                                </div>
-                                @if($value['is_category']==1)
-                                @php 
-                                $categories = $value->categories()->get();
-                                $active="active";
-                                $show="";                                
-                                @endphp
+                                    @if($value['is_category']==1)
+                                        @php
+                                            $categories = $value->categories()->get();
+                                            $active="active";
+                                            $show="";
+                                        @endphp
 
-                                     <!-- Modal Area Start-->
+                                    <!-- Modal Area Start-->
                                         {{--Wash Modal--}}
                                         <div class="modal fade wash-modal" id="washModal" tabindex="-1" role="dialog"
-                                        aria-labelledby="washModalLabel"
-                                        aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Please select your preference for wash</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="services-container">
-                                                        @foreach($categories as $category)
-                                                        @php
-                                                           if(isset($category->image))
-                                                            $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
-                                                            else 
-                                                            $cat_image=$image;                               
-                                                             
-                                                        @endphp
-                                                        <div class="service-box shadow-box default">
-                                                            <div class="media">
-                                                                <div class="media-left">
-                                                                    <img src="{{$cat_image}}"
-                                                                            class="media-object">
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <h4 class="media-heading">{{$category->category_name}}</h4>
-                                                                    <p> {{$category->description}} </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="added {{$active}}">Added</div>
-                                                            <i class="fa fa-plus wash {{$show}}" @click="washServicePrefer($event,'{{$category->category_name}}','-')"></i>
-                                                        </div>
-                                                        <?php 
-                                                        $active="";
-                                                        $show="show";
-                                                        ?>
-                                                        @endforeach
-                                                       
+                                             aria-labelledby="washModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Please select
+                                                            your preference for wash</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
-                                                            data-dismiss="modal">
-                                                        Add
-                                                    </button>
+                                                    <div class="modal-body">
+                                                        <div class="services-container">
+                                                            @foreach($categories as $category)
+                                                                @php
+                                                                    if(isset($category->image))
+                                                                     $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
+                                                                     else
+                                                                     $cat_image=$image;
+
+                                                                @endphp
+                                                                <div class="service-box shadow-box default">
+                                                                    <div class="media">
+                                                                        <div class="media-left">
+                                                                            <img src="{{$cat_image}}"
+                                                                                 class="media-object">
+                                                                        </div>
+                                                                        <div class="media-body">
+                                                                            <h4 class="media-heading">{{$category->category_name}}</h4>
+                                                                            <p> {{$category->description}} </p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="added {{$active}}">Added</div>
+                                                                    <i class="fa fa-plus wash {{$show}}"
+                                                                       @click="washServicePrefer($event,'{{$category->category_name}}','-')"></i>
+                                                                </div>
+                                                                <?php
+                                                                $active = "";
+                                                                $show = "show";
+                                                                ?>
+                                                            @endforeach
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-blue"
+                                                                @click="washServicePrefer($event,'-','add')"
+                                                                data-dismiss="modal">
+                                                            Add
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {{--Modal Area End--}}
-                                @endif 
-                                
+                                        {{--Modal Area End--}}
+                                    @endif
+
                                 @endforeach
-                                
+
                                 <div class="form-group">
                                     <label for="extraDetails">Any Other Request?</label>
                                     <textarea class="form-control" id="extraRequest" name="extraRequest"
@@ -734,10 +777,10 @@
                                         <div class="form-group">
                                             <label for="colDate">Collection Date*</label>
                                             <select id="colDate" name="colDate" required
-                                                    v-model="colDate">
-                                                <option value="17-02-2021" selected>17-02-2021</option>
-                                                <option value="18-02-2021">18-02-2021</option>
-                                                <option value="19-02-2021">19-02-2021</option>
+                                                    v-model="colDate" @change="getColTime($event)">
+                                                <option :value="date" v-for="date in showColDates">${date}</option>
+                                                {{--<option value="18-02-2021">18-02-2021</option>--}}
+                                                {{--<option value="19-02-2021">19-02-2021</option>--}}
                                             </select>
                                         </div>
                                     </div>
@@ -745,10 +788,12 @@
                                         <div class="form-group">
                                             <label for="colTime">Collection Time*</label>
                                             <select id="colTime" name="colTime" required
-                                                    v-model="colTime">
-                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
-                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
-                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
+                                                    v-model="colTime" @change="getDelDate($event)">
+                                                <option :value="time" v-for="time in colShowTimes"
+                                                        v-if="colShowTimes.length">${time}
+                                                </option>
+                                                {{--<option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>--}}
+                                                {{--<option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>--}}
                                             </select>
                                         </div>
                                     </div>
@@ -777,29 +822,31 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="delDate">Delivery Date*</label>
-                                            <select class="marital-select" id="delDate" name="delDate" required
-                                                    v-model="delDate">
-                                                <option value="17-02-2021" selected>17-02-2021</option>
-                                                <option value="18-02-2021">18-02-2021</option>
-                                                <option value="19-02-2021">19-02-2021</option>
+                                            <select id="delDate" name="delDate" required
+                                                    v-model="delDate" @change="getDelTime($event)">
+                                                <option :value="date" v-for="date in showDelDates">${date}</option>
+                                                {{--<option value="18-02-2021">18-02-2021</option>--}}
+                                                {{--<option value="19-02-2021">19-02-2021</option>--}}
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="delTime">Delivery Time*</label>
-                                            <select class="marital-select" id="delTime" name="delTime" required
+                                            <select id="delTime" name="delTime" required
                                                     v-model="delTime">
-                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
-                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
-                                                <option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>
+                                                <option :value="dtime" v-for="dtime in delShowTimes"
+                                                        v-if="delShowTimes.length">${dtime}
+                                                </option>
+                                                {{--<option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>--}}
+                                                {{--<option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>--}}
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="delOption">Delivery Option*</label>
-                                            <select class="marital-select" id="delOption" name="delOption" required
+                                            <select id="delOption" name="delOption" required
                                                     v-model="delOption">
                                                 <option value="Driver Delivers To You" selected>Driver Delivers To You
                                                 </option>
@@ -964,6 +1011,12 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
+=======
+            <<<<<<< HEAD
+
+            =======
+>>>>>>> 7079d72a515efbd8fc01913ab07b2664355fbe1f
             <!-- Modal Area Start-->
             {{--Login Modal--}}
             <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog"
@@ -980,18 +1033,22 @@
                         <div class="modal-body">
                             <div class="login_page bg-white rounded p-4">
                                 <form class="login-form" method="post" action="login">
-                                    <input type="hidden" name="_token" value="3PiFBH5BvaQJfgq1Hd8AF5Cujzjf2hjK7C0ZfnEs">                        <div class="row">
+                                    <input type="hidden" name="_token" value="3PiFBH5BvaQJfgq1Hd8AF5Cujzjf2hjK7C0ZfnEs">
+                                    <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Email address <span class="text-danger">*</span></label>
-                                                <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="" required="" autocomplete="email">
+                                                <input id="email" type="email" class="form-control" placeholder="Email"
+                                                       name="email" value="" required="" autocomplete="email">
                                             </div>
                                         </div>
 
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Password <span class="text-danger">*</span></label>
-                                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required="" autocomplete="new-password">
+                                                <input id="password" type="password" class="form-control"
+                                                       placeholder="Password" name="password" required=""
+                                                       autocomplete="new-password">
 
                                             </div>
                                         </div>
@@ -999,8 +1056,12 @@
                                             <button type="submit" class="btn btn-custom w-100">Sign in</button>
                                         </div>
                                         <div class="col-12 text-center">
-                                            <p class="mb-0 mt-3"><a href="/forgot_password" class="text-dark font-weight-bold">Forgot your password ?</a></p>
-                                            <p class="mb-0"><small class="text-dark mr-2">Don't have an account ?</small> <a href="/register" class="text-dark font-weight-bold">Sign Up</a></p>
+                                            <p class="mb-0 mt-3"><a href="/forgot_password"
+                                                                    class="text-dark font-weight-bold">Forgot your
+                                                    password ?</a></p>
+                                            <p class="mb-0">
+                                                <small class="text-dark mr-2">Don't have an account ?</small>
+                                                <a href="/register" class="text-dark font-weight-bold">Sign Up</a></p>
                                         </div>
                                     </div>
                                 </form>
@@ -1297,24 +1358,24 @@
                     },
                     success: function (res) {
                         response = JSON.parse(res);
-                        address1=$("#address1");
-                        api_url="https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967";
-                        if(response['result'].length>0){
-                            $.get(api_url, function (res) {                         
-                            if (res.addresses.length) {
-                                address1.html("");
-                                for (var i = 0, len = res.addresses.length; i < len; i++) {
-                                    value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
-                                    var option = $('<option></option>', {
-                                        "text":value,
-                                        "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
-                                        "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
-                                    });
-                                    address1.append(option);
+                        address1 = $("#address1");
+                        api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967";
+                        if (response['result'].length > 0) {
+                            $.get(api_url, function (res) {
+                                if (res.addresses.length) {
+                                    address1.html("");
+                                    for (var i = 0, len = res.addresses.length; i < len; i++) {
+                                        value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
+                                        var option = $('<option></option>', {
+                                            "text": value,
+                                            "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
+                                            "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
+                                        });
+                                        address1.append(option);
+                                    }
                                 }
-                            }
-                        });                        
-                    }
+                            });
+                        }
                     }
                 });
         });
@@ -1791,20 +1852,22 @@
         /*document.getElementById("address_btn").style.display = "none";
         document.getElementById("checkout_btn").style.display = "block";*/
     }
+
     //form fixed code
     var pos = $('.fixposition');
     var postarget = $('.footer');
     var sectiontop = pos.offset().top - 130;
     var postar = postarget.offset().top;
     postar = postar - 2000;
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         var windowscroll = $(this).scrollTop();
-        if(windowscroll >= sectiontop) {
+        if (windowscroll >= sectiontop) {
             $('.vue-sidebar').css({
                 "position": "sticky",
-                "top"     : "137px"
+                "top": "137px"
             });
-        }if(windowscroll > postar || windowscroll < sectiontop){
+        }
+        if (windowscroll > postar || windowscroll < sectiontop) {
             $('.vue-sidebar').css({
                 "position": "sticky",
                 "margin-bottom": "15px"
@@ -1828,13 +1891,27 @@
             delDate: '',
             delTime: '',
             delOption: '',
+            showColDates: [],
+            colShowTimes: [],
+            showDelDates: [],
+            delShowTimes: [],
+            timeSlot: [
+                '07:00 AM - 09:00 AM',
+                '09:00 AM - 11:00 AM',
+                '11:00 AM - 01:00 PM',
+                '01:00 PM - 03:00 PM',
+                '03:00 PM - 05:00 PM',
+                '05:00 PM - 07:00 PM',
+                '07:00 PM - 09:00 PM',
+                '09:00 PM - 11:00 PM'
+            ]
 
 
         },
         filters: {},
         computed: {},
         methods: {
-            showLogin: function(){
+            showLogin: function () {
                 e.preventDefault();
             },
             nextStep: function (e, step) {
@@ -1916,9 +1993,176 @@
                         self.services.splice(ind, 1);
                     }
                 }
-                
 
-            }
+
+            },
+            getDate: function (day, custom) {
+                var self = this;
+                var arr = [];
+                if (custom == 'true') {
+                    var d = self.colDate.split('-', 3)[0];
+                    var m = self.colDate.split('-', 3)[1];
+                    var y = self.colDate.split('-', 3)[2];
+                    var dat = y + '-' + m + '-' + d;
+
+                    for (var i = day; i <= 15 + day;) {
+                        var newdate = new Date(dat);
+                        newdate.setDate(newdate.getDate() + i);
+                        var dd = newdate.getDate();
+                        var mm = newdate.getMonth() + 1;
+                        var y = newdate.getFullYear();
+                        var someFormattedDate = dd + '-' + mm + '-' + y;
+                        i++;
+                        arr.push(someFormattedDate);
+                    }
+                } else {
+                    for (var i = day; i <= 15 + day;) {
+                        var newdate = new Date();
+                        newdate.setDate(newdate.getDate() + i);
+                        var dd = newdate.getDate();
+                        var mm = newdate.getMonth() + 1;
+                        var y = newdate.getFullYear();
+                        var someFormattedDate = dd + '-' + mm + '-' + y;
+                        i++;
+                        arr.push(someFormattedDate);
+                    }
+                }
+                return arr;
+            },
+            getColTime: function (e) {
+                var self = this;
+                self.colShowTimes = [];
+                self.delShowTimes = [];
+                self.colTime = '';
+                self.delTime = '';
+                self.delDate = '';
+                var newdate = new Date();
+                newdate.setDate(newdate.getDate() + 0);
+                var dd = newdate.getDate();
+                var mm = newdate.getMonth() + 1;
+                var y = newdate.getFullYear();
+
+                var today = dd + '-' + mm + '-' + y;
+                if (self.colDate == today) {
+                    var frange = self.getTimeSlot(0);
+                    var tflag = false;
+                    if (self.timeSlot.includes(frange)) {
+                        self.timeSlot.filter(function (tslot) {
+                            if (tslot == frange) {
+                                self.colShowTimes.push(tslot);
+                                tflag = true;
+                                return false;
+                            }
+                            if (tflag) {
+                                self.colShowTimes.push(tslot);
+                            }
+                        })
+                    }
+                    else {
+                        frange = self.getTimeSlot(1);
+                        tflag = false;
+                        if(self.timeSlot.includes(frange)){
+                            self.timeSlot.filter(function (tslot) {
+                                if (tslot == frange) {
+                                    self.colShowTimes.push(tslot);
+                                    tflag = true;
+                                    return false;
+                                }
+                                if (tflag) {
+                                    self.colShowTimes.push(tslot);
+                                }
+                            })
+                        }
+                        else {
+                            self.colShowTimes = self.timeSlot;
+                        }
+                    }
+                }
+                else {
+                    self.colShowTimes = self.timeSlot;
+                }
+            },
+            getDelDate: function (e) {
+                var self = this;
+                self.showDelDates = [];
+                self.delTime = '';
+                self.delDate = '';
+                self.showDelDates = self.getDate(1, 'true');
+            },
+            getDelTime: function (e) {
+                var self = this;
+                self.delShowTimes = [];
+                var diff = self.checkDiffDates(self.colDate, self.delDate);
+                if (diff > 1) {
+                    self.delShowTimes = self.timeSlot;
+                } else {
+//                    alert('Delivery Time Abhi Set Karna Hai');
+                    var frange = self.colTime;
+                    var tflag = false;
+                    var ind = self.timeSlot.indexOf(frange);
+                    if(ind > -1){
+                        if (ind == 0 || ind == 1){
+                            var count = 0;
+                                self.timeSlot.filter(function (tslot) {
+                                    if (count >=2) {
+                                        self.delShowTimes.push(tslot);
+                                    }
+                                    count++;
+                                });
+                        } else {
+                            if (self.timeSlot.includes(frange)) {
+                                self.timeSlot.filter(function (tslot) {
+                                    if (tslot == frange) {
+                                        self.delShowTimes.push(tslot);
+                                        tflag = true;
+                                        return false;
+                                    }
+                                    if (tflag) {
+                                        self.delShowTimes.push(tslot);
+                                    }
+                                })
+                            }
+                        }
+                    }
+                }
+            },
+            getTimeSlot: function (sub) {
+                var date = new Date();
+                var hours = date.getHours() - sub;
+//                    var minutes = date.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+//                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var firTime = (hours >= 1 && hours <= 9) ? ('0' + hours) + ':' + '00' + ' ' + ampm : hours + ':' + '00' + ' ' + ampm;
+                var hours = date.getHours() - sub;
+                hours = hours + 2;
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                var secTime = (hours >= 1 && hours <= 9) ? ('0' + hours) + ':' + '00' + ' ' + ampm : hours + ':' + '00' + ' ' + ampm;
+                var frange = firTime + ' - ' + secTime;
+                return frange;
+            },
+            checkDiffDates: function (st, end) {
+                var self = this;
+                var start = st;
+                var end = end;
+                var d = start.split('-', 3)[0];
+                var m = start.split('-', 3)[1];
+                var y = start.split('-', 3)[2];
+                var datst = y + '-' + m + '-' + d;
+                datst = new Date(datst);
+                var d = end.split('-', 3)[0];
+                var m = end.split('-', 3)[1];
+                var y = end.split('-', 3)[2];
+                var datend = y + '-' + m + '-' + d;
+                datend = new Date(datend);
+                var diff = new Date(datend - datst);
+
+                diff = diff / 1000 / 60 / 60 / 24;
+                return Math.round(diff);
+            },
 //            validateEmail: function (value) {
 //                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
 //                    return true;
@@ -1932,6 +2176,20 @@
         },
         mounted: function () {
             var self = this;
+            var date = new Date();
+            var hours = date.getHours();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;// the hour '0' should be '12'
+            if( hours == 11 && ampm == 'PM'){
+                self.showColDates = self.getDate(1, 'f');
+            }
+            else if((hours >= 12 || hours < 7) && ampm == 'AM'){
+                self.showColDates = self.getDate(0, 'f');
+            } else {
+                self.showColDates = self.getDate(0, 'f');
+            }
+            
         }
     });
 </script>

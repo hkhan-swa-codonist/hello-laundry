@@ -588,19 +588,21 @@
                                           rows="3"></textarea>
                             </div>
 
-                            @if(isset($user))
+                            @if (Auth::check())
                             <div class="form-buttons">
                                 <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
                                     Next Step
                                 </button>
                             </div>
-                            @else 
+                            @else
                             <div class="form-buttons">
                                 <button class="btn btn-blue" @click="showLogin()"  style="margin-left: auto" data-toggle="modal" data-target="#loginModal">
                                     Next Step
                                 </button>
                             </div>
                             @endif
+                            
+                            
                             
                         </div>
                         <!--TAB Services-->
@@ -962,65 +964,7 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
-           
-=======
             <!-- Modal Area Start-->
-            {{--Wash Modal--}}
-            <div class="modal fade wash-modal" id="washModal" tabindex="-1" role="dialog"
-                 aria-labelledby="washModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Please select your preference for wash</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="services-container">
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Mixed Wash & Tumble Dry – Up To 6 Kg</h4>
-                                            <p> One wash / No color separate (Each 6kg £14.00) </p>
-                                        </div>
-                                    </div>
-                                    <div class="added active">Added</div>
-                                    <i class="fa fa-plus wash" @click="washServicePrefer($event,'Mixed','-')"></i>
-                                </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Separate Wash & Tumble Dry – Up To 12 Kg</h4>
-                                            <p>Requires two washes for dark and light colors (up to 12kg of light and
-                                                dark clothes £28.00)</p>
-                                        </div>
-                                    </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus wash show"
-                                       @click="washServicePrefer($event,'Separate','-')"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
-                                    data-dismiss="modal">
-                                Add
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {{--Login Modal--}}
             <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog"
                  aria-labelledby="loginModalLabel"
@@ -1072,7 +1016,6 @@
                 </div>
             </div>
             {{--Modal Area End--}}
->>>>>>> bab57a99112e0c0659449b5e7c9ce2addb6fda81
         </div>
     </div>
     <!--end container-->

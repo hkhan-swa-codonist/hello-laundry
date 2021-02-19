@@ -1,25 +1,6 @@
 @include('templates.header')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
-    .filter-loader {
-        position: fixed;
-        background: rgba(255, 255, 255, 0.8);
-        z-index: 999;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        display: none;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        font-size: 32px;
-        color: #409EFF;
-    }
-
-    .filter-loader.active {
-        display: flex;
-    }
     .btn.btn-blue {
         background: #409EFF;
         color: white !important;
@@ -561,7 +542,6 @@
             </div>
         </div>
         <div id="laundryForm" class="vue_laundry_form">
-            <div class="filter-loader"><i class="fa fa-spin fa-spinner"></i></div>
             <div class="row">
                 <div class="col-md-8">
                     <div class="steps-bar">
@@ -613,7 +593,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="extraDetails">Please Specify Any Extra Address Details</label>
-                                <textarea class="form-control" id="extraDetails" name="extraDetails" v-model="extraDetails"
+                                <textarea class="form-control" id="extraDetails" name="extraDetails"
                                           rows="3"></textarea>
                             </div>
 
@@ -744,7 +724,7 @@
                                     <label for="extraDetails">Any Other Request?</label>
                                     <textarea class="form-control" id="extraRequest" name="extraRequest"
                                               rows="3"
-                                              placeholder="Add any special cleaning instructions or request" v-model="anyOtherRequest"></textarea>
+                                              placeholder="Add any special cleaning instructions or request"></textarea>
                                 </div>
                             </div>
 
@@ -766,6 +746,15 @@
                             <div class="sub-form">
                                 <div class="form-row">
                                     <div class="col-md-6 col-12">
+                                        {{--<div class="form-group">--}}
+                                        {{--<label for="colDate">Collection Date*</label>--}}
+                                        {{--<select id="colDate" name="colDate" required--}}
+                                        {{--v-model="colDate" @change="getColTime($event)" size='100px'>--}}
+                                        {{--<option :value="date" v-for="date in showColDates">${date}</option>--}}
+                                        {{--<option value="18-02-2021">18-02-2021</option>--}}
+                                        {{--<option value="19-02-2021">19-02-2021</option>--}}
+                                        {{--</select>--}}
+                                        {{--</div>--}}
                                         <div class="dropdown">
                                             <label for="colDate">Collection Date*</label>
                                             <button class="btn dropdown-toggle" type="button"
@@ -780,6 +769,17 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
+                                        {{--<div class="form-group">--}}
+                                        {{--<label for="colTime">Collection Time*</label>--}}
+                                        {{--<select id="colTime" name="colTime" required--}}
+                                        {{--v-model="colTime" @change="getDelDate($event)">--}}
+                                        {{--<option :value="time" v-for="time in colShowTimes"--}}
+                                        {{--v-if="colShowTimes.length">${time}--}}
+                                        {{--</option>--}}
+                                        {{--<option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>--}}
+                                        {{--<option value="07:00 AM - 09:00 AM">07:00 AM - 09:00 AM</option>--}}
+                                        {{--</select>--}}
+                                        {{--</div>--}}
                                         <div class="dropdown">
                                             <label for="colDate">Collection Time*</label>
                                             <button class="btn dropdown-toggle" type="button"
@@ -794,6 +794,17 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
+                                        {{--<div class="form-group">--}}
+                                        {{--<label for="colOption">Collection Option*</label>--}}
+                                        {{--<select id="colOption" name="colOption" required--}}
+                                        {{--v-model="colOption">--}}
+                                        {{--<option value="Driver Collects From You" selected>--}}
+                                        {{--</option>--}}
+                                        {{--<option value="Driver Collects from Reception/Porter">Driver Collects--}}
+                                        {{--from Reception/Porter--}}
+                                        {{--</option>--}}
+                                        {{--</select>--}}
+                                        {{--</div>--}}
                                         <div class="dropdown">
                                             <label for="colDate">Collection Option*</label>
                                             <button class="btn dropdown-toggle" type="button"
@@ -843,6 +854,15 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
+                                        {{--<div class="form-group">--}}
+                                        {{--<label for="delTime">Delivery Time*</label>--}}
+                                        {{--<select id="delTime" name="delTime" required--}}
+                                        {{--v-model="delTime">--}}
+                                        {{--<option :value="dtime" v-for="dtime in delShowTimes"--}}
+                                        {{--v-if="delShowTimes.length">${dtime}--}}
+                                        {{--</option>--}}
+                                        {{--</select>--}}
+                                        {{--</div>--}}
                                         <div class="dropdown">
                                             <label for="colDate">Delivery Time*</label>
                                             <button class="btn dropdown-toggle" type="button"
@@ -888,7 +908,7 @@
                                             <label for="delInstruction">Delivery Instruction?</label>
                                             <textarea class="form-control" id="delInstruction" name="delInstruction"
                                                       rows="3"
-                                                      placeholder="Enter Delivery Instruction" v-model="delInstruction"></textarea>
+                                                      placeholder="Enter Delivery Instruction"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -977,7 +997,7 @@
                                 <a class="btn btn-blue" @click="prevStep($event,3)">
                                     Previous
                                 </a>
-                                <button class="btn btn-blue" @click="checkOut($event)">
+                                <button class="btn btn-blue" @click="nextStep($event,1)">
                                     Check Out
                                 </button>
                             </div>
@@ -1813,6 +1833,59 @@
     }
 
 
+    function checkout() {
+        var address = $("#address").val();
+        var delivery_date = $("#delivery_date").val();
+        var delivery_time = $("#delivery_time").val();
+        var pickup_date = $("#pickup_date").val();
+        var pickup_time = $("#pickup_time").val();
+        var any_collection_instruction = $("#any_collection_instruction").val();
+        var any_delivery_instruction = $("#any_delivery_instruction").val();
+        var any_other_request = $("#any_other_request").val();
+        var customer_id = '{{ Auth::id() }}';
+        var payment_method
+            = $('input[name=payment]:checked').val();
+        if (address == "") {
+            alert('Please choose address');
+            return false;
+        } else if (pickup_date == "") {
+            alert('Please choose  pickup date');
+            return false;
+        } else if (pickup_time == "") {
+            alert('Please choose  pickup time');
+            return false;
+        } else if (delivery_date == "") {
+            alert('Please choose  delivery date');
+            return false;
+        } else if (delivery_time == "") {
+            alert('Please choose  pickup time');
+            return false;
+        } else {
+            $.ajax({
+                url: '/checkout',
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    customer_id: customer_id,
+                    address_id: address,
+                    pickup_date: pickup_date,
+                    pickup_time: $("#pickup_time").val(),
+                    delivery_date: delivery_date,
+                    delivery_time: $("#delivery_time").val(),
+                    payment_mode: payment_method,
+                    other_requests: any_other_request,
+                    collection_instructions: any_collection_instruction,
+                    delivery_instructions: any_delivery_instruction,
+                },
+                success: function (data) {
+                    if (data == 1) {
+                        window.location = "/payment";
+                        // window.location = "/thankyou";
+                    }
+                }
+            });
+        }
+    }
 
     function choose_address(id, address) {
         $("#address").val(id);
@@ -1859,13 +1932,10 @@
             delDate: '',
             delTime: '',
             delOption: '',
-            extraDetails: '',
             showColDates: [],
             colShowTimes: [],
             showDelDates: [],
             delShowTimes: [],
-            anyOtherRequest: '',
-            delInstruction: '',
             timeSlot: [
                 '07:00 AM - 09:00 AM',
                 '09:00 AM - 11:00 AM',
@@ -2180,66 +2250,6 @@
                 e.preventDefault();
                 self.delTime = jQuery(e.target).text();
 
-            },
-            checkOut: function(e){
-                e.preventDefault();
-                var self = this;
-                var address = self.laAddress;
-                var delivery_date = self.delDate;
-                var delivery_time = self.delTime;
-                var pickup_date = self.colDate;
-                var pickup_time = self.colTime;
-                var any_collection_instruction = self.colOption;
-                var any_delivery_instruction = self.delInstruction;
-                var any_other_request = self.anyOtherRequest;
-                var extra_details = self.extraDetails;
-                var customer_id = '{{ Auth::id() }}';
-//                var payment_method = jQuery('input[name=payment]:checked').val();
-                if (address == "") {
-                    alert('Please choose address');
-                    return false;
-                } else if (pickup_date == "") {
-                    alert('Please choose  pickup date');
-                    return false;
-                } else if (pickup_time == "") {
-                    alert('Please choose  pickup time');
-                    return false;
-                } else if (delivery_date == "") {
-                    alert('Please choose  delivery date');
-                    return false;
-                } else if (delivery_time == "") {
-                    alert('Please choose  pickup time');
-                    return false;
-                } else {
-                    jQuery(".filter-loader").addClass("active");
-                    jQuery.ajax({
-                        url: '/checkout',
-                        type: 'POST',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            customer_id: customer_id,
-                            address_id: address,
-                            pickup_date: pickup_date,
-                            pickup_time: pickup_time,
-                            delivery_date: delivery_date,
-                            delivery_time: delivery_time,
-//                          payment_mode: payment_method,
-                            other_requests: any_other_request,
-                            collection_instructions: any_collection_instruction,
-                            delivery_instructions: any_delivery_instruction,
-                        },
-                        success: function (data) {
-                            if (data == 1) {
-                                window.location = "/payment";
-                                // window.location = "/thankyou";
-                                jQuery(".filter-loader").removeClass("active");
-                            }
-                        },
-                        error: function (res) {
-                            console.log('Error');
-                        }
-                    });
-                }
             },
 //            validateEmail: function (value) {
 //                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {

@@ -607,7 +607,6 @@
                                           rows="3"></textarea>
                             </div>
 
-<<<<<<< HEAD
                             @if (Auth::check())
                             <div class="form-buttons">
                                 <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
@@ -624,23 +623,6 @@
                             
                             
                             
-=======
-                            @if(isset($user))
-                                <div class="form-buttons">
-                                    <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
-                                        Next Step
-                                    </button>
-                                </div>
-                            @else
-                                <div class="form-buttons">
-                                    <button class="btn btn-blue" @click="showLogin()" style="margin-left: auto"
-                                            data-toggle="modal" data-target="#loginModal">
-                                        Next Step
-                                    </button>
-                                </div>
-                            @endif
-
->>>>>>> 7079d72a515efbd8fc01913ab07b2664355fbe1f
                         </div>
                         <!--TAB Services-->
                         <div class="address-form" v-show="step == 2">
@@ -1011,12 +993,6 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
-=======
-            <<<<<<< HEAD
-
-            =======
->>>>>>> 7079d72a515efbd8fc01913ab07b2664355fbe1f
             <!-- Modal Area Start-->
             {{--Login Modal--}}
             <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog"

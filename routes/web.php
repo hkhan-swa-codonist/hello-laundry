@@ -21,6 +21,7 @@ Route::get('/products/{id}', 'WebController@products');
 Route::get('/cart', 'WebController@cart');
 Route::get('/login', 'WebController@showLogin');
 Route::get('/profile/{id}', 'WebController@profile');
+
 Route::post('/login', 'WebController@doLogin');
 Route::post('/register', 'WebController@doRegister');
 Route::get('/register', 'WebController@showRegister');

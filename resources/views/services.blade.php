@@ -30,6 +30,8 @@
     .btn-blue.height {
         height: 48px;
         margin-right: 25%;
+        cursor: pointer;
+        padding-top: 14px;
     }
 
     .btn.btn-blue:hover {
@@ -555,7 +557,7 @@
                         <p>
                             Please select the service you need. We will weigh or count the items you give us. We will
                             prepare the invoice after we receive your items, you can check our price list or use our
-                            price estimator anytime. our minimum order is $20.00</p>
+                            price estimator anytime. our minimum order is £20.00</p>
                     </div>
                 </div>
             </div>
@@ -996,7 +998,7 @@
                         <div class="v-order-box">
                             <div class="order-step">
                                 <h4 @click="toStep($event,1)">Address</h4>
-                                <p v-if="laAddress || laPostcode">${laAddress} <br>${laPostcode}</p>
+                                <p v-if="laAddress">${laAddress}</p>
                             </div>
                             <div class="order-edit" @click="toStep($event,1)"><i class="fa fa-edit"></i></div>
                         </div>
@@ -1369,8 +1371,8 @@
         });
 
         $('#get_address_button').click(function () {
-            $.ajax(
-                {
+            $("#laundryForm .filter-loader").addClass("active");
+            $.ajax({
                     type: "POST",
                     url: "api/address/bypostcode",
                     data: {
@@ -1394,9 +1396,11 @@
                                         });
                                         address1.append(option);
                                     }
+                                    $("#laundryForm .filter-loader").removeClass("active");
                                 }
                             });
                         }
+
                     }
                 });
         });

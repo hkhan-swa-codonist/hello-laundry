@@ -493,64 +493,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            @php
-                $cart_data = Session::get('cart', []);
-            @endphp
-            @foreach($data as $key => $value)
-                @php
-                    {{ $image = env('IMG_URL').$value->image; }}
-                @endphp
-                <?php
-                if ($value['is_category'] == 1) {
-                    $function_call = "check_category($value->id);";
-                } else {
-                    $function_call = "add_to_cart($value->id);";
-
-                }
-                ?>
-                <div class="col-lg-6 col-md-6 col-12 mb-4 pb-2">
-                    <div class="service-four text-center shadow">
-                        <div class="icon-interior mb-4">
-                            <img src="{{ $image }}" class="img-fluid mx-auto d-block" alt="">
-                        </div>
-                        <div class="content">
-                            <h4 class="title text-uppercase">{{ $value->service_name }}</h4>
-                            <p class="text-muted">{{ $value->description }}</p>
-                            @if($value->is_category == 1)
-                                @if(@$cart_data[$value->id])
-                                    <a style="color:#FF0000" id="bt_{{$value->id}}"
-                                       onclick="check_category({{$value->id}})"> Remove From Cart</i></a>
-                                @else
-                                    <a style="color:#064ea3" id="bt_{{$value->id}}"
-                                       onclick="check_category({{$value->id}})"> Add To Cart</i></a>
-                                @endif
-                            @else
-                                @if(@$cart_data[$value->id])
-                                    <a style="color:#FF0000" id="bt_{{$value->id}}" onclick="{{$function_call}}"> Remove
-                                        From Cart</i></a>
-                                @else
-                                    <a style="color:#064ea3" id="bt_{{$value->id}}" onclick="{{$function_call}}"> Add To
-                                        Cart</i></a>
-                                @endif
-                            @endif
-                        </div>
-                    </div>
-                </div><!--end col-->
-            @endforeach
-        </div><!--end row-->
-
-        <div class="row p-10">
-            <div class="form-group">
-                <label for="exampleFormControlTextarea2">Any Other Request?</label>
-                <div id="modal_detail">
-                </div>
-                <textarea class="form-control rounded-0" id="any_other_request" name="any_other_request" rows="3"
-                          placeholder="Type your request here"></textarea>
-            </div>
-        </div>
-
+        </div>   
         <div id="laundryForm" class="vue_laundry_form">
             <div class="row">
                 <div class="col-md-8">
@@ -607,21 +550,22 @@
                                           rows="3"></textarea>
                             </div>
 
-                            @if(isset($user))
-                                <div class="form-buttons">
-                                    <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
-                                        Next Step
-                                    </button>
-                                </div>
+                            @if (Auth::check())
+                            <div class="form-buttons">
+                                <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
+                                    Next Step
+                                </button>
+                            </div>
                             @else
-                                <div class="form-buttons">
-                                    <button class="btn btn-blue" @click="showLogin()" style="margin-left: auto"
-                                            data-toggle="modal" data-target="#loginModal">
-                                        Next Step
-                                    </button>
-                                </div>
+                            <div class="form-buttons">
+                                <button class="btn btn-blue" @click="showLogin()"  style="margin-left: auto" data-toggle="modal" data-target="#loginModal">
+                                    Next Step
+                                </button>
+                            </div>
                             @endif
-
+                            
+                            
+                            
                         </div>
                         <!--TAB Services-->
                         <div class="address-form" v-show="step == 2">
@@ -992,65 +936,7 @@
                 </div>
             </div>
 
-            <<<<<<< HEAD
-
-            =======
             <!-- Modal Area Start-->
-            {{--Wash Modal--}}
-            <div class="modal fade wash-modal" id="washModal" tabindex="-1" role="dialog"
-                 aria-labelledby="washModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Please select your preference for wash</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="services-container">
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Mixed Wash & Tumble Dry – Up To 6 Kg</h4>
-                                            <p> One wash / No color separate (Each 6kg £14.00) </p>
-                                        </div>
-                                    </div>
-                                    <div class="added active">Added</div>
-                                    <i class="fa fa-plus wash" @click="washServicePrefer($event,'Mixed','-')"></i>
-                                </div>
-                                <div class="service-box shadow-box">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="<?php echo e(asset('/web/images/service1_icon.svg')); ?>"
-                                                 class="media-object">
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading">Separate Wash & Tumble Dry – Up To 12 Kg</h4>
-                                            <p>Requires two washes for dark and light colors (up to 12kg of light and
-                                                dark clothes £28.00)</p>
-                                        </div>
-                                    </div>
-                                    <div class="added">Added</div>
-                                    <i class="fa fa-plus wash show"
-                                       @click="washServicePrefer($event,'Separate','-')"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
-                                    data-dismiss="modal">
-                                Add
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {{--Login Modal--}}
             <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog"
                  aria-labelledby="loginModalLabel"
@@ -1066,7 +952,7 @@
                         <div class="modal-body">
                             <div class="login_page bg-white rounded p-4">
                                 <form class="login-form" method="post" action="login">
-                                    <input type="hidden" name="_token" value="3PiFBH5BvaQJfgq1Hd8AF5Cujzjf2hjK7C0ZfnEs">
+                                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}"/>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -1110,7 +996,6 @@
                 </div>
             </div>
             {{--Modal Area End--}}
-            >>>>>>> bab57a99112e0c0659449b5e7c9ce2addb6fda81
         </div>
     </div>
     <!--end container-->

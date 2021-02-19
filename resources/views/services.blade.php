@@ -2223,7 +2223,7 @@
             } else {
                 self.showColDates = self.getDate(0, 'f');
             }
-            
+
         }
     });
 </script>

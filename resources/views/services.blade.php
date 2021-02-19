@@ -493,64 +493,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            @php
-                $cart_data = Session::get('cart', []);
-            @endphp
-            @foreach($data as $key => $value)
-                @php
-                    {{ $image = env('IMG_URL').$value->image; }}
-                @endphp
-                <?php
-                if ($value['is_category'] == 1) {
-                    $function_call = "check_category($value->id);";
-                } else {
-                    $function_call = "add_to_cart($value->id);";
-
-                }
-                ?>
-                <div class="col-lg-6 col-md-6 col-12 mb-4 pb-2">
-                    <div class="service-four text-center shadow">
-                        <div class="icon-interior mb-4">
-                            <img src="{{ $image }}" class="img-fluid mx-auto d-block" alt="">
-                        </div>
-                        <div class="content">
-                            <h4 class="title text-uppercase">{{ $value->service_name }}</h4>
-                            <p class="text-muted">{{ $value->description }}</p>
-                            @if($value->is_category == 1)
-                                @if(@$cart_data[$value->id])
-                                    <a style="color:#FF0000" id="bt_{{$value->id}}"
-                                       onclick="check_category({{$value->id}})"> Remove From Cart</i></a>
-                                @else
-                                    <a style="color:#064ea3" id="bt_{{$value->id}}"
-                                       onclick="check_category({{$value->id}})"> Add To Cart</i></a>
-                                @endif
-                            @else
-                                @if(@$cart_data[$value->id])
-                                    <a style="color:#FF0000" id="bt_{{$value->id}}" onclick="{{$function_call}}"> Remove
-                                        From Cart</i></a>
-                                @else
-                                    <a style="color:#064ea3" id="bt_{{$value->id}}" onclick="{{$function_call}}"> Add To
-                                        Cart</i></a>
-                                @endif
-                            @endif
-                        </div>
-                    </div>
-                </div><!--end col-->
-            @endforeach
-        </div><!--end row-->
-
-        <div class="row p-10">
-            <div class="form-group">
-                <label for="exampleFormControlTextarea2">Any Other Request?</label>
-                <div id="modal_detail">
-                </div>
-                <textarea class="form-control rounded-0" id="any_other_request" name="any_other_request" rows="3"
-                          placeholder="Type your request here"></textarea>
-            </div>
-        </div>
-
+        </div>   
         <div id="laundryForm" class="vue_laundry_form">
             <div class="row">
                 <div class="col-md-8">
@@ -1009,7 +952,7 @@
                         <div class="modal-body">
                             <div class="login_page bg-white rounded p-4">
                                 <form class="login-form" method="post" action="login">
-                                    <input type="hidden" name="_token" value="3PiFBH5BvaQJfgq1Hd8AF5Cujzjf2hjK7C0ZfnEs">
+                                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}"/>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">

@@ -493,7 +493,8 @@
                     </div>
                 </div>
             </div>
-        </div>   
+        </div>       
+
         <div id="laundryForm" class="vue_laundry_form">
             <div class="row">
                 <div class="col-md-8">

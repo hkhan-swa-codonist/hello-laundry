@@ -645,12 +645,12 @@
                                 </span>
                             </div>
                             <div class="form-group">
-                                <label for="address1">Select Your Address*</label>                                
+                                <label for="address1">Select Your Address*</label>
                                 <select id="address1" name="address1" required
-                                        v-model="laAddress" :disabled="laPostcode==''">
-                                        <option value="">Select Address</option>
+                                        v-model="laAddress" :disabled="laPostcode==''" @change="getAddText($event)">
+                                    <option value="">Select Address</option>
                                     @foreach($addresses as $value)
-                                        <option value="{{$value->id}}">{{$value->address}}</option>                                                
+                                        <option value="{{$value->id}}">{{$value->address}}</option>
                                     @endforeach
                                 </select>
                                 <div class="res-msg"></div>
@@ -1012,20 +1012,22 @@
                         <div style="display: none">
                             <ul class="list-unstyled">
                                 @foreach($payment_modes as $key => $value)
-                                <?php
-                                $checked = '';
-                                if($key == 0){
-                                    $checked='checked';
-                                }else{
-                                    $checked=''; 
-                                }
-                                ?>
-                                <li class="mb-2 mr-2">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" {{$checked}} class="custom-control-input" name="payment" id="payment_{{$value->id}}" value="{{$value->id}}">
-                                        <label class="custom-control-label" for="payment_{{$value->id}}">{{ $value->payment_mode }}</label>
-                                    </div>
-                                </li>
+                                    <?php
+                                    $checked = '';
+                                    if ($key == 0) {
+                                        $checked = 'checked';
+                                    } else {
+                                        $checked = '';
+                                    }
+                                    ?>
+                                    <li class="mb-2 mr-2">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" {{$checked}} class="custom-control-input" name="payment"
+                                                   id="payment_{{$value->id}}" value="{{$value->id}}">
+                                            <label class="custom-control-label"
+                                                   for="payment_{{$value->id}}">{{ $value->payment_mode }}</label>
+                                        </div>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -1058,7 +1060,7 @@
                         <div class="v-order-box">
                             <div class="order-step">
                                 <h4 @click="nextStep($event,1)">Address</h4>
-                                <p v-if="laAddress">${laAddress}</p>
+                                <p v-if="addressText">${addressText}</p>
                             </div>
                             <div class="order-edit" @click="nextStep($event,1)"><i class="fa fa-edit"></i></div>
                         </div>
@@ -1535,8 +1537,7 @@
                     _token: "{{ csrf_token() }}",
                     postcode: $("#postCode").val(),
                 },
-                success: function (res) 
-                {
+                success: function (res) {
                     response = JSON.parse(res);
                     address1 = $("#address1");
                     api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=YJ7WdPqNm0KJiDn7h741Eg30033";
@@ -1548,7 +1549,7 @@
                                     value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
                                     var option = $('<option></option>', {
                                         "text": value,
-                                        "value": res.addresses[i]['town_or_city'] + '?' + res.addresses[i]['country'] + '?'  + res.addresses[i]['formatted_address']
+                                        "value": res.addresses[i]['town_or_city'] + '?' + res.addresses[i]['country'] + '?' + res.addresses[i]['formatted_address']
                                     });
                                     address1.append(option);
                                 }
@@ -1565,8 +1566,8 @@
                     console.log('Error');
                 }
             })
-               
-           
+
+
         });
 
         $('.userinfo').click(function () {
@@ -2018,6 +2019,7 @@
             services: [],
             preferance: 'Mixed',
             logPrefer: 'register',
+            addressText: '',
             fName: '',
             lName: '',
             cEmail: '',
@@ -2451,10 +2453,27 @@
                 self.delTime = jQuery(e.target).text();
 
             },
+            isNumber: function (myString) {
+                return  /^\d+$/.test(myString);
+            },
             checkOut: function (e) {
-                e.preventDefault();
                 var self = this;
-                var address = self.laAddress;
+                e.preventDefault();
+                var add_id, city, country;
+                console.log(self.isNumber(self.laAddress));
+                if (self.isNumber(self.laAddress)) {
+                     add_id = self.laAddress;
+                    city = '';
+                    country = '';
+                } else {
+                    add_id = '';
+                     city = self.laAddress.split('?', 2)[0];
+                     country = self.laAddress.split('?', 2)[1];
+                }
+                console.log('city =' + city);
+                console.log('country =' + country);
+                console.log('add_id =' + add_id);
+                var postcode = self.laPostcode;
                 var delivery_date = self.delDate;
                 var delivery_time = self.delTime;
                 var pickup_date = self.colDate;
@@ -2488,7 +2507,14 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                             customer_id: customer_id,
+<<<<<<< HEAD
                             address_id: address,
+=======
+                            city: city,
+                            country: country,
+                            postcode: postcode,
+                            address_id: add_id,
+>>>>>>> 15281c75b3be5ea7aa785e88b62e5d65dfc13227
                             pickup_date: pickup_date,
                             pickup_time: pickup_time,
                             delivery_date: delivery_date,
@@ -2523,6 +2549,11 @@
                 }
                 return null;
             },
+            getAddText: function (e) {
+                var self = this;
+                e.preventDefault();
+                self.addressText = jQuery("#address1 option:selected").text();
+            }
         },
         mounted: function () {
             var self = this;

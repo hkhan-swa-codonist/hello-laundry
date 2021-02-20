@@ -463,7 +463,7 @@
     }
 
     .res-msg {
-        font-size: 11px;
+        font-size: 14px;
         color: red;
     }
 
@@ -775,7 +775,7 @@
                                 @endforeach
 
                                 <div class="form-group">
-                                    <label for="extraDetails">Any Other Request?</label>
+                                    <label for="extraRequest">Any Other Request?</label>
                                     <textarea class="form-control" id="extraRequest" name="extraRequest"
                                               rows="3"
                                               placeholder="Add any special cleaning instructions or request"
@@ -926,49 +926,63 @@
                                     <div class="form-group">
                                         <label for="fName">First Name*</label>
                                         <input type="text" class="form-control" id="fName"
-                                               name="fName">
+                                               name="fName" v-model="fName">
+                                        <div id="fNameMsg" class="res-msg" v-if="fName == ''">Please Enter First Name
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="lName">Last Name*</label>
                                         <input type="text" class="form-control" id="lName"
-                                               name="lName">
+                                               name="lName" v-model="lName">
+                                        <div id="lNameMsg" class="res-msg" v-if="lName == ''">Please Enter Last Name
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="cEmail">Email Id*</label>
                                         <input type="email" class="form-control" id="cEmail"
-                                               name="cEmail">
+                                               name="cEmail" v-model="cEmail">
+                                        <div id="cEmailMsg" class="res-msg" v-if="cEmail == ''">Please Enter Email</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="pCode">Postcode*</label>
                                         <input type="text" class="form-control" id="pCode"
-                                               name="pCode">
+                                               name="pCode" v-model="pCode">
+                                        <div id="pCodeMsg" class="res-msg" v-if="pCode == ''">Please Enter Postcode
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="addLine">Address Line*</label>
                                         <input type="text" class="form-control" id="addLine"
-                                               name="addLine">
+                                               name="addLine" v-model="addLine">
+                                        <div id="addLineMsg" class="res-msg" v-if="addLine == ''">Please Enter the
+                                            Address
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="extAdd">Extra Address Details</label>
                                         <input type="text" class="form-control" id="extAdd"
-                                               name="extAdd">
+                                               name="extAdd" v-model="extAdd">
+                                        <div id="extAddMsg" class="res-msg"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="mobNo">Mobile No*</label>
                                         <input type="text" class="form-control" id="mobNo" placeholder="+44"
-                                               name="mobNo">
+                                               name="mobNo" v-model="mobNo">
+                                        <div id="mobNoMsg" class="res-msg" v-if="mobNo == ''">Please Enter Mobile
+                                            Number
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6"></div>
@@ -986,12 +1000,10 @@
                                 <a class="btn btn-blue" @click="prevStep($event,3)">
                                     Previous
                                 </a>
-                                <button class="btn btn-blue" @click="nextStep($event,5)">
-                                    Check Out
+                                <button class="btn btn-blue" @click="nextStep($event,5)" :disabled='isPFormFilled'>
+                                    Next Step
                                 </button>
                             </div>
-                            <p>By continuing you agree to our <a href="">Terms & Conditions</a> and <a href="">Privacy
-                                    Policy</a>. We will authorize your card with a pre payment of £20</p>
                         </div>
                         <!--TAB Payment-->
                         <div class="address-form" v-show="step == 5">
@@ -1182,11 +1194,13 @@
                                             <button type="submit" class="btn btn-custom w-100">Sign in</button>
                                         </div>
                                         <div class="col-12 text-center">
-                                            <p class="mb-0 mt-3"><a type="button" class="text-dark font-weight-bold" @click="logPreference($event,'forgot')">Forgot your
+                                            <p class="mb-0 mt-3"><a type="button" class="text-dark font-weight-bold"
+                                                                    @click="logPreference($event,'forgot')">Forgot your
                                                     password ?</a></p>
                                             <p class="mb-0">
                                                 <small class="text-dark mr-2">Don't have an account ?</small>
-                                                <a type="button" class="text-dark font-weight-bold" @click="logPreference($event,'reg')">Sign Up</a></p>
+                                                <a type="button" class="text-dark font-weight-bold"
+                                                   @click="logPreference($event,'reg')">Sign Up</a></p>
                                         </div>
                                     </div>
                                 </form>
@@ -1197,12 +1211,15 @@
                                     <h6 class="text-uppercase mt-3 mb-4">Recover Account</h6>
                                 </div>
                                 <form class="login-form" method="post" action="/forgot_password">
-                                    <input type="hidden" name="_token" value="VlTXo9gKe4fXKi7JhzV1BvIpJdkO8WfgM9CqgWoN">                                <div class="row">
+                                    <input type="hidden" name="_token" value="VlTXo9gKe4fXKi7JhzV1BvIpJdkO8WfgM9CqgWoN">
+                                    <div class="row">
                                         <div class="col-lg-12">
-                                            <p class="text-muted">Please enter your Email. You will receive One time Password.</p>
+                                            <p class="text-muted">Please enter your Email. You will receive One time
+                                                Password.</p>
                                             <div class="form-group">
                                                 <label>Email <span class="text-danger">*</span></label>
-                                                <input id="email" type="text" class="form-control " name="email" value="" placeholder="Email">
+                                                <input id="email" type="text" class="form-control " name="email"
+                                                       value="" placeholder="Email">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -1975,6 +1992,13 @@
             services: [],
             preferance: 'Mixed',
             logPrefer: 'register',
+            fName: '',
+            lName: '',
+            cEmail: '',
+            pCode: '',
+            addLine: '',
+            mobNo: '',
+            extAdd: '',
             laPostcode: '',
             laAddress: '',
             colDate: '',
@@ -2070,6 +2094,14 @@
                 } else {
                     return true;
                 }
+            },
+            isPFormFilled: function () {
+                var self = this;
+                if (self.fName !== '' && self.cEmail !== '' && self.pCode !== '' && self.addLine !== '' && self.mobNo !== '') {
+                    return false;
+                } else {
+                    return true;
+                }
             }
         },
         methods: {
@@ -2130,7 +2162,9 @@
                     }
                 }
                 if (step == 5) {
-                    self.step = step;
+                    if (!self.isPFormFilled) {
+                        self.step = step;
+                    }
                 }
 
             },
@@ -2399,8 +2433,8 @@
                 var delivery_time = self.delTime;
                 var pickup_date = self.colDate;
                 var pickup_time = self.colTime;
-                var any_collection_instruction = self.colOption;
                 var any_delivery_instruction = self.delInstruction;
+                var any_collection_instruction = self.colInstruction;
                 var any_other_request = self.anyOtherRequest;
                 var extra_details = self.extraDetails;
                 var customer_id = '{{ Auth::id() }}';
@@ -2433,6 +2467,7 @@
                             pickup_time: pickup_time,
                             delivery_date: delivery_date,
                             delivery_time: delivery_time,
+                            extra_details: extra_details,
 //                          payment_mode: payment_method,
                             other_requests: any_other_request,
                             collection_instructions: any_collection_instruction,

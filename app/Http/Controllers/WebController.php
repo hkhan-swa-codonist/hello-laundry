@@ -470,8 +470,8 @@ class WebController extends Controller
     public function checkout(Request $request)
     {
         $input = $request->all();
-        
-        if(is_numeric($input['address_id'])!==1){
+       
+        if(!isset($input['address_id'])){
             $data['city']=$input['city'];
             $data['country']=$input['country'];
             $data['postcode']=$input['postcode'];
@@ -481,19 +481,24 @@ class WebController extends Controller
             $data['unique_id'] = $input['postcode'];
             $data['status']=1;
             $data['type']=1;
-            if($id = Address::where('city',$data['city'])
+            print_r($data);
+            $row = Address::where('city',$data['city'])
                             ->where('country',$data['country'])
                             ->where('customer_id',$data['customer_id'])
-                            ->where('address',$data['address'])->first())
-            echo $id;
+                            ->where('address',$data['address'])->first();
+            print_r($row);
+            if($row){
+                print_r($row);
+                $data['address_id']=$row->id;
+            }
             else{ 
             echo "No address Present";
             $data['address']=$input['address'];
             $id = Address::create($data)->id;
             echo $id;
             }
+            die();
         }
-        die();
         $input['pickup_date'] = date('Y-m-d', strtotime($input['pickup_date']));
         $input['delivery_date'] = date('Y-m-d', strtotime($input['delivery_date']));
         // $data = json_decode($input['data'], true);

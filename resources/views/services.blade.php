@@ -2460,7 +2460,6 @@
                 var self = this;
                 e.preventDefault();
                 var add_id, city, country;
-                console.log(self.isNumber(self.laAddress));
                 if (self.isNumber(self.laAddress)) {
                      add_id = self.laAddress;
                     city = '';
@@ -2470,9 +2469,6 @@
                      city = self.laAddress.split('?', 2)[0];
                      country = self.laAddress.split('?', 2)[1];
                 }
-                console.log('city =' + city);
-                console.log('country =' + country);
-                console.log('add_id =' + add_id);
                 var postcode = self.laPostcode;
                 var delivery_date = self.delDate;
                 var delivery_time = self.delTime;
@@ -2484,22 +2480,6 @@
                 var extra_details = self.extraDetails;
                 var customer_id = '{{ Auth::id() }}';
                 var payment_method = jQuery('input[name=payment]:checked').val();
-                if (address == "") {
-                    alert('Please choose address');
-                    return false;
-                } else if (pickup_date == "") {
-                    alert('Please choose  pickup date');
-                    return false;
-                } else if (pickup_time == "") {
-                    alert('Please choose  pickup time');
-                    return false;
-                } else if (delivery_date == "") {
-                    alert('Please choose  delivery date');
-                    return false;
-                } else if (delivery_time == "") {
-                    alert('Please choose  pickup time');
-                    return false;
-                } else {
                     jQuery(".filter-loader").addClass("active");
                     jQuery.ajax({
                         url: '/checkout',
@@ -2532,7 +2512,7 @@
                             console.log('Error');
                         }
                     });
-                }
+
             },
             getCookie: function (name) {
                 var self = this;

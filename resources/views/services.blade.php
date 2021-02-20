@@ -1383,7 +1383,7 @@
                     success: function (res) {
                         response = JSON.parse(res);
                         address1 = $("#address1");
-                        api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967";
+                        api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=YJ7WdPqNm0KJiDn7h741Eg30033";
                         if (response['result'].length > 0) {
                             $.get(api_url, function (res) {
                                 if (res.addresses.length) {
@@ -2228,7 +2228,7 @@
                             pickup_time: pickup_time,
                             delivery_date: delivery_date,
                             delivery_time: delivery_time,
-//                          payment_mode: payment_method,
+                            payment_mode: "2",
                             other_requests: any_other_request,
                             collection_instructions: any_collection_instruction,
                             delivery_instructions: any_delivery_instruction,

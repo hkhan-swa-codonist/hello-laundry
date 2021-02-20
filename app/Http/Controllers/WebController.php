@@ -273,11 +273,17 @@ class WebController extends Controller
             $password = $input["password"];
             $input['password'] = password_hash($password, PASSWORD_DEFAULT, $options);
             $input['status'] = 1;
+            /*
+            // Code commented for a while 
+            // Matin Will let me know if need to keep or remove
+            
             $stripe = new Stripe();
             $stripe_token = $stripe->customers()->create([
                 'email' => $input['email'],
             ]);
+            
             $input['stripe_token'] = $stripe_token['id'];
+            //*/
             $customer = Customer::create($input);
 
             if(is_object($customer)) {

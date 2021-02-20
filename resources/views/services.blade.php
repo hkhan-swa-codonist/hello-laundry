@@ -2459,15 +2459,16 @@
             checkOut: function (e) {
                 var self = this;
                 e.preventDefault();
-                var add_id, city, country;
+                var add_id, city, country, address;
                 if (self.isNumber(self.laAddress)) {
                      add_id = self.laAddress;
                     city = '';
                     country = '';
                 } else {
                     add_id = '';
-                     city = self.laAddress.split('?', 2)[0];
-                     country = self.laAddress.split('?', 2)[1];
+                     city = self.laAddress.split('?', 3)[0];
+                     country = self.laAddress.split('?', 3)[1];
+                    address = self.laAddress.split('?', 3)[2];
                 }
                 var postcode = self.laPostcode;
                 var delivery_date = self.delDate;
@@ -2489,6 +2490,7 @@
                             customer_id: customer_id,
                             city: city,
                             country: country,
+                            address: address,
                             postcode: postcode,
                             address_id: add_id,
                             pickup_date: pickup_date,

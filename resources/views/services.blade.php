@@ -1009,6 +1009,26 @@
                             </div>
                         </div>
                         <!--TAB Payment-->
+                        <div style="display: none">
+                            <ul class="list-unstyled">
+                                @foreach($payment_modes as $key => $value)
+                                <?php
+                                $checked = '';
+                                if($key == 0){
+                                    $checked='checked';
+                                }else{
+                                    $checked=''; 
+                                }
+                                ?>
+                                <li class="mb-2 mr-2">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" {{$checked}} class="custom-control-input" name="payment" id="payment_{{$value->id}}" value="{{$value->id}}">
+                                        <label class="custom-control-label" for="payment_{{$value->id}}">{{ $value->payment_mode }}</label>
+                                    </div>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
                         <div class="address-form" v-show="step == 5">
                             <div class="step-title">
                                 <h1 class="first">Payment</h1>
@@ -1528,7 +1548,7 @@
                                     value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
                                     var option = $('<option></option>', {
                                         "text": value,
-                                        "value": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ','  + res.addresses[i]['formated_address']
+                                        "value": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ','  + res.addresses[i]['formatted_address']
                                     });
                                     address1.append(option);
                                 }
@@ -2435,7 +2455,6 @@
                 e.preventDefault();
                 var self = this;
                 var address = self.laAddress;
-
                 var delivery_date = self.delDate;
                 var delivery_time = self.delTime;
                 var pickup_date = self.colDate;
@@ -2445,7 +2464,7 @@
                 var any_other_request = self.anyOtherRequest;
                 var extra_details = self.extraDetails;
                 var customer_id = '{{ Auth::id() }}';
-//                var payment_method = jQuery('input[name=payment]:checked').val();
+                var payment_method = jQuery('input[name=payment]:checked').val();
                 if (address == "") {
                     alert('Please choose address');
                     return false;
@@ -2469,7 +2488,6 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                             customer_id: customer_id,
-                            address:address,
                             city:city,
                             postcode:postcode,
                             address_id: address,
@@ -2478,8 +2496,7 @@
                             delivery_date: delivery_date,
                             delivery_time: delivery_time,
                             extra_details: extra_details,
-//                          payment_mode: payment_method,
-                            payment_mode: "2",
+                            payment_mode: payment_method,
                             other_requests: any_other_request,
                             collection_instructions: any_collection_instruction,
                             delivery_instructions: any_delivery_instruction,

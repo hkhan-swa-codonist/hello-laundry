@@ -120,7 +120,7 @@
 
     .vue_laundry_form .step {
         text-align: center;
-        padding-right: 70px;
+        padding-right: 115px;
     }
 
     .vue_laundry_form .step h3 {
@@ -147,13 +147,9 @@
         top: 11px;
         right: 0;
         height: 2px;
-        width: 140px;
+        width: 184px;
         background: #C0C4CC;
         z-index: -1;
-    }
-
-    .vue_laundry_form .step:nth-child(4) h3:before, .vue_laundry_form .step:nth-child(5) h3:before {
-        width: 175px;
     }
 
     .vue_laundry_form .step:first-child h3:before {
@@ -604,23 +600,19 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="steps-bar">
-                        <div class="step" :class="{active: step == 1 || step == 2 || step ==3 || step==4 || step==5}">
+                        <div class="step" :class="{active: step == 1 || step == 2 || step ==3 || step==4}">
                             <h3>1</h3>
                             <h4>Address</h4>
                         </div>
-                        <div class="step" :class="{active: step == 2 || step ==3 || step==4 || step==5}">
+                        <div class="step" :class="{active: step == 2 || step ==3 || step==4}">
                             <h3>2</h3>
                             <h4>Services</h4>
                         </div>
-                        <div class="step" :class="{active: step ==3 || step==4 || step==5}">
+                        <div class="step" :class="{active: step ==3 || step==4}">
                             <h3>3</h3>
                             <h4>Collection</h4>
                         </div>
-                        <div class="step" :class="{active: step==4 || step==5}">
-                            <h3>4</h3>
-                            <h4>Personal Details</h4>
-                        </div>
-                        <div class="step" :class="{active: step==5}">
+                        <div class="step" :class="{active: step==4}">
                             <h3>4</h3>
                             <h4>Payment</h4>
                         </div>
@@ -658,6 +650,8 @@
                                           v-model="extraDetails"
                                           rows="3"></textarea>
                             </div>
+
+
                             <div class="form-buttons">
                                 <button class="btn btn-blue" @click="nextStep($event,2)"
                                         :class="{disabled: laAddress == '' || laPostcode == ''}"
@@ -836,13 +830,25 @@
                                             Collection Date
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="colInstruction">Collection Instruction?</label>
-                                            <textarea class="form-control" id="colInstruction" name="colInstruction"
-                                                      rows="3"
-                                                      placeholder="Enter Collection Instruction"
-                                                      v-model="colInstruction"></textarea>
+                                    <div class="col-md-6 col-12">
+                                        <div class="dropdown">
+                                            <label for="colDate">Collection Option*</label>
+                                            <button class="btn dropdown-toggle" type="button"
+                                                    data-toggle="dropdown">
+                                                ${colOption | colOptFilter}
+                                                <i class="fa fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" @click="getColOpt($event)">Driver Collects From
+                                                        You</a>
+                                                </li>
+                                                <li><a href="" @click="getColOpt($event)">Driver Collects
+                                                        from Reception/Porter</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div id="colOptMsg" class="res-msg" v-if="colOption==''">*Please Select
+                                            Collection Date
                                         </div>
                                     </div>
                                 </div>
@@ -887,6 +893,25 @@
                                             Collection Date
                                         </div>
                                     </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="dropdown">
+                                            <label for="colDate">Delivery Option*</label>
+                                            <button class="btn dropdown-toggle" type="button"
+                                                    data-toggle="dropdown">
+                                                ${delOption | delOptFilter}
+                                                <i class="fa fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" @click="getDelOpt($event)">Driver Delivers To You</a>
+                                                </li>
+                                                <li><a href="" @click="getDelOpt($event)">Driver Delivers To
+                                                        Reception/Porter</a></li>
+                                            </ul>
+                                        </div>
+                                        <div id="delOptMsg" class="res-msg" v-if="delOption==''">*Please Select
+                                            Collection Date
+                                        </div>
+                                    </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="delInstruction">Delivery Instruction?</label>
@@ -915,7 +940,7 @@
 
                             </div>
                         </div>
-                        <!--TAB Personal Details-->
+                        <!--TAB Payment-->
                         <div class="address-form" v-show="step == 4">
                             <div class="step-title">
                                 <h1 class="first">Personal</h1>
@@ -982,29 +1007,12 @@
                                     <button class="btn btn-blue verify">Verify</button>
                                 </div>
                             </div>
-                            <div class="form-buttons">
-                                <a class="btn btn-blue" @click="prevStep($event,3)">
-                                    Previous
-                                </a>
-                                <button class="btn btn-blue" @click="nextStep($event,5)">
-                                    Check Out
-                                </button>
-                            </div>
-                            <p>By continuing you agree to our <a href="">Terms & Conditions</a> and <a href="">Privacy
-                                    Policy</a>. We will authorize your card with a pre payment of £20</p>
-                        </div>
-                        <!--TAB Payment-->
-                        <div class="address-form" v-show="step == 5">
-                            <div class="step-title">
-                                <h1 class="first">Payment</h1>
-                                <h1 class="last">Details</h1>
-                            </div>
                             <p class="note-box"><b>Note:</b>We will authorise your card with a pre-payment of £20. The
                                 final
                                 value is calculated after we count / weigh your order. You can calculate the approximate
                                 price using our price list. Our minimum order is £20.</p>
                             <div class="form-buttons">
-                                <a class="btn btn-blue" @click="prevStep($event,4)">
+                                <a class="btn btn-blue" @click="prevStep($event,3)">
                                     Previous
                                 </a>
                                 <button class="btn btn-blue" @click="checkOut($event)">
@@ -1056,17 +1064,10 @@
                         <hr class="dashed">
                         <div class="v-order-box">
                             <div class="order-step">
-                                <h4 @click="nextStep($event,4)">Personal Details</h4>
-                            </div>
-                            <div class="order-edit" @click="nextStep($event,4)"><i class="fa fa-edit"></i></div>
-                        </div>
-                        <hr class="dashed">
-                        <div class="v-order-box">
-                            <div class="order-step">
-                                <h4 @click="nextStep($event,5)">Payment</h4>
+                                <h4 @click="nextStep($event,4)">Payment</h4>
                                 {{--<p>Dynamic</p>--}}
                             </div>
-                            <div class="order-edit" @click="nextStep($event,5)"><i class="fa fa-edit"></i></div>
+                            <div class="order-edit" @click="nextStep($event,4)"><i class="fa fa-edit"></i></div>
                         </div>
                     </div>
                 </div>
@@ -1080,84 +1081,13 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" v-if="logPrefer == 'register'">Register</h5>
-                            <h5 class="modal-title" v-if="logPrefer == 'login'">Login</h5>
-                            <h5 class="modal-title" v-if="logPrefer == 'forgot'">Forgot Password</h5>
+                            <h5 class="modal-title">Login</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="login_page bg-white rounded p-4" v-if="logPrefer == 'register'">
-                                <form method="POST" action="/register">
-                                    <input type="hidden" name="_token" value="VlTXo9gKe4fXKi7JhzV1BvIpJdkO8WfgM9CqgWoN">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label for="uFName">Firstname<span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="uFName" v-model="uFName"
-                                                       name="uFName" placeholder="Firstname" required="">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label for="uLName">Lastname<span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="uLName" v-model="uLName"
-                                                       name="uLName" placeholder="Lastname" required="">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Username<span class="text-danger">*</span></label>
-                                                <input id="customer_name" type="text" class="form-control"
-                                                       v-model="customer_name"
-                                                       name="customer_name" value="" placeholder="Username" required=""
-                                                       autofocus="">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Phone <span class="text-danger">*</span></label>
-                                                <input id="phone_number" type="text" class="form-control"
-                                                       v-model="phone_number"
-                                                       name="phone_number" value="" placeholder="Phone" required=""
-                                                       autocomplete="email">
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Email<span class="text-danger">*</span></label>
-                                                <input id="email" type="email" class="form-control " name="email"
-                                                       v-model="email"
-                                                       placeholder="Email" value="" required="" autocomplete="email">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Password <span class="text-danger">*</span></label>
-                                                <input id="password" type="password" class="form-control "
-                                                       placeholder="Password" name="password" required=""
-                                                       autocomplete="new-password">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-12 mb-0">
-                                            <button type="submit" class="btn btn-custom w-100">Register</button>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="mb-0">
-                                                <small class="text-dark mr-2">Already have an account ?</small>
-                                                <a type="button" class="text-dark font-weight-bold"
-                                                   @click="logPreference($event,'log')">Login</a></p>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="login_page bg-white rounded p-4" v-if="logPrefer == 'login'">
+                            <div class="login_page bg-white rounded p-4">
                                 <form class="login-form" method="post" action="login">
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}"/>
                                     <div class="row">
@@ -1182,31 +1112,12 @@
                                             <button type="submit" class="btn btn-custom w-100">Sign in</button>
                                         </div>
                                         <div class="col-12 text-center">
-                                            <p class="mb-0 mt-3"><a type="button" class="text-dark font-weight-bold" @click="logPreference($event,'forgot')">Forgot your
+                                            <p class="mb-0 mt-3"><a href="/forgot_password"
+                                                                    class="text-dark font-weight-bold">Forgot your
                                                     password ?</a></p>
                                             <p class="mb-0">
                                                 <small class="text-dark mr-2">Don't have an account ?</small>
-                                                <a type="button" class="text-dark font-weight-bold" @click="logPreference($event,'reg')">Sign Up</a></p>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="login_page bg-white rounded p-4" v-if="logPrefer == 'forgot'">
-                                <div class="text-center">
-                                    <a href="index.html"><img src="images/logo.png" height="20" alt=""></a>
-                                    <h6 class="text-uppercase mt-3 mb-4">Recover Account</h6>
-                                </div>
-                                <form class="login-form" method="post" action="/forgot_password">
-                                    <input type="hidden" name="_token" value="VlTXo9gKe4fXKi7JhzV1BvIpJdkO8WfgM9CqgWoN">                                <div class="row">
-                                        <div class="col-lg-12">
-                                            <p class="text-muted">Please enter your Email. You will receive One time Password.</p>
-                                            <div class="form-group">
-                                                <label>Email <span class="text-danger">*</span></label>
-                                                <input id="email" type="text" class="form-control " name="email" value="" placeholder="Email">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <button type="submit" class="btn btn-custom w-100">Send</button>
+                                                <a href="/register" class="text-dark font-weight-bold">Sign Up</a></p>
                                         </div>
                                     </div>
                                 </form>
@@ -1489,30 +1400,28 @@
         $('#get_address_button').click(function () {
             $("#laundryForm .filter-loader").addClass("active");
             $.ajax({
-                    type: "POST",
-                    url: "api/address/bypostcode",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        postcode: $("#postCode").val(),
-                    },
-                    success: function (res) {
-                        response = JSON.parse(res);
-                        address1 = $("#address1");
-                        api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=YJ7WdPqNm0KJiDn7h741Eg30033";
-                        if (response['result'].length > 0) {
-                            $.get(api_url, function (res) {
-                                if (res.addresses.length) {
-                                    address1.html("");
-                                    for (var i = 0, len = res.addresses.length; i < len; i++) {
-                                        value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
-                                        var option = $('<option></option>', {
-                                            "text": value,
-                                            "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
-                                            "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
-                                        });
-                                        address1.append(option);
-                                    }
-                                    $("#laundryForm .filter-loader").removeClass("active");
+                type: "POST",
+                url: "api/address/bypostcode",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    postcode: $("#postCode").val(),
+                },
+                success: function (res) {
+                    response = JSON.parse(res);
+                    address1 = $("#address1");
+                    api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967";
+                    if (response['result'].length > 0) {
+                        $.get(api_url, function (res) {
+                            if (res.addresses.length) {
+                                address1.html("");
+                                for (var i = 0, len = res.addresses.length; i < len; i++) {
+                                    value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
+                                    var option = $('<option></option>', {
+                                        "text": value,
+                                        "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
+                                        "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
+                                    });
+                                    address1.append(option);
                                 }
                                 $('#postCode').siblings('.res-msg').addClass('serve').html('We serve in your area');
                                 $('#address1').siblings('.res-msg').html('*Please select address');
@@ -1976,13 +1885,14 @@
             step: 1,
             services: [],
             preferance: 'Mixed',
-            logPrefer: 'register',
             laPostcode: '',
             laAddress: '',
             colDate: '',
             colTime: '',
+            colOption: '',
             delDate: '',
             delTime: '',
+            delOption: '',
             extraDetails: '',
             showColDates: [],
             colShowTimes: [],
@@ -1990,12 +1900,6 @@
             delShowTimes: [],
             anyOtherRequest: '',
             delInstruction: '',
-            colInstruction: '',
-            uFName: '',
-            uLName: '',
-            customer_name: '',
-            phone_number: '',
-            email: '',
             timeSlot: [
                 '07:00 AM - 09:00 AM',
                 '09:00 AM - 11:00 AM',
@@ -2024,6 +1928,14 @@
                 if (value == '') return 'Delivery Time';
                 return value;
             },
+            colOptFilter: function (value) {
+                if (value == '') return 'Collection Options';
+                return value;
+            },
+            delOptFilter: function (value) {
+                if (value == '') return 'Delivery Options';
+                return value;
+            }
         },
         computed: {
             isColDate: function () {
@@ -2067,7 +1979,8 @@
 //                    return true;
 //                } else
 
-                if (self.colDate !== '' && self.colTime !== '' && self.delDate !== '' && self.delTime !== '') {
+                if (self.colDate !== '' && self.colTime !== '' && self.colOption !== '' && self.delDate !== '' && self.delTime !== '' &&
+                    self.delOption !== '') {
                     return false;
                 } else {
                     return true;
@@ -2075,27 +1988,11 @@
             }
         },
         methods: {
-            logPreference: function (e, prefer) {
-                var self = this;
-                e.preventDefault();
-                if (prefer == 'log') {
-                    self.logPrefer = 'login';
-                }
-                if (prefer == 'reg') {
-                    self.logPrefer = 'register';
-                }
-                if (prefer == 'forgot') {
-                    self.logPrefer = 'forgot';
-                }
-            },
             showLogin: function (e) {
                 e.preventDefault();
                 var self = this;
-                self.logPrefer = 'register';
                 var post_code = self.laPostcode;
-                var address = self.laAddress;
                 document.cookie = 'user_post_code=' + post_code;
-                document.cookie = 'user_address=' + address;
             },
             nextStep: function (e, step) {
                 var self = this;
@@ -2130,9 +2027,6 @@
                     if (!self.isFormFilled) {
                         self.step = step;
                     }
-                }
-                if (step == 5) {
-                    self.step = step;
                 }
 
             },
@@ -2387,6 +2281,16 @@
                 diff = diff / 1000 / 60 / 60 / 24;
                 return Math.round(diff);
             },
+            getColOpt: function (e) {
+                var self = this;
+                e.preventDefault();
+                self.colOption = jQuery(e.target).text();
+            },
+            getDelOpt: function (e) {
+                var self = this;
+                e.preventDefault();
+                self.delOption = jQuery(e.target).text();
+            },
             setDelTime: function (e) {
                 var self = this;
                 e.preventDefault();
@@ -2435,7 +2339,7 @@
                             pickup_time: pickup_time,
                             delivery_date: delivery_date,
                             delivery_time: delivery_time,
-                            payment_mode: "2",
+//                          payment_mode: payment_method,
                             other_requests: any_other_request,
                             collection_instructions: any_collection_instruction,
                             delivery_instructions: any_delivery_instruction,

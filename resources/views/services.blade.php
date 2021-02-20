@@ -20,6 +20,7 @@
     .filter-loader.active {
         display: flex;
     }
+
     .btn.btn-blue {
         background: #409EFF;
         color: white !important;
@@ -187,10 +188,12 @@
     .vue-sidebar .v-order-box .order-step h4 {
         color: #409EFF;
         font-size: 18px;
+        cursor: pointer;
     }
 
     .vue-sidebar .v-order-box .order-edit i {
         color: #409EFF;
+        cursor: pointer;
     }
 
     .vue-sidebar .sidebar-title {
@@ -286,8 +289,8 @@
         color: white;
         box-shadow: 2px 4px 8px 0px rgb(205 213 230);
         position: absolute;
-        top: -18px;
-        right: -18px;
+        top: -10px;
+        right: -10px;
         cursor: pointer;
     }
 
@@ -315,11 +318,11 @@
         display: block;
         color: white;
         background: #409EFF;
-        padding: 2px 12px;
+        padding: 2px 9px;
         width: max-content;
         position: absolute;
         top: 41%;
-        right: -20px;
+        right: -10px;
     }
 
     i.fa-minus.show {
@@ -410,6 +413,7 @@
 
     #laundryForm .dropdown .dropdown-menu li {
         padding: 3px;
+        transition: all 0.3s linear;
     }
 
     #laundryForm .dropdown .dropdown-menu li:hover {
@@ -438,6 +442,34 @@
     #laundryForm .btn.dropdown-toggle i.fa.fa-angle-down {
         float: right;
         font-size: 15px;
+    }
+
+    #laundryForm .form-row > .col, .form-row > [class*=col-] {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .btn-blue.disabled {
+        opacity: 0.5;
+    }
+
+    .btn-blue.disabled:hover {
+        opacity: 0.5;
+        background: #409EFF;
+    }
+
+    .res-msg {
+        font-size: 11px;
+        color: red;
+    }
+
+    .res-msg.serve {
+        color: #409EFF;
+    }
+
+    button:disabled, select[disabled] {
+        background: #409EFF !important;
+        opacity: 0.1 !important;
     }
 
     @media screen and (max-width: 767px) {
@@ -597,7 +629,7 @@
                                     <label for="postCode">Enter Your Postcode*</label>
                                     <input v-model="laPostcode" type="text" class="form-control" id="postCode"
                                            name="postCode">
-                                    {{--<div class="invalid-feedback">Please fill out this field.</div>--}}
+                                    <div class="res-msg"></div>
                                 </div>
                                 <span id="get_address_button" class="btn btn-blue height">
                                     Get Address
@@ -606,28 +638,29 @@
                             <div class="form-group">
                                 <label for="address1">Select Your Address*</label>
                                 <select id="address1" name="address1" required
-                                        v-model="laAddress">
-                                    <option value="address0" selected>Address of The Post Code City 1</option>
-                                    <option value="address1">Address of The Post Code City 2</option>
-                                    <option value="address2">Address of The Post Code City 3</option>
+                                        v-model="laAddress" :disabled="laPostcode==''">
+                                    <option value="address0" selected></option>
                                 </select>
-                                {{--<div class="invalid-feedback">Please select Marital Status.</div>--}}
+                                <div class="res-msg"></div>
                             </div>
                             <div class="form-group">
                                 <label for="extraDetails">Please Specify Any Extra Address Details</label>
-                                <textarea class="form-control" id="extraDetails" name="extraDetails" v-model="extraDetails"
+                                <textarea class="form-control" id="extraDetails" name="extraDetails"
+                                          v-model="extraDetails"
                                           rows="3"></textarea>
                             </div>
 
                             @if (Auth::check())
                                 <div class="form-buttons">
-                                    <button class="btn btn-blue" @click="nextStep($event,2)" style="margin-left: auto">
+                                    <button class="btn btn-blue" @click="nextStep($event,2)"
+                                            :class="{disabled: laAddress == '' || laPostcode == ''}"
+                                            style="margin-left: auto">
                                         Next Step
                                     </button>
                                 </div>
                             @else
                                 <div class="form-buttons">
-                                    <button class="btn btn-blue" @click="showLogin()" style="margin-left: auto"
+                                    <button class="btn btn-blue" @click="showLogin($event)" style="margin-left: auto"
                                             data-toggle="modal" data-target="#loginModal">
                                         Next Step
                                     </button>
@@ -746,15 +779,18 @@
                                     <label for="extraDetails">Any Other Request?</label>
                                     <textarea class="form-control" id="extraRequest" name="extraRequest"
                                               rows="3"
-                                              placeholder="Add any special cleaning instructions or request" v-model="anyOtherRequest"></textarea>
+                                              placeholder="Add any special cleaning instructions or request"
+                                              v-model="anyOtherRequest"></textarea>
                                 </div>
+                                <div id="serviceMsg" class="res-msg"></div>
                             </div>
 
                             <div class="form-buttons">
                                 <a class="btn btn-blue" @click="prevStep($event,1)">
                                     Previous
                                 </a>
-                                <button class="btn btn-blue" @click="nextStep($event,3)">
+                                <button class="btn btn-blue" @click="nextStep($event,3)"
+                                        :class="{disabled: services.length == 0}">
                                     Next Step
                                 </button>
                             </div>
@@ -780,12 +816,15 @@
                                                     <a href="" @click="getColTime($event)">${date}</a></li>
                                             </ul>
                                         </div>
+                                        <div id="colDateMsg" class="res-msg" v-if="colDate==''">*Please Select
+                                            Collection Date
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="dropdown">
                                             <label for="colDate">Collection Time*</label>
                                             <button class="btn dropdown-toggle" type="button"
-                                                    data-toggle="dropdown">
+                                                    data-toggle="dropdown" :disabled='isColDate'>
                                                 ${colTime | colTFilter}
                                                 <i class="fa fa-angle-down"></i>
                                             </button>
@@ -793,6 +832,9 @@
                                                 <li v-for="time in colShowTimes" v-if="colShowTimes.length">
                                                     <a href="" @click="getDelDate($event)">${time}</a></li>
                                             </ul>
+                                        </div>
+                                        <div id="colTimeMsg" class="res-msg" v-if="colTime==''">*Please Select
+                                            Collection Date
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
@@ -812,6 +854,9 @@
                                                 </li>
                                             </ul>
                                         </div>
+                                        <div id="colOptMsg" class="res-msg" v-if="colOption==''">*Please Select
+                                            Collection Date
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -822,19 +867,10 @@
                             <div class="sub-form">
                                 <div class="form-row">
                                     <div class="col-md-6 col-12">
-                                        {{--<div class="form-group">--}}
-                                        {{--<label for="delDate">Delivery Date*</label>--}}
-                                        {{--<select id="delDate" name="delDate" required--}}
-                                        {{--v-model="delDate" @change="getDelTime($event)">--}}
-                                        {{--<option :value="date" v-for="date in showDelDates">${date}</option>--}}
-                                        {{--<option value="18-02-2021">18-02-2021</option>--}}
-                                        {{--<option value="19-02-2021">19-02-2021</option>--}}
-                                        {{--</select>--}}
-                                        {{--</div>--}}
                                         <div class="dropdown">
                                             <label for="colDate">Delivery Date*</label>
                                             <button class="btn dropdown-toggle" type="button"
-                                                    data-toggle="dropdown">
+                                                    data-toggle="dropdown" :disabled='isColTime'>
                                                 ${delDate | delDFilter}
                                                 <i class="fa fa-angle-down"></i>
                                             </button>
@@ -843,12 +879,15 @@
                                                     <a href="" @click="getDelTime($event)">${date}</a></li>
                                             </ul>
                                         </div>
+                                        <div id="delDateMsg" class="res-msg" v-if="delDate==''">*Please Select
+                                            Collection Date
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="dropdown">
                                             <label for="colDate">Delivery Time*</label>
                                             <button class="btn dropdown-toggle" type="button"
-                                                    data-toggle="dropdown">
+                                                    data-toggle="dropdown" :disabled='isDelDate'>
                                                 ${delTime | delTFilter}
                                                 <i class="fa fa-angle-down"></i>
                                             </button>
@@ -857,19 +896,11 @@
                                                     <a href="" @click="setDelTime($event)">${dtime}</a></li>
                                             </ul>
                                         </div>
+                                        <div id="delTimeMsg" class="res-msg" v-if="delTime==''">*Please Select
+                                            Collection Date
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-12">
-                                        {{--<div class="form-group">--}}
-                                        {{--<label for="delOption">Delivery Option*</label>--}}
-                                        {{--<select id="delOption" name="delOption" required--}}
-                                        {{--v-model="delOption">--}}
-                                        {{--<option value="Driver Delivers To You" selected>Driver Delivers To You--}}
-                                        {{--</option>--}}
-                                        {{--<option value="Driver Delivers To Reception/Porter">Driver Delivers To--}}
-                                        {{--Reception/Porter--}}
-                                        {{--</option>--}}
-                                        {{--</select>--}}
-                                        {{--</div>--}}
                                         <div class="dropdown">
                                             <label for="colDate">Delivery Option*</label>
                                             <button class="btn dropdown-toggle" type="button"
@@ -884,13 +915,17 @@
                                                         Reception/Porter</a></li>
                                             </ul>
                                         </div>
+                                        <div id="delOptMsg" class="res-msg" v-if="delOption==''">*Please Select
+                                            Collection Date
+                                        </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="delInstruction">Delivery Instruction?</label>
                                             <textarea class="form-control" id="delInstruction" name="delInstruction"
                                                       rows="3"
-                                                      placeholder="Enter Delivery Instruction" v-model="delInstruction"></textarea>
+                                                      placeholder="Enter Delivery Instruction"
+                                                      v-model="delInstruction"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -899,7 +934,7 @@
                                 <a class="btn btn-blue" @click="prevStep($event,2)">
                                     Previous
                                 </a>
-                                <button class="btn btn-blue" @click="nextStep($event,4)">
+                                <button class="btn btn-blue" @click="nextStep($event,4)" :disabled='isFormFilled'>
                                     Next Step
                                 </button>
                             </div>
@@ -986,55 +1021,52 @@
                             <p>By continuing you agree to our <a href="">Terms & Conditions</a> and <a href="">Privacy
                                     Policy</a>. We will authorize your card with a pre payment of £20</p>
                         </div>
-
                     </form>
-
-
                 </div>
-
+                {{--Sidebar Laundry Form--}}
                 <div class="col-md-4 fixposition">
                     <div class="vue-sidebar">
                         <h5 class="sidebar-title text-center">Summary</h5>
                         <div class="v-order-box">
                             <div class="order-step">
-                                <h4 @click="toStep($event,1)">Address</h4>
+                                <h4 @click="nextStep($event,1)">Address</h4>
                                 <p v-if="laAddress">${laAddress}</p>
                             </div>
-                            <div class="order-edit" @click="toStep($event,1)"><i class="fa fa-edit"></i></div>
+                            <div class="order-edit" @click="nextStep($event,1)"><i class="fa fa-edit"></i></div>
                         </div>
                         <hr class="dashed">
                         <div class="v-order-box">
                             <div class="order-step">
-                                <h4 @click="toStep($event,2)">Services</h4>
+                                <h4 @click="nextStep($event,2)">Services</h4>
                                 <ul class="services-list" v-if="services.length">
                                     <li v-for="service in services"><p>${service}</p></li>
                                 </ul>
                             </div>
-                            <div class="order-edit" @click="toStep($event,2)"><i class="fa fa-edit"></i></div>
+                            <div class="order-edit" @click="nextStep($event,2)"><i class="fa fa-edit"></i></div>
                         </div>
                         <hr class="dashed">
                         <div class="v-order-box">
                             <div class="order-step">
-                                <h4 @click="toStep($event,3)">Collection</h4>
+                                <h4 @click="nextStep($event,3)">Collection</h4>
                                 <p v-if="colDate || colTime">${colDate } ${ colTime}</p>
                             </div>
-                            <div class="order-edit" @click="toStep($event,3)"><i class="fa fa-edit"></i></div>
+                            <div class="order-edit" @click="nextStep($event,3)"><i class="fa fa-edit"></i></div>
                         </div>
                         <hr class="dashed">
                         <div class="v-order-box">
                             <div class="order-step">
-                                <h4 @click="toStep($event,3)">Delivery</h4>
+                                <h4 @click="nextStep($event,3)">Delivery</h4>
                                 <p v-if="delDate || delTime">${delDate } ${ delTime}</p>
                             </div>
-                            <div class="order-edit"><i class="fa fa-edit"></i></div>
+                            <div class="order-edit" @click="nextStep($event,3)"><i class="fa fa-edit"></i></div>
                         </div>
                         <hr class="dashed">
                         <div class="v-order-box">
                             <div class="order-step">
-                                <h4 @click="toStep($event,4)">Payment</h4>
+                                <h4 @click="nextStep($event,4)">Payment</h4>
                                 {{--<p>Dynamic</p>--}}
                             </div>
-                            <div class="order-edit" @click="toStep($event,4)"><i class="fa fa-edit"></i></div>
+                            <div class="order-edit" @click="nextStep($event,4)"><i class="fa fa-edit"></i></div>
                         </div>
                     </div>
                 </div>
@@ -1089,12 +1121,6 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-blue" @click="washServicePrefer($event,'-','add')"
-                                    data-dismiss="modal">
-                                Add
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -1373,42 +1399,46 @@
         $('#get_address_button').click(function () {
             $("#laundryForm .filter-loader").addClass("active");
             $.ajax({
-                    type: "POST",
-                    url: "api/address/bypostcode",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        postcode: $("#postCode").val(),
-                    },
-                    success: function (res) {
-                        response = JSON.parse(res);
-                        address1 = $("#address1");
-                        api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967";
-                        if (response['result'].length > 0) {
-                            $.get(api_url, function (res) {
-                                if (res.addresses.length) {
-                                    address1.html("");
-                                    for (var i = 0, len = res.addresses.length; i < len; i++) {
-                                        value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
-                                        var option = $('<option></option>', {
-                                            "text": value,
-                                            "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
-                                            "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
-                                        });
-                                        address1.append(option);
-                                    }
-                                    $("#laundryForm .filter-loader").removeClass("active");
+                type: "POST",
+                url: "api/address/bypostcode",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    postcode: $("#postCode").val(),
+                },
+                success: function (res) {
+                    response = JSON.parse(res);
+                    address1 = $("#address1");
+                    api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967";
+                    if (response['result'].length > 0) {
+                        $.get(api_url, function (res) {
+                            if (res.addresses.length) {
+                                address1.html("");
+                                for (var i = 0, len = res.addresses.length; i < len; i++) {
+                                    value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
+                                    var option = $('<option></option>', {
+                                        "text": value,
+                                        "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
+                                        "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
+                                    });
+                                    address1.append(option);
                                 }
-                            });
-                        }
-
+                                $('#postCode').siblings('.res-msg').addClass('serve').html('We serve in your area');
+                                $('#address1').siblings('.res-msg').html('*Please select address');
+                                $("#laundryForm .filter-loader").removeClass("active");
+                            }
+                        });
                     }
-                });
+                },
+                error: function (res) {
+                    $("#laundryForm .filter-loader").removeClass("active");
+                    console.log('Error');
+                }
+            });
         });
 
         $('.userinfo').click(function () {
 
             var userid = $(this).data('id');
-
             // AJAX request
             $.ajax({
                 url: 'ajaxfile.php',
@@ -1817,7 +1847,6 @@
     }
 
 
-
     function choose_address(id, address) {
         $("#address").val(id);
         $("#address_text").text(address);
@@ -1880,8 +1909,6 @@
                 '07:00 PM - 09:00 PM',
                 '09:00 PM - 11:00 PM'
             ]
-
-
         },
         filters: {
             colDFilter: function (value) {
@@ -1909,16 +1936,98 @@
                 return value;
             }
         },
-        computed: {},
+        computed: {
+            isColDate: function () {
+                return this.colDate == '' ? true : false;
+            },
+            isColTime: function () {
+                return this.colTime == '' ? true : false;
+            },
+            isDelDate: function () {
+                return this.delDate == '' ? true : false;
+            },
+            isFormFilled: function () {
+                var self = this;
+//                if (self.colDate == '') {
+//                    jQuery('#colDateMsg').html('*Please Select collection date');
+//                    return true;
+//                }
+//                if (self.colTime == '') {
+//                    jQuery('#colDateMsg').html('');
+//                    jQuery('#colTimeMsg').html('*Please Select collection Time');
+//                    return true;
+//                }
+//                if (self.colOption == '') {
+//                    jQuery('#colTimeMsg').html('');
+//                    jQuery('#colOptMsg').html('*Please Select collection Option');
+//                    return true;
+//                }
+//                if (self.delDate == '') {
+//                    jQuery('#colOptMsg').html('');
+//                    jQuery('#delDateMsg').html('*Please Select delivery Date');
+//                    return true;
+//                }
+//                if (self.delTime == '') {
+//                    jQuery('#delDateMsg').html('');
+//                    jQuery('#delTimeMsg').html('*Please Select delivery Time');
+//                    return true;
+//                }
+//                if (self.delOption == '') {
+//                    jQuery('#delTimeMsg').html('');
+//                    jQuery('#delOptMsg').html('*Please Select delivery Option');
+//                    return true;
+//                } else
+
+                if (self.colDate !== '' && self.colTime !== '' && self.colOption !== '' && self.delDate !== '' && self.delTime !== '' &&
+                    self.delOption !== '') {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        },
         methods: {
-            showLogin: function () {
+            showLogin: function (e) {
                 e.preventDefault();
+                var self = this;
+                var post_code = self.laPostcode;
+                document.cookie = 'user_post_code=' + post_code;
             },
             nextStep: function (e, step) {
                 var self = this;
                 e.preventDefault();
-//                var formId = jQuery('#laundryForm').offset().top;
-                self.step = step;
+                if (step == 1) {
+                    self.step = step;
+                }
+                if (step == 2) {
+                    if (self.laPostcode == '') {
+                        jQuery('#postCode').siblings('.res-msg').html('*Please Enter the Post Code');
+                    }
+                    else if (self.laAddress == '') {
+                        jQuery('#postCode').siblings('.res-msg').html('');
+                        jQuery('#address1').siblings('.res-msg').html('*Please select address');
+                    }
+                    else if (self.laPostcode !== '' && self.laAddress !== '') {
+                        jQuery('#address1').siblings('.res-msg').html('');
+                        jQuery('#postCode').siblings('.res-msg').html('');
+                        self.step = step;
+                    }
+                }
+                if (step == 3) {
+                    if (self.services.length == 0) {
+                        jQuery('#serviceMsg').html('*Please Select at least One service');
+                    }
+                    else if (self.services.length > 0) {
+                        jQuery('#serviceMsg').html('');
+                        self.step = step;
+                    }
+                }
+                if (step == 4) {
+                    if (!self.isFormFilled) {
+                        self.step = step;
+                    }
+                }
+
             },
             prevStep: function (e, step) {
                 var self = this;
@@ -1926,11 +2035,6 @@
 //                var formId = jQuery('#laundryForm').offset().top;
                 self.step = step;
 //                window.scrollTo(0, formId);
-            },
-            toStep: function (e, step) {
-                var self = this;
-                e.preventDefault();
-                self.step = step;
             },
             clickService: function (e, action, service) {
                 var self = this;
@@ -2003,6 +2107,8 @@
                     var d = self.colDate.split('-', 3)[0];
                     var m = self.colDate.split('-', 3)[1];
                     var y = self.colDate.split('-', 3)[2];
+                    d = (d >= 1 && d <= 9) ? '0' + d : d;
+                    m = (m >= 1 && m <= 9) ? '0' + m : m;
                     var dat = y + '-' + m + '-' + d;
 
                     for (var i = day; i <= 15 + day;) {
@@ -2011,6 +2117,8 @@
                         var dd = newdate.getDate();
                         var mm = newdate.getMonth() + 1;
                         var y = newdate.getFullYear();
+                        dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
+                        mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
                         var someFormattedDate = dd + '-' + mm + '-' + y;
                         i++;
                         arr.push(someFormattedDate);
@@ -2022,6 +2130,8 @@
                         var dd = newdate.getDate();
                         var mm = newdate.getMonth() + 1;
                         var y = newdate.getFullYear();
+                        dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
+                        mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
                         var someFormattedDate = dd + '-' + mm + '-' + y;
                         i++;
                         arr.push(someFormattedDate);
@@ -2043,7 +2153,8 @@
                 var dd = newdate.getDate();
                 var mm = newdate.getMonth() + 1;
                 var y = newdate.getFullYear();
-
+                dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
+                mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
                 var today = dd + '-' + mm + '-' + y;
                 if (self.colDate == today) {
                     var frange = self.getTimeSlot(0);
@@ -2185,7 +2296,7 @@
                 self.delTime = jQuery(e.target).text();
 
             },
-            checkOut: function(e){
+            checkOut: function (e) {
                 e.preventDefault();
                 var self = this;
                 var address = self.laAddress;
@@ -2245,16 +2356,17 @@
                     });
                 }
             },
-//            validateEmail: function (value) {
-//                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
-//                    return true;
-//                } else {
-//                    return false;
-//                }
-//            },
-//            hasNumber: function (myString) {
-//                return /\d/.test(myString);
-//            }
+            getCookie: function (name) {
+                var self = this;
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            },
         },
         mounted: function () {
             var self = this;
@@ -2271,7 +2383,7 @@
             } else {
                 self.showColDates = self.getDate(0, 'f');
             }
-
+            self.laPostcode = self.getCookie('user_post_code');
         }
     });
 </script>

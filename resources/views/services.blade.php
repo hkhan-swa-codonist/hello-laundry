@@ -593,7 +593,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>       
+
         <div id="laundryForm" class="vue_laundry_form">
             <div class="filter-loader"><i class="fa fa-spin fa-spinner"></i></div>
             <div class="row">

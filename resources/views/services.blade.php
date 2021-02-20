@@ -645,7 +645,8 @@
                                 </span>
                             </div>
                             <div class="form-group">
-                                <label for="address1">Select Your Address*</label>                                <select id="address1" name="address1" required
+                                <label for="address1">Select Your Address*</label>                                
+                                <select id="address1" name="address1" required
                                         v-model="laAddress" :disabled="laPostcode==''">
                                         <option value="">Select Address</option>
                                     @foreach($addresses as $value)
@@ -1508,35 +1509,34 @@
         $('#get_address_button').click(function () {
             $("#laundryForm .filter-loader").addClass("active");
             $.ajax({
-                    type: "POST",
-                    url: "api/address/bypostcode",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        postcode: $("#postCode").val(),
-                    },
-                    success: function (res) {
-                        response = JSON.parse(res);
-                        address1 = $("#address1");
-                        api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=YJ7WdPqNm0KJiDn7h741Eg30033";
-                        if (response['result'].length > 0) {
-                            $.get(api_url, function (res) {
-                                if (res.addresses.length) {
-                                    address1.html("");
-                                    for (var i = 0, len = res.addresses.length; i < len; i++) {
-                                        value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
-                                        var option = $('<option></option>', {
-                                            "text": value,
-                                            "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
-                                            "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
-                                        });
-                                        address1.append(option);
-                                    }
-                                    $("#laundryForm .filter-loader").removeClass("active");
+                type: "POST",
+                url: "api/address/bypostcode",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    postcode: $("#postCode").val(),
+                },
+                success: function (res) 
+                {
+                    response = JSON.parse(res);
+                    address1 = $("#address1");
+                    api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=YJ7WdPqNm0KJiDn7h741Eg30033";
+                    if (response['result'].length > 0) {
+                        $.get(api_url, function (res) {
+                            if (res.addresses.length) {
+                                address1.html("");
+                                for (var i = 0, len = res.addresses.length; i < len; i++) {
+                                    value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
+                                    var option = $('<option></option>', {
+                                        "text": value,
+                                        "value": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ','  + res.addresses[i]['formated_address']
+                                    });
+                                    address1.append(option);
                                 }
-                                $('#postCode').siblings('.res-msg').addClass('serve').html('We serve in your area');
-                                $('#address1').siblings('.res-msg').html('*Please select address');
                                 $("#laundryForm .filter-loader").removeClass("active");
                             }
+                            $('#postCode').siblings('.res-msg').addClass('serve').html('We serve in your area');
+                            $('#address1').siblings('.res-msg').html('*Please select address');
+                            // $("#laundryForm .filter-loader").removeClass("active");
                         });
                     }
                 },
@@ -1544,7 +1544,9 @@
                     $("#laundryForm .filter-loader").removeClass("active");
                     console.log('Error');
                 }
-            });
+            })
+               
+           
         });
 
         $('.userinfo').click(function () {
@@ -2433,6 +2435,7 @@
                 e.preventDefault();
                 var self = this;
                 var address = self.laAddress;
+
                 var delivery_date = self.delDate;
                 var delivery_time = self.delTime;
                 var pickup_date = self.colDate;
@@ -2466,17 +2469,17 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                             customer_id: customer_id,
+                            address:address,
+                            city:city,
+                            postcode:postcode,
                             address_id: address,
                             pickup_date: pickup_date,
                             pickup_time: pickup_time,
                             delivery_date: delivery_date,
                             delivery_time: delivery_time,
-<<<<<<< HEAD
                             extra_details: extra_details,
 //                          payment_mode: payment_method,
-=======
                             payment_mode: "2",
->>>>>>> 762d046b94366f16dfd7d496bd2f8c6769564053
                             other_requests: any_other_request,
                             collection_instructions: any_collection_instruction,
                             delivery_instructions: any_delivery_instruction,

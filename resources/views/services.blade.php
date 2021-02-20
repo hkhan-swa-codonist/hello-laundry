@@ -1548,7 +1548,7 @@
                                     value = res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join("");
                                     var option = $('<option></option>', {
                                         "text": value,
-                                        "value": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ','  + res.addresses[i]['formatted_address']
+                                        "value": res.addresses[i]['town_or_city'] + '?' + res.addresses[i]['country'] + '?'  + res.addresses[i]['formatted_address']
                                     });
                                     address1.append(option);
                                 }

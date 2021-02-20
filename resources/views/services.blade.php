@@ -645,10 +645,12 @@
                                 </span>
                             </div>
                             <div class="form-group">
-                                <label for="address1">Select Your Address*</label>
-                                <select id="address1" name="address1" required
+                                <label for="address1">Select Your Address*</label>                                <select id="address1" name="address1" required
                                         v-model="laAddress" :disabled="laPostcode==''">
-                                    <option value="address0" selected></option>
+                                        <option value="">Select Address</option>
+                                    @foreach($addresses as $value)
+                                        <option value="{{$value->id}}">{{$value->address}}</option>                                                
+                                    @endforeach
                                 </select>
                                 <div class="res-msg"></div>
                             </div>

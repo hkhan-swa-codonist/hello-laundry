@@ -2507,14 +2507,10 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                             customer_id: customer_id,
-<<<<<<< HEAD
-                            address_id: address,
-=======
                             city: city,
                             country: country,
                             postcode: postcode,
                             address_id: add_id,
->>>>>>> 15281c75b3be5ea7aa785e88b62e5d65dfc13227
                             pickup_date: pickup_date,
                             pickup_time: pickup_time,
                             delivery_date: delivery_date,

@@ -462,11 +462,35 @@ class WebController extends Controller
         //return 1;
     }
 
+    public function process_address($input){
+    
+    }
+
    
     public function checkout(Request $request)
     {
         $input = $request->all();
         
+        if(is_numeric($input['address_id'])!==1){
+            $data['city']=$input['city'];
+            $data['country']=$input['country'];
+            $data['postcode']=$input['postcode'];
+            $data['address']= $input['address'];
+            $data['customer_id']= $input['customer_id'];
+            $data['manual_address']= $input['extra_details'];
+            $data['unique_id'] = $input['postcode'];
+            $data['type']=1;
+            if($id = Address::where('city',$data['city'])
+                            ->where('country',$data['country'])
+                            ->where('customer_id',$data['customer_id'])
+                            ->where('address',$data['address'])->first()->id())
+            echo $id;
+            else 
+            echo "No address Present";
+            $id = Address::create($data)->id;
+            echo $id;
+        }
+        die();
         $input['pickup_date'] = date('Y-m-d', strtotime($input['pickup_date']));
         $input['delivery_date'] = date('Y-m-d', strtotime($input['delivery_date']));
         // $data = json_decode($input['data'], true);

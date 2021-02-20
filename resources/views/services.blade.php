@@ -2488,8 +2488,6 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                             customer_id: customer_id,
-                            city:city,
-                            postcode:postcode,
                             address_id: address,
                             pickup_date: pickup_date,
                             pickup_time: pickup_time,

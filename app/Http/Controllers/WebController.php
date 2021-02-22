@@ -36,6 +36,8 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 use Kreait\Firebase\Database;
 use Cartalyst\Stripe\Stripe;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Redirect as FacadesRedirect;
 use Mail;
 use Omnipay\Omnipay;
 use Omnipay\Common\CreditCard;
@@ -62,10 +64,9 @@ class WebController extends Controller
                 }
             }
          $payment_modes = PaymentMethod::where('status',1)->get();
-       $currency = AppSetting::where('id',1)->value('default_currency');
-       $addresses = Address::all();
-
-        return view('services',[ 'data' => $type,'payment_modes' => $payment_modes, 'currency' => $currency, 'addresses' => $addresses]);
+         $currency = AppSetting::where('id',1)->value('default_currency');
+         $addresses = Address::all();
+         return view('services',[ 'data' => $type,'payment_modes' => $payment_modes, 'currency' => $currency, 'addresses' => $addresses]);
     }
 
     public function pricing(){
@@ -255,6 +256,8 @@ class WebController extends Controller
     {   
         $input = $request->all();
         $validator = Validator::make($input, [
+          'uFName'=>'required',
+          'uFName'=>'required',
           'customer_name' => 'required', // make sure the email is an actual email
           'phone_number' => 'required|numeric|digits_between:9,20|unique:customers,phone_number',
           'email' => 'required|email|regex:/^[a-zA-Z]{1}/|unique:customers,email',
@@ -284,6 +287,9 @@ class WebController extends Controller
             
             $input['stripe_token'] = $stripe_token['id'];
             //*/
+            if(isset($input['return_url']) and $input['return_url']!=""){
+                return Redirect::to($input['return_url']);
+            }
             $customer = Customer::create($input);
 
             if(is_object($customer)) {
@@ -323,7 +329,10 @@ class WebController extends Controller
               'password' => $input['password']
             );
             // attempt to do the login
-            if (Auth::attempt($userdata))
+            if(isset($input['return_url']) and $input['return_url']!=""){
+                return Redirect::to($input['return_url']);
+            }
+            else if (Auth::attempt($userdata))
             {
               return Redirect::to('check_service_availability');
             }
@@ -475,29 +484,24 @@ class WebController extends Controller
             $data['city']=$input['city'];
             $data['country']=$input['country'];
             $data['postcode']=$input['postcode'];
-            $data['address']= $input['address_id'];
+            $data['address']= $input['address'];
             $data['customer_id']= $input['customer_id'];
             $data['manual_address']= $input['extra_details'];
             $data['unique_id'] = $input['postcode'];
             $data['status']=1;
             $data['type']=1;
-            print_r($data);
             $row = Address::where('city',$data['city'])
                             ->where('country',$data['country'])
                             ->where('customer_id',$data['customer_id'])
                             ->where('address',$data['address'])->first();
-            print_r($row);
             if($row){
-                print_r($row);
-                $data['address_id']=$row->id;
+                $input['address_id']=$row->id;
             }
             else{ 
             echo "No address Present";
             $data['address']=$input['address'];
             $id = Address::create($data)->id;
-            echo $id;
             }
-            die();
         }
         $input['pickup_date'] = date('Y-m-d', strtotime($input['pickup_date']));
         $input['delivery_date'] = date('Y-m-d', strtotime($input['delivery_date']));

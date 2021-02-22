@@ -919,6 +919,9 @@
                             </div>
                         </div>
                         <!--TAB Personal Details-->
+                        @php 
+                        $user = Auth::user();
+                        @endphp
                         <div class="address-form" v-show="step == 4">
                             <div class="step-title">
                                 <h1 class="first">Personal</h1>
@@ -929,7 +932,7 @@
                                     <div class="form-group">
                                         <label for="fName">First Name*</label>
                                         <input type="text" class="form-control" id="fName"
-                                               name="fName" v-model="fName">
+                                               name="fName"  v-model="fName">
                                         <div id="fNameMsg" class="res-msg" v-if="fName == ''">Please Enter First Name
                                         </div>
                                     </div>
@@ -947,7 +950,7 @@
                                     <div class="form-group">
                                         <label for="cEmail">Email Id*</label>
                                         <input type="email" class="form-control" id="cEmail"
-                                               name="cEmail" v-model="cEmail">
+                                               name="email"  v-model="cEmail">
                                         <div id="cEmailMsg" class="res-msg" v-if="cEmail == ''">Please Enter Email</div>
                                     </div>
                                 </div>
@@ -1127,7 +1130,9 @@
                         <div class="modal-body">
                             <div class="login_page bg-white rounded p-4" v-if="logPrefer == 'register'">
                                 <form method="POST" action="/register">
-                                    <input type="hidden" name="_token" value="VlTXo9gKe4fXKi7JhzV1BvIpJdkO8WfgM9CqgWoN">
+                                    @csrf
+                                    <input type="hidden" name="return_url" value="services">
+                                    
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -1196,7 +1201,8 @@
                             </div>
                             <div class="login_page bg-white rounded p-4" v-if="logPrefer == 'login'">
                                 <form class="login-form" method="post" action="login">
-                                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}"/>
+                                    @csrf
+                                    <input type="hidden" name="return_url" value="services">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -1541,6 +1547,7 @@
                     response = JSON.parse(res);
                     address1 = $("#address1");
                     api_url = "https://api.getaddress.io/find/" + $("#postCode").val() + "?expand=true&api-key=YJ7WdPqNm0KJiDn7h741Eg30033";
+                    
                     if (response['result'].length > 0) {
                         $.get(api_url, function (res) {
                             if (res.addresses.length) {

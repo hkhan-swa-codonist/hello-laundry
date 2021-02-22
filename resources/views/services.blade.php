@@ -703,10 +703,11 @@
                                             <i class="fa fa-minus" @click="washService($event,'remove')"></i>
                                         @else
                                             <i class="fa fa-plus show"
-                                               @click="clickService($event,'add','{{ $value->service_name }}')"></i>
+                                               @click="clickService($event,'add',[{{ $value->id }},'{{ $value->service_name }}'])"></i>
                                             <i class="fa fa-minus"
-                                               @click="clickService($event,'remove','{{ $value->service_name }}' )"></i>
+                                               @click="clickService($event,'remove',[{{ $value->id }},'{{ $value->service_name }}'] )"></i>
                                         @endif
+
                                     </div>
                                     @if($value['is_category']==1)
                                         @php
@@ -742,17 +743,18 @@
                                                                 <div class="service-box shadow-box default">
                                                                     <div class="media">
                                                                         <div class="media-left">
-                                                                            <img src="{{$cat_image}}" class="media-object">
+                                                                            <img src="{{$cat_image}}"
+                                                                                 class="media-object">
                                                                         </div>
                                                                         <div class="media-body">
                                                                             <h4 class="media-heading"
-                                                                                data-service="serviceName">{{$category->category_name}}</h4>
+                                                                                data-service="serviceNameM">{{$category->category_name}}</h4>
                                                                             <p> {{$category->description}} </p>
                                                                         </div>
                                                                     </div>
                                                                     <div class="added {{$active}}">Added</div>
                                                                     <i class="fa fa-plus wash {{$show}}"
-                                                                       @click="washServicePrefer($event,'{{$category->category_name}}','-')"></i>
+                                                                       @click="washServicePrefer($event,'{{$category->category_name}}','-',{ {{ $value->id }}:[{{ $category->id }},'{{ $category->category_name }}']})"></i>
                                                                 </div>
                                                                 <?php
                                                                 $active = "";
@@ -764,7 +766,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-blue"
-                                                                @click="washServicePrefer($event,'-','add')"
+                                                                @click="washServicePrefer($event,'-','add','')"
                                                                 data-dismiss="modal">
                                                             Add
                                                         </button>
@@ -776,7 +778,6 @@
                                     @endif
 
                                 @endforeach
-
                                 <div class="form-group">
                                     <label for="extraRequest">Any Other Request?</label>
                                     <textarea class="form-control" id="extraRequest" name="extraRequest"
@@ -2024,305 +2025,356 @@
 </script>
 <script>
     var app = new Vue({
-            delimiters: ['${', '}'],
-            el: '#laundryForm',
-            data: {
-                step: 1,
-                services: [],
-                preferance: 'Mixed',
-                logPrefer: 'register',
-                addressText: '',
-                fName: '',
-                lName: '',
-                cEmail: '',
-                pCode: '',
-                addLine: '',
-                mobNo: '',
-                extAdd: '',
-                laPostcode: '',
-                laAddress: '',
-                colDate: '',
-                colTime: '',
-                delDate: '',
-                delTime: '',
-                extraDetails: '',
-                showColDates: [],
-                colShowTimes: [],
-                showDelDates: [],
-                delShowTimes: [],
-                anyOtherRequest: '',
-                delInstruction: '',
-                colInstruction: '',
-                uFName: '',
-                uLName: '',
-                customer_name: '',
-                phone_number: '',
-                email: '',
-                timeSlot: [
-                    '07:00 AM - 09:00 AM',
-                    '09:00 AM - 11:00 AM',
-                    '11:00 AM - 01:00 PM',
-                    '01:00 PM - 03:00 PM',
-                    '03:00 PM - 05:00 PM',
-                    '05:00 PM - 07:00 PM',
-                    '07:00 PM - 09:00 PM',
-                    '09:00 PM - 11:00 PM'
-                ]
+        delimiters: ['${', '}'],
+        el: '#laundryForm',
+        data: {
+            step: 1,
+            services: [],
+            servicesIDs: [],
+            servicesCookies: [],
+            preferance: 'Mixed',
+            logPrefer: 'register',
+            addressText: '',
+            fName: '',
+            lName: '',
+            cEmail: '',
+            pCode: '',
+            addLine: '',
+            mobNo: '',
+            extAdd: '',
+            laPostcode: '',
+            laAddress: '',
+            colDate: '',
+            colTime: '',
+            delDate: '',
+            delTime: '',
+            extraDetails: '',
+            showColDates: [],
+            colShowTimes: [],
+            showDelDates: [],
+            delShowTimes: [],
+            anyOtherRequest: '',
+            delInstruction: '',
+            colInstruction: '',
+            uFName: '',
+            uLName: '',
+            customer_name: '',
+            phone_number: '',
+            email: '',
+            timeSlot: [
+                '07:00 AM - 09:00 AM',
+                '09:00 AM - 11:00 AM',
+                '11:00 AM - 01:00 PM',
+                '01:00 PM - 03:00 PM',
+                '03:00 PM - 05:00 PM',
+                '05:00 PM - 07:00 PM',
+                '07:00 PM - 09:00 PM',
+                '09:00 PM - 11:00 PM'
+            ]
+        },
+        filters: {
+            colDFilter: function (value) {
+                if (value == '') return 'Collection Date';
+                return value;
             },
-            filters: {
-                colDFilter: function (value) {
-                    if (value == '') return 'Collection Date';
-                    return value;
-                },
-                colTFilter: function (value) {
-                    if (value == '') return 'Collection Time';
-                    return value;
-                },
-                delDFilter: function (value) {
-                    if (value == '') return 'Delivery Date';
-                    return value;
-                },
-                delTFilter: function (value) {
-                    if (value == '') return 'Delivery Time';
-                    return value;
-                },
+            colTFilter: function (value) {
+                if (value == '') return 'Collection Time';
+                return value;
             },
-            computed: {
-                isColDate: function () {
-                    return this.colDate == '' ? true : false;
-                },
-                isColTime: function () {
-                    return this.colTime == '' ? true : false;
-                },
-                isDelDate: function () {
-                    return this.delDate == '' ? true : false;
-                },
-                isFormFilled: function () {
-                    var self = this;
-                    if (self.colDate !== '' && self.colTime !== '' && self.delDate !== '' && self.delTime !== '') {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },
-                isPFormFilled: function () {
-                    var self = this;
-                    if (self.fName !== '' && self.cEmail !== '' && self.pCode !== '' && self.addLine !== '' && self.mobNo !== '') {
-                        return false;
-                    } else {
-                        return true;
-                    }
+            delDFilter: function (value) {
+                if (value == '') return 'Delivery Date';
+                return value;
+            },
+            delTFilter: function (value) {
+                if (value == '') return 'Delivery Time';
+                return value;
+            },
+        },
+        computed: {
+            isColDate: function () {
+                return this.colDate == '' ? true : false;
+            },
+            isColTime: function () {
+                return this.colTime == '' ? true : false;
+            },
+            isDelDate: function () {
+                return this.delDate == '' ? true : false;
+            },
+            isFormFilled: function () {
+                var self = this;
+                if (self.colDate !== '' && self.colTime !== '' && self.delDate !== '' && self.delTime !== '') {
+                    return false;
+                } else {
+                    return true;
                 }
             },
-            methods: {
-                logPreference: function (e, prefer) {
-                    var self = this;
-                    e.preventDefault();
-                    if (prefer == 'log') {
-                        self.logPrefer = 'login';
-                    }
-                    if (prefer == 'reg') {
-                        self.logPrefer = 'register';
-                    }
-                    if (prefer == 'forgot') {
-                        self.logPrefer = 'forgot';
-                    }
-                },
-                showLogin: function (e) {
-                    e.preventDefault();
-                    var self = this;
+            isPFormFilled: function () {
+                var self = this;
+                if (self.fName !== '' && self.cEmail !== '' && self.pCode !== '' && self.addLine !== '' && self.mobNo !== '') {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        },
+        methods: {
+            logPreference: function (e, prefer) {
+                var self = this;
+                e.preventDefault();
+                if (prefer == 'log') {
+                    self.logPrefer = 'login';
+                }
+                if (prefer == 'reg') {
                     self.logPrefer = 'register';
-                    var post_code = self.laPostcode;
-                    var address = self.laAddress;
-                    var services = self.services;
-                    var colDate = self.colDate;
-                    var colTime = self.colTime;
-                    var colInstruction = self.colInstruction;
-                    var delDate = self.delDate;
-                    var delTime = self.delTime;
-                    var delInstruction = self.delInstruction;
-                    document.cookie = 'user_post_code=' + post_code;
-                    document.cookie = 'user_address=' + address;
-                    document.cookie = 'services=' + services;
-                    document.cookie = 'colDate=' + colDate;
-                    document.cookie = 'colTime=' + colTime;
-                    document.cookie = 'colInstruction=' + colInstruction;
-                    document.cookie = 'delDate=' + delDate;
-                    document.cookie = 'delTime=' + delTime;
-                    document.cookie = 'delInstruction=' + delInstruction;
-                },
-                nextStep: function (e, step) {
-                    var self = this;
-                    e.preventDefault();
-                    var formId = jQuery('#laundryForm').offset().top - 122;
-                    if (step == 1) {
+                }
+                if (prefer == 'forgot') {
+                    self.logPrefer = 'forgot';
+                }
+            },
+            showLogin: function (e) {
+                e.preventDefault();
+                var self = this;
+                self.logPrefer = 'register';
+                var post_code = self.laPostcode;
+                var address = self.laAddress;
+                var services = self.services;
+                var colDate = self.colDate;
+                var colTime = self.colTime;
+                var colInstruction = self.colInstruction;
+                var delDate = self.delDate;
+                var delTime = self.delTime;
+                var delInstruction = self.delInstruction;
+                document.cookie = 'user_post_code=' + post_code;
+                document.cookie = 'user_address=' + address;
+                document.cookie = 'services=' + services;
+                document.cookie = 'colDate=' + colDate;
+                document.cookie = 'colTime=' + colTime;
+                document.cookie = 'colInstruction=' + colInstruction;
+                document.cookie = 'delDate=' + delDate;
+                document.cookie = 'delTime=' + delTime;
+                document.cookie = 'delInstruction=' + delInstruction;
+            },
+            nextStep: function (e, step) {
+                var self = this;
+                e.preventDefault();
+                var formId = jQuery('#laundryForm').offset().top - 122;
+                if (step == 1) {
+                    self.step = step;
+                    window.scrollTo(0, formId);
+                }
+                if (step == 2) {
+                    if (self.laPostcode == '') {
+                        jQuery('#postCode').siblings('.res-msg').html('*Please Enter the Post Code');
+                    }
+                    else if (self.laAddress == '') {
+                        jQuery('#postCode').siblings('.res-msg').html('');
+                        jQuery('#address1').siblings('.res-msg').html('*Please select address');
+                    }
+                    else if (self.laPostcode !== '' && self.laAddress !== '') {
+                        jQuery('#address1').siblings('.res-msg').html('');
+                        jQuery('#postCode').siblings('.res-msg').html('');
                         self.step = step;
                         window.scrollTo(0, formId);
                     }
-                    if (step == 2) {
-                        if (self.laPostcode == '') {
-                            jQuery('#postCode').siblings('.res-msg').html('*Please Enter the Post Code');
-                        }
-                        else if (self.laAddress == '') {
-                            jQuery('#postCode').siblings('.res-msg').html('');
-                            jQuery('#address1').siblings('.res-msg').html('*Please select address');
-                        }
-                        else if (self.laPostcode !== '' && self.laAddress !== '') {
-                            jQuery('#address1').siblings('.res-msg').html('');
-                            jQuery('#postCode').siblings('.res-msg').html('');
-                            self.step = step;
-                            window.scrollTo(0, formId);
-                        }
+                }
+                if (step == 3) {
+                    if (self.services.length == 0) {
+                        jQuery('#serviceMsg').html('*Please Select at least One service');
                     }
-                    if (step == 3) {
-                        if (self.services.length == 0) {
-                            jQuery('#serviceMsg').html('*Please Select at least One service');
-                        }
-                        else if (self.services.length > 0) {
-                            jQuery('#serviceMsg').html('');
-                            self.step = step;
-                            window.scrollTo(0, formId);
-                        }
+                    else if (self.services.length > 0) {
+                        jQuery('#serviceMsg').html('');
+                        self.step = step;
+                        window.scrollTo(0, formId);
                     }
-                    if (step == 4) {
-                        if (!self.isFormFilled) {
-                            self.step = step;
-                            window.scrollTo(0, formId);
-                        }
+                }
+                if (step == 4) {
+                    if (!self.isFormFilled) {
+                        self.step = step;
+                        window.scrollTo(0, formId);
                     }
-                    if (step == 5) {
-                        if (!self.isPFormFilled) {
-                            self.step = step;
-                            window.scrollTo(0, formId);
-                        }
+                }
+                if (step == 5) {
+                    if (!self.isPFormFilled) {
+                        self.step = step;
+                        window.scrollTo(0, formId);
                     }
+                }
 
-                },
-                prevStep: function (e, step) {
-                    var self = this;
-                    e.preventDefault();
-                    var formId = jQuery('#laundryForm').offset().top - 122;
-                    self.step = step;
-                    window.scrollTo(0, formId);
-                },
-                clickService: function (e, action, service) {
-                    var self = this;
-                    if (action == 'add') {
-                        jQuery(e.target).siblings('.added').addClass('active');
-                        jQuery(e.target).siblings('i.fa-minus').addClass('show');
-                        self.services.push(service);
+            },
+            prevStep: function (e, step) {
+                var self = this;
+                e.preventDefault();
+                var formId = jQuery('#laundryForm').offset().top - 122;
+                self.step = step;
+                window.scrollTo(0, formId);
+            },
+            clickService: function (e, action, service) {
+                var self = this;
+                if (action == 'add') {
+                    jQuery(e.target).siblings('.added').addClass('active');
+                    jQuery(e.target).siblings('i.fa-minus').addClass('show');
+                    self.services.push(service[1]);
+                    self.servicesIDs.push(service[0]);
+                    var arr = [];
+                    var obj = {
+                        id: service[0],
+                        name: service[1]
+                    };
+                    self.servicesCookies.push(obj);
+
+                }
+                if (action == 'remove') {
+                    jQuery(e.target).removeClass('show');
+                    jQuery(e.target).siblings('.added').removeClass('active');
+                    var ind = self.services.indexOf(service[1]);
+                    if (ind > -1) {
+                        self.services.splice(ind, 1);
                     }
-                    if (action == 'remove') {
-                        jQuery(e.target).removeClass('show');
-                        jQuery(e.target).siblings('.added').removeClass('active');
-                        var ind = self.services.indexOf(service);
-                        if (ind > -1) {
-                            self.services.splice(ind, 1);
+                    var ind = self.servicesIDs.indexOf(service[0]);
+                    if (ind > -1) {
+                        self.servicesIDs.splice(ind, 1);
+                    }
+                    self.servicesCookies.forEach(function (item, index) {
+                        if (item.id == service[0]) {
+                            self.servicesCookies.splice(index, 1);
                         }
-                    }
+                    });
+                }
 
 
-                },
-                washService: function (e, action) {
-                    var self = this;
-                    var text = 'Wash, Dry and Fold - ';
-                    if (action == "add") {
-                        jQuery(e.target).siblings('.added').addClass('active');
-                        jQuery(e.target).siblings('i.fa-minus').addClass('show');
+            },
+            washService: function (e, action) {
+                var self = this;
+                var text = 'Wash, Dry and Fold - ';
+                if (action == "add") {
+                    jQuery(e.target).siblings('.added').addClass('active');
+                    jQuery(e.target).siblings('i.fa-minus').addClass('show');
+                }
+                if (action == "remove") {
+                    jQuery(e.target).removeClass('show');
+                    jQuery(e.target).siblings('.added').removeClass('active');
+                    text = text + self.preferance;
+                    var ind = self.services.indexOf(text);
+                    if (ind > -1) {
+                        self.services.splice(ind, 1);
                     }
-                    if (action == "remove") {
-                        jQuery(e.target).removeClass('show');
-                        jQuery(e.target).siblings('.added').removeClass('active');
-                        text = text + self.preferance;
-                        var ind = self.services.indexOf(text);
-                        if (ind > -1) {
-                            self.services.splice(ind, 1);
+                    self.servicesIDs.forEach(function (item, index) {
+                        if (item.cat) {
+                            self.servicesIDs.splice(index, 1);
                         }
+                    });
+                }
+            },
+            washServicePrefer: function (e, prefer, action, subcat) {
+                var self = this;
 
+                var text = 'Wash, Dry and Fold - ';
+                if (action == 'add') {
+                    text = text + self.preferance;
+                    self.services.push(text);
+                }
+                else {
+                    jQuery(e.target).removeClass('show');
+                    jQuery(e.target).siblings('.added').addClass('active');
+                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
+                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
+                    text = text + self.preferance;
+                    self.preferance = prefer;
+                    var ind = self.services.indexOf(text);
+                    if (ind > -1) {
+                        self.services.splice(ind, 1);
                     }
+                    self.servicesIDs.forEach(function (item, index) {
+                        if (item.cat) {
+                            self.servicesIDs.splice(index, 1);
+                        }
+                    });
+                    var key = Object.keys(subcat);
+                    var id = subcat[key][0];
+                    var ob = {
+                        cat: key[0],
+                        subcat: id,
+                    };
+                    self.servicesIDs.push(ob);
 
-                },
-                washServicePrefer: function (e, prefer, action) {
-                    var self = this;
-                    var text = 'Wash, Dry and Fold - ';
-                    if (action == 'add') {
-                        text = text + self.preferance;
-                        self.services.push(text);
+                }
+
+
+            },
+            getDate: function (day, custom) {
+                var self = this;
+                var arr = [];
+                if (custom == 'true') {
+                    var d = self.colDate.split('-', 3)[0];
+                    var m = self.colDate.split('-', 3)[1];
+                    var y = self.colDate.split('-', 3)[2];
+                    d = (d >= 1 && d <= 9) ? '0' + d : d;
+                    m = (m >= 1 && m <= 9) ? '0' + m : m;
+                    var dat = y + '-' + m + '-' + d;
+
+                    for (var i = day; i <= 15 + day;) {
+                        var newdate = new Date(dat);
+                        newdate.setDate(newdate.getDate() + i);
+                        var dd = newdate.getDate();
+                        var mm = newdate.getMonth() + 1;
+                        var y = newdate.getFullYear();
+                        dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
+                        mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
+                        var someFormattedDate = dd + '-' + mm + '-' + y;
+                        i++;
+                        arr.push(someFormattedDate);
+                    }
+                } else {
+                    for (var i = day; i <= 15 + day;) {
+                        var newdate = new Date();
+                        newdate.setDate(newdate.getDate() + i);
+                        var dd = newdate.getDate();
+                        var mm = newdate.getMonth() + 1;
+                        var y = newdate.getFullYear();
+                        dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
+                        mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
+                        var someFormattedDate = dd + '-' + mm + '-' + y;
+                        i++;
+                        arr.push(someFormattedDate);
+                    }
+                }
+                return arr;
+            },
+            getColTime: function (e) {
+                var self = this;
+                e.preventDefault();
+                self.colDate = jQuery(e.target).text();
+                self.colShowTimes = [];
+                self.delShowTimes = [];
+                self.colTime = '';
+                self.delTime = '';
+                self.delDate = '';
+                var newdate = new Date();
+                newdate.setDate(newdate.getDate() + 0);
+                var dd = newdate.getDate();
+                var mm = newdate.getMonth() + 1;
+                var y = newdate.getFullYear();
+                dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
+                mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
+                var today = dd + '-' + mm + '-' + y;
+                if (self.colDate == today) {
+                    var frange = self.getTimeSlot(0);
+                    var tflag = false;
+                    if (self.timeSlot.includes(frange)) {
+                        self.timeSlot.filter(function (tslot) {
+                            if (tslot == frange) {
+                                self.colShowTimes.push(tslot);
+                                tflag = true;
+                                return false;
+                            }
+                            if (tflag) {
+                                self.colShowTimes.push(tslot);
+                            }
+                        })
                     }
                     else {
-                        jQuery(e.target).removeClass('show');
-                        jQuery(e.target).siblings('.added').addClass('active');
-                        jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
-                        jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
-                        text = text + self.preferance;
-                        self.preferance = prefer;
-                        var ind = self.services.indexOf(text);
-                        if (ind > -1) {
-                            self.services.splice(ind, 1);
-                        }
-                    }
-
-
-                },
-                getDate: function (day, custom) {
-                    var self = this;
-                    var arr = [];
-                    if (custom == 'true') {
-                        var d = self.colDate.split('-', 3)[0];
-                        var m = self.colDate.split('-', 3)[1];
-                        var y = self.colDate.split('-', 3)[2];
-                        d = (d >= 1 && d <= 9) ? '0' + d : d;
-                        m = (m >= 1 && m <= 9) ? '0' + m : m;
-                        var dat = y + '-' + m + '-' + d;
-
-                        for (var i = day; i <= 15 + day;) {
-                            var newdate = new Date(dat);
-                            newdate.setDate(newdate.getDate() + i);
-                            var dd = newdate.getDate();
-                            var mm = newdate.getMonth() + 1;
-                            var y = newdate.getFullYear();
-                            dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
-                            mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
-                            var someFormattedDate = dd + '-' + mm + '-' + y;
-                            i++;
-                            arr.push(someFormattedDate);
-                        }
-                    } else {
-                        for (var i = day; i <= 15 + day;) {
-                            var newdate = new Date();
-                            newdate.setDate(newdate.getDate() + i);
-                            var dd = newdate.getDate();
-                            var mm = newdate.getMonth() + 1;
-                            var y = newdate.getFullYear();
-                            dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
-                            mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
-                            var someFormattedDate = dd + '-' + mm + '-' + y;
-                            i++;
-                            arr.push(someFormattedDate);
-                        }
-                    }
-                    return arr;
-                },
-                getColTime: function (e) {
-                    var self = this;
-                    e.preventDefault();
-                    self.colDate = jQuery(e.target).text();
-                    self.colShowTimes = [];
-                    self.delShowTimes = [];
-                    self.colTime = '';
-                    self.delTime = '';
-                    self.delDate = '';
-                    var newdate = new Date();
-                    newdate.setDate(newdate.getDate() + 0);
-                    var dd = newdate.getDate();
-                    var mm = newdate.getMonth() + 1;
-                    var y = newdate.getFullYear();
-                    dd = (dd >= 1 && dd <= 9) ? '0' + dd : dd;
-                    mm = (mm >= 1 && mm <= 9) ? '0' + mm : mm;
-                    var today = dd + '-' + mm + '-' + y;
-                    if (self.colDate == today) {
-                        var frange = self.getTimeSlot(0);
-                        var tflag = false;
+                        frange = self.getTimeSlot(1);
+                        tflag = false;
                         if (self.timeSlot.includes(frange)) {
                             self.timeSlot.filter(function (tslot) {
                                 if (tslot == frange) {
@@ -2336,282 +2388,267 @@
                             })
                         }
                         else {
-                            frange = self.getTimeSlot(1);
-                            tflag = false;
+                            self.colShowTimes = self.timeSlot;
+                        }
+                    }
+                }
+                else {
+                    self.colShowTimes = self.timeSlot;
+                }
+            },
+            getDelDate: function (e) {
+                var self = this;
+                e.preventDefault();
+                self.colTime = jQuery(e.target).text();
+                self.showDelDates = [];
+                self.delTime = '';
+                self.delDate = '';
+                self.showDelDates = self.getDate(1, 'true');
+            },
+            getDelTime: function (e) {
+                var self = this;
+                e.preventDefault();
+                self.delDate = jQuery(e.target).text();
+                self.delShowTimes = [];
+                var diff = self.checkDiffDates(self.colDate, self.delDate);
+                if (diff > 1) {
+                    self.delShowTimes = self.timeSlot;
+                } else {
+                    var frange = self.colTime;
+                    var tflag = false;
+                    var ind = self.timeSlot.indexOf(frange);
+                    if (ind > -1) {
+                        if (ind == 0 || ind == 1) {
+                            var count = 0;
+                            self.timeSlot.filter(function (tslot) {
+                                if (count >= 2) {
+                                    self.delShowTimes.push(tslot);
+                                }
+                                count++;
+                            });
+                        } else {
                             if (self.timeSlot.includes(frange)) {
                                 self.timeSlot.filter(function (tslot) {
                                     if (tslot == frange) {
-                                        self.colShowTimes.push(tslot);
+                                        self.delShowTimes.push(tslot);
                                         tflag = true;
                                         return false;
                                     }
                                     if (tflag) {
-                                        self.colShowTimes.push(tslot);
+                                        self.delShowTimes.push(tslot);
                                     }
                                 })
                             }
-                            else {
-                                self.colShowTimes = self.timeSlot;
-                            }
                         }
                     }
-                    else {
-                        self.colShowTimes = self.timeSlot;
-                    }
-                },
-                getDelDate: function (e) {
-                    var self = this;
-                    e.preventDefault();
-                    self.colTime = jQuery(e.target).text();
-                    self.showDelDates = [];
-                    self.delTime = '';
-                    self.delDate = '';
-                    self.showDelDates = self.getDate(1, 'true');
-                },
-                getDelTime: function (e) {
-                    var self = this;
-                    e.preventDefault();
-                    self.delDate = jQuery(e.target).text();
-                    self.delShowTimes = [];
-                    var diff = self.checkDiffDates(self.colDate, self.delDate);
-                    if (diff > 1) {
-                        self.delShowTimes = self.timeSlot;
-                    } else {
-                        var frange = self.colTime;
-                        var tflag = false;
-                        var ind = self.timeSlot.indexOf(frange);
-                        if (ind > -1) {
-                            if (ind == 0 || ind == 1) {
-                                var count = 0;
-                                self.timeSlot.filter(function (tslot) {
-                                    if (count >= 2) {
-                                        self.delShowTimes.push(tslot);
-                                    }
-                                    count++;
-                                });
-                            } else {
-                                if (self.timeSlot.includes(frange)) {
-                                    self.timeSlot.filter(function (tslot) {
-                                        if (tslot == frange) {
-                                            self.delShowTimes.push(tslot);
-                                            tflag = true;
-                                            return false;
-                                        }
-                                        if (tflag) {
-                                            self.delShowTimes.push(tslot);
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                    }
-                },
-                getTimeSlot: function (sub) {
-                    var date = new Date();
-                    var hours = date.getHours() - sub;
-//                    var minutes = date.getMinutes();
-                    var ampm = hours >= 12 ? 'PM' : 'AM';
-                    hours = hours % 12;
-                    hours = hours ? hours : 12; // the hour '0' should be '12'
-//                minutes = minutes < 10 ? '0'+minutes : minutes;
-                    var firTime = (hours >= 1 && hours <= 9) ? ('0' + hours) + ':' + '00' + ' ' + ampm : hours + ':' + '00' + ' ' + ampm;
-                    var hours = date.getHours() - sub;
-                    hours = hours + 2;
-                    var ampm = hours >= 12 ? 'PM' : 'AM';
-                    hours = hours % 12;
-                    hours = hours ? hours : 12;
-                    var secTime = (hours >= 1 && hours <= 9) ? ('0' + hours) + ':' + '00' + ' ' + ampm : hours + ':' + '00' + ' ' + ampm;
-                    var frange = firTime + ' - ' + secTime;
-                    return frange;
-                },
-                checkDiffDates: function (st, end) {
-                    var self = this;
-                    var start = st;
-                    var end = end;
-                    var d = start.split('-', 3)[0];
-                    var m = start.split('-', 3)[1];
-                    var y = start.split('-', 3)[2];
-                    var datst = y + '-' + m + '-' + d;
-                    datst = new Date(datst);
-                    var d = end.split('-', 3)[0];
-                    var m = end.split('-', 3)[1];
-                    var y = end.split('-', 3)[2];
-                    var datend = y + '-' + m + '-' + d;
-                    datend = new Date(datend);
-                    var diff = new Date(datend - datst);
-
-                    diff = diff / 1000 / 60 / 60 / 24;
-                    return Math.round(diff);
-                },
-                setDelTime: function (e) {
-                    var self = this;
-                    e.preventDefault();
-                    self.delTime = jQuery(e.target).text();
-
-                },
-                isNumber: function (myString) {
-                    return /^\d+$/.test(myString);
-                },
-                checkOut: function (e) {
-                    var self = this;
-                    e.preventDefault();
-                    var add_id, city, country, address;
-                    if (self.isNumber(self.laAddress)) {
-                        add_id = self.laAddress;
-                        city = '';
-                        country = '';
-                    } else {
-                        add_id = '';
-                        city = self.laAddress.split('?', 3)[0];
-                        country = self.laAddress.split('?', 3)[1];
-                        address = self.laAddress.split('?', 3)[2];
-                    }
-                    var postcode = self.laPostcode;
-                    var delivery_date = self.delDate;
-                    var delivery_time = self.delTime;
-                    var pickup_date = self.colDate;
-                    var pickup_time = self.colTime;
-                    var any_delivery_instruction = self.delInstruction;
-                    var any_collection_instruction = self.colInstruction;
-                    var any_other_request = self.anyOtherRequest;
-                    var extra_details = self.extraDetails;
-                    var customer_id = '{{ Auth::id() }}';
-                    var payment_method = jQuery('input[name=payment]:checked').val();
-                    jQuery(".filter-loader").addClass("active");
-                    jQuery.ajax({
-                        url: '/checkout',
-                        type: 'POST',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            customer_id: customer_id,
-                            city: city,
-                            country: country,
-                            address: address,
-                            postcode: postcode,
-                            address_id: add_id,
-                            pickup_date: pickup_date,
-                            pickup_time: pickup_time,
-                            delivery_date: delivery_date,
-                            delivery_time: delivery_time,
-                            extra_details: extra_details,
-                            payment_mode: payment_method,
-                            other_requests: any_other_request,
-                            collection_instructions: any_collection_instruction,
-                            delivery_instructions: any_delivery_instruction,
-                        },
-                        success: function (data) {
-                            if (data == 1) {
-                                window.location = "/payment";
-                                jQuery(".filter-loader").removeClass("active");
-                            }
-                        },
-                        error: function (res) {
-                            console.log('Error');
-                        }
-                    });
-
-                },
-                getCookie: function (name) {
-                    var self = this;
-                    var nameEQ = name + "=";
-                    var ca = document.cookie.split(';');
-                    for (var i = 0; i < ca.length; i++) {
-                        var c = ca[i];
-                        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-                    }
-                    return null;
-                },
-                getAddText: function (e) {
-                    var self = this;
-                    e.preventDefault();
-                    self.addressText = jQuery("#address1 option:selected").text();
-                },
+                }
             },
-            mounted: function () {
-                var self = this;
-                var pathname = window.location.href;
-                var submitted = pathname.split('?')[1];
-
+            getTimeSlot: function (sub) {
                 var date = new Date();
-                var hours = date.getHours();
+                var hours = date.getHours() - sub;
+//                    var minutes = date.getMinutes();
                 var ampm = hours >= 12 ? 'PM' : 'AM';
                 hours = hours % 12;
-                hours = hours ? hours : 12;// the hour '0' should be '12'
-                if (hours == 11 && ampm == 'PM') {
-                    self.showColDates = self.getDate(1, 'f');
-                }
-                else if ((hours >= 12 || hours < 7) && ampm == 'AM') {
-                    self.showColDates = self.getDate(0, 'f');
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+//                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var firTime = (hours >= 1 && hours <= 9) ? ('0' + hours) + ':' + '00' + ' ' + ampm : hours + ':' + '00' + ' ' + ampm;
+                var hours = date.getHours() - sub;
+                hours = hours + 2;
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                var secTime = (hours >= 1 && hours <= 9) ? ('0' + hours) + ':' + '00' + ' ' + ampm : hours + ':' + '00' + ' ' + ampm;
+                var frange = firTime + ' - ' + secTime;
+                return frange;
+            },
+            checkDiffDates: function (st, end) {
+                var self = this;
+                var start = st;
+                var end = end;
+                var d = start.split('-', 3)[0];
+                var m = start.split('-', 3)[1];
+                var y = start.split('-', 3)[2];
+                var datst = y + '-' + m + '-' + d;
+                datst = new Date(datst);
+                var d = end.split('-', 3)[0];
+                var m = end.split('-', 3)[1];
+                var y = end.split('-', 3)[2];
+                var datend = y + '-' + m + '-' + d;
+                datend = new Date(datend);
+                var diff = new Date(datend - datst);
+
+                diff = diff / 1000 / 60 / 60 / 24;
+                return Math.round(diff);
+            },
+            setDelTime: function (e) {
+                var self = this;
+                e.preventDefault();
+                self.delTime = jQuery(e.target).text();
+
+            },
+            isNumber: function (myString) {
+                return /^\d+$/.test(myString);
+            },
+            checkOut: function (e) {
+                var self = this;
+                e.preventDefault();
+                var add_id, city, country, address;
+                if (self.isNumber(self.laAddress)) {
+                    add_id = self.laAddress;
+                    city = '';
+                    country = '';
                 } else {
-                    self.showColDates = self.getDate(0, 'f');
+                    add_id = '';
+                    city = self.laAddress.split('?', 3)[0];
+                    country = self.laAddress.split('?', 3)[1];
+                    address = self.laAddress.split('?', 3)[2];
                 }
-                self.laPostcode = self.getCookie('user_post_code');
-                if (submitted == 'login') {
-                    var serv = self.getCookie('services');
-                    serv = serv.split(',');
+                var postcode = self.laPostcode;
+                var delivery_date = self.delDate;
+                var delivery_time = self.delTime;
+                var pickup_date = self.colDate;
+                var pickup_time = self.colTime;
+                var any_delivery_instruction = self.delInstruction;
+                var any_collection_instruction = self.colInstruction;
+                var any_other_request = self.anyOtherRequest;
+                var extra_details = self.extraDetails;
+                var services = self.servicesIDs;
+                var customer_id = '{{ Auth::id() }}';
+                var payment_method = jQuery('input[name=payment]:checked').val();
+                jQuery(".filter-loader").addClass("active");
+                jQuery.ajax({
+                    url: '/checkout',
+                    type: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        customer_id: customer_id,
+                        city: city,
+                        country: country,
+                        address: address,
+                        postcode: postcode,
+                        address_id: add_id,
+                        pickup_date: pickup_date,
+                        pickup_time: pickup_time,
+                        delivery_date: delivery_date,
+                        delivery_time: delivery_time,
+                        extra_details: extra_details,
+                        payment_mode: payment_method,
+                        other_requests: any_other_request,
+                        collection_instructions: any_collection_instruction,
+                        delivery_instructions: any_delivery_instruction,
+                        services: services,
+                    },
+                    success: function (data) {
+                        if (data == 1) {
+                            window.location = "/payment";
+                            jQuery(".filter-loader").removeClass("active");
+                        }
+                    },
+                    error: function (res) {
+                        console.log('Error');
+                    }
+                });
+
+            },
+            getCookie: function (name) {
+                var self = this;
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            },
+            getAddText: function (e) {
+                var self = this;
+                e.preventDefault();
+                self.addressText = jQuery("#address1 option:selected").text();
+            },
+        },
+        mounted: function () {
+            var self = this;
+            var pathname = window.location.href;
+            var submitted = pathname.split('?')[1];
+
+            var date = new Date();
+            var hours = date.getHours();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;// the hour '0' should be '12'
+            if (hours == 11 && ampm == 'PM') {
+                self.showColDates = self.getDate(1, 'f');
+            }
+            else if ((hours >= 12 || hours < 7) && ampm == 'AM') {
+                self.showColDates = self.getDate(0, 'f');
+            } else {
+                self.showColDates = self.getDate(0, 'f');
+            }
+            self.laPostcode = self.getCookie('user_post_code');
+            if (submitted == 'login') {
+                var serv = self.getCookie('services');
+                serv = serv.split(',');
 //                    console.log(serv);
 //                    var a = "I want apple";
 //                    var b = " an";
 //                    var position = 0;
 //                    var output = [a.slice(0, position), b, a.slice(position)].join('');
 //                    console.log(output);
-                    var lservice = '';
-                    if(serv.includes('Wash')){
-                        var ind = serv.indexOf('Wash');
-                        if(ind > -1){
-                            serv.splice(ind,1);
-                        }
+                var lservice = '';
+                if (serv.includes('Wash')) {
+                    var ind = serv.indexOf('Wash');
+                    if (ind > -1) {
+                        serv.splice(ind, 1);
                     }
-                    var txt = ' Dry and Fold - Mixed';
-                    var txt2 = ' Dry and Fold - Separate Wash';
-                    if(serv.includes(txt)){
-                        var ind = serv.indexOf(txt);
-                        if(ind > -1){
-                            serv.splice(ind,1);
-                            serv.push('Wash,'+ txt);
-                        }
-                        lservice = 'mixed';
-                    }
-                    if(serv.includes(txt2)){
-                        var ind = serv.indexOf(txt2);
-                        if(ind > -1){
-                            serv.splice(ind,1);
-                            serv.push('Wash,'+ txt2);
-                        }
-                        lservice = 'separate';
-                    }
-                    console.log(serv);
-                    self.services = serv;
-//
-                    jQuery("h4[data-service='serviceName']").each(function () {
-                        if(lservice == 'separate'){
-                            jQuery('#washModal').parents('.media').siblings('.added').addClass('active');
-                        }
-                        if(lservice == 'mixed'){
-
-                        }
-                        if(jQuery(this).text().trim() == 'Wash, Dry and Fold - Mixed'){
-                            jQuery(this).parents('.media').siblings('.added').addClass('active');
-                        }
-                        if(self.services.includes(jQuery(this).text().trim())){
-                            jQuery(this).parents('.media').siblings('.added').addClass('active');
-                            jQuery(this).parents('.media').siblings('i.fa-plus').removeClass('show');
-                            jQuery(this).parents('.media').siblings('i.fa-minus').addClass('show');
-                        }
-                    });
-
-                    self.laAddress = self.getCookie('user_address');
-
-                    self.colDate = self.getCookie('colDate');
-                    self.colTime = self.getCookie('colTime');
-                    self.colInstruction = self.getCookie('colInstruction');
-                    self.delDate = self.getCookie('delDate');
-                    self.delTime = self.getCookie('delTime');
-                    self.delInstruction = self.getCookie('delInstruction');
-                    self.step = 4;
                 }
+                var txt = ' Dry and Fold - Mixed';
+                var txt2 = ' Dry and Fold - Separate Wash';
+                if (serv.includes(txt)) {
+                    var ind = serv.indexOf(txt);
+                    if (ind > -1) {
+                        serv.splice(ind, 1);
+                        serv.push('Wash,' + txt);
+                    }
+                    lservice = 'mixed';
+                }
+                if (serv.includes(txt2)) {
+                    var ind = serv.indexOf(txt2);
+                    if (ind > -1) {
+                        serv.splice(ind, 1);
+                        serv.push('Wash,' + txt2);
+                    }
+                    lservice = 'separate';
+                }
+//                self.services = serv;
+                console.log(serv);
+                jQuery("h4[data-service='serviceName']").each(function () {
+//
+//                    if (jQuery(this).text().trim() == 'Wash, Dry and Fold - Mixed') {
+//                        jQuery(this).parents('.media').siblings('.added').addClass('active');
+//                    }
+                    if (serv.includes(jQuery(this).text().trim())) {
+                        jQuery(this).parents('.media').siblings('i.fa-plus').trigger('click');
+                    }
+                });
+                if (lservice == 'separate') {
+                    jQuery("h4[data-service='serviceNameM']").each(function () {
+//                        Wash, Dry and Fold - Separate Wash
+
+                    });
+                }
+                if (lservice == 'mixed') {
+
+                }
+                self.laAddress = self.getCookie('user_address');
+                self.colDate = self.getCookie('colDate');
+                self.colTime = self.getCookie('colTime');
+                self.colInstruction = self.getCookie('colInstruction');
+                self.delDate = self.getCookie('delDate');
+                self.delTime = self.getCookie('delTime');
+                self.delInstruction = self.getCookie('delInstruction');
+                self.step = 4;
             }
-        })
-    ;
+        }
+    });
 </script>

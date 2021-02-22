@@ -287,9 +287,7 @@ class WebController extends Controller
             
             $input['stripe_token'] = $stripe_token['id'];
             //*/
-            if(isset($input['return_url']) and $input['return_url']!=""){
-                return Redirect::to($input['return_url']);
-            }
+           
             $customer = Customer::create($input);
 
             if(is_object($customer)) {
@@ -301,7 +299,11 @@ class WebController extends Controller
                 // attempt to do the login
                 if (Auth::attempt($userdata))
                 {
-                  return Redirect::to('profile/orders');
+                    if(isset($input['return_url']) and $input['return_url']!=""){
+                        return Redirect::to($input['return_url']);
+                    }
+                    else
+                    return Redirect::to('profile/orders');
                 }
                 else
                 {

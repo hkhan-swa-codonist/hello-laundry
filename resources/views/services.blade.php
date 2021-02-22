@@ -702,10 +702,11 @@
                                             <i class="fa fa-minus" @click="washService($event,'remove')"></i>
                                         @else
                                             <i class="fa fa-plus show"
-                                               @click="clickService($event,'add','{{ $value->service_name }}')"></i>
+                                               @click="clickService($event,'add',[{{ $value->id }},'{{ $value->service_name }}'])"></i>
                                             <i class="fa fa-minus"
-                                               @click="clickService($event,'remove','{{ $value->service_name }}' )"></i>
+                                               @click="clickService($event,'remove',[{{ $value->id }},'{{ $value->service_name }}'] )"></i>
                                         @endif
+                                        
                                     </div>
                                     @if($value['is_category']==1)
                                         @php
@@ -752,7 +753,7 @@
                                                                     </div>
                                                                     <div class="added {{$active}}">Added</div>
                                                                     <i class="fa fa-plus wash {{$show}}"
-                                                                       @click="washServicePrefer($event,'{{$category->category_name}}','-')"></i>
+                                                                       @click="washServicePrefer($event,'{{$category->category_name}}','-',{ {{ $value->id }}:[{{ $category->id }},'{{ $category->category_name }}']})"></i>
                                                                 </div>
                                                                 <?php
                                                                 $active = "";
@@ -764,7 +765,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-blue"
-                                                                @click="washServicePrefer($event,'-','add')"
+                                                                @click="washServicePrefer($event,'-','add',{ {{ $value->id }}:[{{ $category->id }},'{{ $category->category_name }}']})"
                                                                 data-dismiss="modal">
                                                             Add
                                                         </button>
@@ -2211,6 +2212,7 @@
 //                window.scrollTo(0, formId);
             },
             clickService: function (e, action, service) {
+                console.log(service);
                 var self = this;
                 if (action == 'add') {
                     jQuery(e.target).siblings('.added').addClass('active');
@@ -2252,7 +2254,8 @@
                 }
 
             },
-            washServicePrefer: function (e, prefer, action) {
+            washServicePrefer: function (e, prefer, action,subcat) {
+                console.log(subcat);
                 var self = this;
                 var text = 'Wash, Dry and Fold - ';
                 if (action == 'add') {

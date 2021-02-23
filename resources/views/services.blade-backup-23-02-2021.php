@@ -2138,7 +2138,6 @@
                 var post_code = self.laPostcode;
                 var address = self.laAddress;
                 var services = self.services;
-                var servicesId = self.servicesIDs;
                 var colDate = self.colDate;
                 var colTime = self.colTime;
                 var colInstruction = self.colInstruction;
@@ -2148,7 +2147,6 @@
                 document.cookie = 'user_post_code=' + post_code;
                 document.cookie = 'user_address=' + address;
                 document.cookie = 'services=' + services;
-                document.cookie = 'servicesId=' + JSON.stringify(servicesId);
                 document.cookie = 'colDate=' + colDate;
                 document.cookie = 'colTime=' + colTime;
                 document.cookie = 'colInstruction=' + colInstruction;
@@ -2573,6 +2571,7 @@
             var self = this;
             var pathname = window.location.href;
             var submitted = pathname.split('?')[1];
+
             var date = new Date();
             var hours = date.getHours();
             var ampm = hours >= 12 ? 'PM' : 'AM';
@@ -2589,9 +2588,6 @@
             self.laPostcode = self.getCookie('user_post_code');
             if (submitted == 'login') {
                 var serv = self.getCookie('services');
-                var servId = self.getCookie('servicesId');
-                var servId = JSON.parse(servId);
-                console.log(servId);
                 serv = serv.split(',');
 //                    console.log(serv);
 //                    var a = "I want apple";
@@ -2627,6 +2623,10 @@
 //                self.services = serv;
                 console.log(serv);
                 jQuery("h4[data-service='serviceName']").each(function () {
+//
+//                    if (jQuery(this).text().trim() == 'Wash, Dry and Fold - Mixed') {
+//                        jQuery(this).parents('.media').siblings('.added').addClass('active');
+//                    }
                     if (serv.includes(jQuery(this).text().trim())) {
                         jQuery(this).parents('.media').siblings('i.fa-plus').trigger('click');
                     }
@@ -2636,19 +2636,9 @@
 //                        Wash, Dry and Fold - Separate Wash
                     });
                 }
-                servId.forEach(function (item, index) {
-                    if (item.cat) {
-                        var cat = item.cat.parseInt();
-                        jQuery(".service-box[data-cat='" + cat +"']").children('.added').addClass('active');
-                        jQuery(".service-box[data-cat='" + cat +"']").children('i.fa-minus').addClass('show');
-                        if(jQuery(".service-box[data-subcat='" + item.subcat +"']").children('.added').hasClass('active')){
-                            jQuery(".service-box[data-subcat='" + item.subcat +"']").parents('.meodal-body').siblings('.modal-footer').children('.btn-blue').trigger('click');
-                        } else {
-                            jQuery(".service-box[data-subcat='" + item.subcat +"']").children('i.fa-plus.wash').trigger('click');
-                            jQuery(".service-box[data-subcat='" + item.subcat +"']").parents('.meodal-body').siblings('.modal-footer').children('.btn-blue').trigger('click');
-                        }
-                    }
-                });
+                if (lservice == 'mixed') {
+
+                }
                 self.laAddress = self.getCookie('user_address');
                 self.colDate = self.getCookie('colDate');
                 self.colTime = self.getCookie('colTime');

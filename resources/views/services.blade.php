@@ -475,6 +475,18 @@
         background: #409EFF !important;
         opacity: 0.1 !important;
     }
+    .v-order-box.disabled {
+        position: relative;
+    }
+    .v-order-box.disabled:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+    }
 
     @media screen and (max-width: 767px) {
         .vue_laundry_form .step h3:before {
@@ -1096,12 +1108,21 @@
                             <div class="order-edit" @click="nextStep($event,3)"><i class="fa fa-edit"></i></div>
                         </div>
                         <hr class="dashed">
+                        @if (Auth::check())
                         <div class="v-order-box">
                             <div class="order-step">
                                 <h4 @click="nextStep($event,4)">Personal Details</h4>
                             </div>
                             <div class="order-edit" @click="nextStep($event,4)"><i class="fa fa-edit"></i></div>
                         </div>
+                        @else
+                            <div class="v-order-box" :class="{ disabled: isFormFilled }">
+                                <div class="order-step">
+                                    <h4 @click="showLogin($event)" data-toggle="modal" data-target="#loginModal">Personal Details</h4>
+                                </div>
+                                <div class="order-edit" @click="showLogin($event)" data-toggle="modal" data-target="#loginModal"><i class="fa fa-edit"></i></div>
+                            </div>
+                        @endif
                         <hr class="dashed">
                         <div class="v-order-box">
                             <div class="order-step">
@@ -2137,7 +2158,7 @@
                 var self = this;
                 self.logPrefer = 'register';
                 var post_code = self.laPostcode;
-                var address = self.laAddress;
+                var address = self.addressText;
                 var services = self.services;
                 var servicesId = self.servicesIDs;
                 var colDate = self.colDate;
@@ -2635,7 +2656,11 @@
                         }
                     }
                 });
+                self.pCode = self.getCookie('user_post_code');
+                self.addressText = self.getCookie('user_address');
                 self.laAddress = self.getCookie('user_address');
+                self.addLine = self.getCookie('user_address');
+//                jQuery('#address1').find('option:contains("Blue")').attr("selected",true);
                 self.colDate = self.getCookie('colDate');
                 self.colTime = self.getCookie('colTime');
                 self.colInstruction = self.getCookie('colInstruction');

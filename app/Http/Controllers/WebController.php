@@ -300,7 +300,7 @@ class WebController extends Controller
                 if (Auth::attempt($userdata))
                 {
                     if(isset($input['return_url']) and $input['return_url']!=""){
-                        return Redirect::to($input['return_url']);
+                        return Redirect::to($input['return_url']."?login");
                     }
                     else
                     return Redirect::to('profile/orders');
@@ -332,7 +332,7 @@ class WebController extends Controller
             );
             // attempt to do the login
             if(isset($input['return_url']) and $input['return_url']!=""){
-                return Redirect::to($input['return_url']);
+                return Redirect::to($input['return_url']."?login");
             }
             else if (Auth::attempt($userdata))
             {

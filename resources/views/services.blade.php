@@ -934,7 +934,7 @@
                                     <div class="form-group">
                                         <label for="fName">First Name*</label>
                                         <input type="text" class="form-control" id="fName"
-                                               name="fName" v-model="fName">
+                                               name="fName" v-model="fName" value="{{$user->uFName}}">
                                         <div id="fNameMsg" class="res-msg" v-if="fName == ''">Please Enter First Name
                                         </div>
                                     </div>
@@ -943,7 +943,7 @@
                                     <div class="form-group">
                                         <label for="lName">Last Name*</label>
                                         <input type="text" class="form-control" id="lName"
-                                               name="lName" v-model="lName">
+                                               name="lName" v-model="lName"  value="{{$user->uLName}}">
                                         <div id="lNameMsg" class="res-msg" v-if="lName == ''">Please Enter Last Name
                                         </div>
                                     </div>
@@ -952,7 +952,7 @@
                                     <div class="form-group">
                                         <label for="cEmail">Email Id*</label>
                                         <input type="email" class="form-control" id="cEmail"
-                                               name="email" v-model="cEmail">
+                                               name="email" v-model="cEmail"  value="{{$user->email}}">
                                         <div id="cEmailMsg" class="res-msg" v-if="cEmail == ''">Please Enter Email</div>
                                     </div>
                                 </div>
@@ -987,7 +987,7 @@
                                     <div class="form-group">
                                         <label for="mobNo">Mobile No*</label>
                                         <input type="text" class="form-control" id="mobNo" placeholder="+44"
-                                               name="mobNo" v-model="mobNo">
+                                               name="mobNo" v-model="mobNo" value={{$value->phone_number}}>
                                         <div id="mobNoMsg" class="res-msg" v-if="mobNo == ''">Please Enter Mobile
                                             Number
                                         </div>

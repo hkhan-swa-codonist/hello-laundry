@@ -683,7 +683,7 @@
                                         {{ $image = env('IMG_URL').$value->image; }}
                                     @endphp
 
-                                    <div class="service-box shadow-box">
+                                    <div class="service-box shadow-box" data-cat={{$value->id}}>
                                         <div class="media">
                                             <div class="media-left">
 
@@ -740,7 +740,7 @@
                                                                      else
                                                                      $cat_image=$image;
                                                                 @endphp
-                                                                <div class="service-box shadow-box default">
+                                                                <div class="service-box shadow-box default"  data-subcat={{$category->id}}>
                                                                     <div class="media">
                                                                         <div class="media-left">
                                                                             <img src="{{$cat_image}}"

@@ -331,12 +331,13 @@ class WebController extends Controller
               'password' => $input['password']
             );
             // attempt to do the login
-            if(isset($input['return_url']) and $input['return_url']!=""){
-                return Redirect::to($input['return_url']."?login");
-            }
-            else if (Auth::attempt($userdata))
+           
+            if (Auth::attempt($userdata))
             {
-              return Redirect::to('check_service_availability');
+                if(isset($input['return_url']) and $input['return_url']!=""){
+                    return Redirect::to($input['return_url']."?login");
+                }
+                return Redirect::to('check_service_availability');
             }
             else
             {

@@ -934,7 +934,7 @@
                                     <div class="form-group">
                                         <label for="fName">First Name*</label>
                                         <input type="text" class="form-control" id="fName"
-                                               name="fName" v-model="fName" value="{{$user->uFName}}">
+                                               name="fName" v-model="fName" value="{{ isset($user->uFName)?$user->uFName:""}}">
                                         <div id="fNameMsg" class="res-msg" v-if="fName == ''">Please Enter First Name
                                         </div>
                                     </div>
@@ -943,7 +943,7 @@
                                     <div class="form-group">
                                         <label for="lName">Last Name*</label>
                                         <input type="text" class="form-control" id="lName"
-                                               name="lName" v-model="lName"  value="{{$user->uLName}}">
+                                               name="lName" v-model="lName"  value="{{isset($user->uLName)?$user->uLName:""}}">
                                         <div id="lNameMsg" class="res-msg" v-if="lName == ''">Please Enter Last Name
                                         </div>
                                     </div>
@@ -952,7 +952,7 @@
                                     <div class="form-group">
                                         <label for="cEmail">Email Id*</label>
                                         <input type="email" class="form-control" id="cEmail"
-                                               name="email" v-model="cEmail"  value="{{$user->email}}">
+                                               name="email" v-model="cEmail"  value="{{isset($user->email)?$user->email:""}}">
                                         <div id="cEmailMsg" class="res-msg" v-if="cEmail == ''">Please Enter Email</div>
                                     </div>
                                 </div>
@@ -987,7 +987,7 @@
                                     <div class="form-group">
                                         <label for="mobNo">Mobile No*</label>
                                         <input type="text" class="form-control" id="mobNo" placeholder="+44"
-                                               name="mobNo" v-model="mobNo" value={{$value->phone_number}}>
+                                               name="phone_number" v-model="mobNo" value={{isset($user->phone_number)?$user->phone_number:""}}>
                                         <div id="mobNoMsg" class="res-msg" v-if="mobNo == ''">Please Enter Mobile
                                             Number
                                         </div>
@@ -1204,7 +1204,7 @@
                                 </form>
                             </div>
                             <div class="login_page bg-white rounded p-4" v-if="logPrefer == 'login'">
-                                <form class="login-form" method="post" action="login">
+                                <form class="login-form" method="post" action="/login">
                                     @csrf
                                     <input type="hidden" name="return_url" value="services">
                                     <div class="row">

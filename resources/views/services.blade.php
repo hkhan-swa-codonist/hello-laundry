@@ -621,7 +621,7 @@
                             <h4>Personal Details</h4>
                         </div>
                         <div class="step" :class="{active: step==5}">
-                            <h3>4</h3>
+                            <h3>5</h3>
                             <h4>Payment</h4>
                         </div>
                     </div>

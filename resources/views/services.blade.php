@@ -735,12 +735,13 @@
                                                         <div class="services-container">
                                                             @foreach($categories as $category)
                                                                 @php
-                                                                    if(isset($category->image))
-                                                                     $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
-                                                                     else
-                                                                     $cat_image=$image;
+                                                                        if(isset($category->image))
+                                                                         $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
+                                                                         else
+                                                                         $cat_image=$image;
                                                                 @endphp
-                                                                <div class="service-box shadow-box default"  data-subcat={{$category->id}}>
+                                                                <div class="service-box shadow-box default"
+                                                                     data-subcat={{$category->id}}>
                                                                     <div class="media">
                                                                         <div class="media-left">
                                                                             <img src="{{$cat_image}}"
@@ -752,8 +753,8 @@
                                                                             <p> {{$category->description}} </p>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="added {{$active}}">Added</div>
-                                                                    <i class="fa fa-plus wash {{$show}}"
+                                                                    <div class="added">Added</div>
+                                                                    <i class="fa fa-plus wash show"
                                                                        @click="washServicePrefer($event,'{{$category->category_name}}','-',{ {{ $value->id }}:[{{ $category->id }},'{{ $category->category_name }}']})"></i>
                                                                 </div>
                                                                 <?php
@@ -764,13 +765,13 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-blue"
-                                                                @click="washServicePrefer($event,'-','add','')"
-                                                                data-dismiss="modal">
-                                                            Add
-                                                        </button>
-                                                    </div>
+                                                    {{--<div class="modal-footer">--}}
+                                                        {{--<button type="button" class="btn btn-blue"--}}
+                                                                {{--@click="washServicePrefer($event,'-','add','')"--}}
+                                                                {{--data-dismiss="modal">--}}
+                                                            {{--Add--}}
+                                                        {{--</button>--}}
+                                                    {{--</div>--}}
                                                 </div>
                                             </div>
                                         </div>
@@ -2032,7 +2033,7 @@
             services: [],
             servicesIDs: [],
             servicesCookies: [],
-            preferance: 'Mixed',
+            preferance: 'Mixed Wash',
             logPrefer: 'register',
             addressText: '',
             fName: '',
@@ -2249,6 +2250,9 @@
                 var self = this;
                 var text = 'Wash, Dry and Fold - ';
                 if (action == "add") {
+                    var modal_id = jQuery(e.target).attr('data-target');
+                    modal_id = modal_id.toString();
+                    jQuery(modal_id).find('.service-box:first-child').children('i.fa-plus').trigger('click');
                     jQuery(e.target).siblings('.added').addClass('active');
                     jQuery(e.target).siblings('i.fa-minus').addClass('show');
                 }
@@ -2269,39 +2273,36 @@
             },
             washServicePrefer: function (e, prefer, action, subcat) {
                 var self = this;
-
-                var text = 'Wash, Dry and Fold - ';
-                if (action == 'add') {
-                    text = text + self.preferance;
-                    self.services.push(text);
+                var text1 = 'Wash, Dry and Fold - ';
+//                if (action == 'add') {
+//                    text = text + self.preferance;
+//                    self.services.push(text);
+//                }
+                jQuery(e.target).removeClass('show');
+                jQuery(e.target).siblings('.added').addClass('active');
+                jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
+                jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
+                var text = text1 + self.preferance;
+                var ind = self.services.indexOf(text);
+                if (ind > -1) {
+                    self.services.splice(ind, 1);
                 }
-                else {
-                    jQuery(e.target).removeClass('show');
-                    jQuery(e.target).siblings('.added').addClass('active');
-                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('i.fa').addClass('show');
-                    jQuery(e.target).parent('.service-box').siblings('.service-box').children('.added').removeClass('active');
-                    text = text + self.preferance;
-                    self.preferance = prefer;
-                    var ind = self.services.indexOf(text);
-                    if (ind > -1) {
-                        self.services.splice(ind, 1);
+                self.preferance = prefer;
+                text = text1 + self.preferance;
+                self.services.push(text);
+
+                self.servicesIDs.forEach(function (item, index) {
+                    if (item.cat) {
+                        self.servicesIDs.splice(index, 1);
                     }
-                    self.servicesIDs.forEach(function (item, index) {
-                        if (item.cat) {
-                            self.servicesIDs.splice(index, 1);
-                        }
-                    });
-                    var key = Object.keys(subcat);
-                    var id = subcat[key][0];
-                    var ob = {
-                        cat: key[0],
-                        subcat: id,
-                    };
-                    self.servicesIDs.push(ob);
-
-                }
-
-
+                });
+                var key = Object.keys(subcat);
+                var id = subcat[key][0];
+                var ob = {
+                    cat: key[0],
+                    subcat: id,
+                };
+                self.servicesIDs.push(ob);
             },
             getDate: function (day, custom) {
                 var self = this;
@@ -2593,13 +2594,6 @@
                 var servId = JSON.parse(servId);
                 console.log(servId);
                 serv = serv.split(',');
-//                    console.log(serv);
-//                    var a = "I want apple";
-//                    var b = " an";
-//                    var position = 0;
-//                    var output = [a.slice(0, position), b, a.slice(position)].join('');
-//                    console.log(output);
-                var lservice = '';
                 if (serv.includes('Wash')) {
                     var ind = serv.indexOf('Wash');
                     if (ind > -1) {
@@ -2614,7 +2608,6 @@
                         serv.splice(ind, 1);
                         serv.push('Wash,' + txt);
                     }
-                    lservice = 'mixed';
                 }
                 if (serv.includes(txt2)) {
                     var ind = serv.indexOf(txt2);
@@ -2622,30 +2615,23 @@
                         serv.splice(ind, 1);
                         serv.push('Wash,' + txt2);
                     }
-                    lservice = 'separate';
                 }
-//                self.services = serv;
-                console.log(serv);
                 jQuery("h4[data-service='serviceName']").each(function () {
                     if (serv.includes(jQuery(this).text().trim())) {
                         jQuery(this).parents('.media').siblings('i.fa-plus').trigger('click');
                     }
                 });
-                if (lservice == 'separate') {
-                    jQuery("h4[data-service='serviceNameM']").each(function () {
-//                        Wash, Dry and Fold - Separate Wash
-                    });
-                }
                 servId.forEach(function (item, index) {
                     if (item.cat) {
-                        var cat = item.cat.parseInt();
-                        jQuery(".service-box[data-cat='" + cat +"']").children('.added').addClass('active');
-                        jQuery(".service-box[data-cat='" + cat +"']").children('i.fa-minus').addClass('show');
-                        if(jQuery(".service-box[data-subcat='" + item.subcat +"']").children('.added').hasClass('active')){
-                            jQuery(".service-box[data-subcat='" + item.subcat +"']").parents('.meodal-body').siblings('.modal-footer').children('.btn-blue').trigger('click');
+                        var cat = parseInt(item.cat);
+                        jQuery(".service-box[data-cat='" + cat + "']").children('.added').addClass('active');
+                        jQuery(".service-box[data-cat='" + cat + "']").children('i.fa-minus').addClass('show');
+
+                        if (jQuery(".service-box[data-subcat='" + item.subcat + "']").children('.added').hasClass('active')) {
+                            jQuery(".service-box[data-subcat='" + item.subcat + "']").children('.added').removeClass('active');
+                            jQuery(".service-box[data-subcat='" + item.subcat + "']").children('i.fa-plus').addClass('show').trigger('click');
                         } else {
-                            jQuery(".service-box[data-subcat='" + item.subcat +"']").children('i.fa-plus.wash').trigger('click');
-                            jQuery(".service-box[data-subcat='" + item.subcat +"']").parents('.meodal-body').siblings('.modal-footer').children('.btn-blue').trigger('click');
+                            jQuery(".service-box[data-subcat='" + item.subcat + "']").children('i.fa-plus.wash').trigger('click');
                         }
                     }
                 });

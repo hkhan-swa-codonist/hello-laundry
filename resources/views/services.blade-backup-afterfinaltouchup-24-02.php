@@ -2388,7 +2388,7 @@
                     if (self.timeSlot.includes(frange)) {
                         self.timeSlot.filter(function (tslot) {
                             if (tslot == frange) {
-//                                self.colShowTimes.push(tslot);
+                                self.colShowTimes.push(tslot);
                                 tflag = true;
                                 return false;
                             }
@@ -2403,7 +2403,7 @@
                         if (self.timeSlot.includes(frange)) {
                             self.timeSlot.filter(function (tslot) {
                                 if (tslot == frange) {
-//                                    self.colShowTimes.push(tslot);
+                                    self.colShowTimes.push(tslot);
                                     tflag = true;
                                     return false;
                                 }
@@ -2614,11 +2614,28 @@
                 var serv = self.getCookie('services');
                 var servId = self.getCookie('servicesId');
                 var servId = JSON.parse(servId);
+                console.log(servId);
                 serv = serv.split(',');
                 if (serv.includes('Wash')) {
                     var ind = serv.indexOf('Wash');
                     if (ind > -1) {
                         serv.splice(ind, 1);
+                    }
+                }
+                var txt = ' Dry and Fold - Mixed';
+                var txt2 = ' Dry and Fold - Separate Wash';
+                if (serv.includes(txt)) {
+                    var ind = serv.indexOf(txt);
+                    if (ind > -1) {
+                        serv.splice(ind, 1);
+                        serv.push('Wash,' + txt);
+                    }
+                }
+                if (serv.includes(txt2)) {
+                    var ind = serv.indexOf(txt2);
+                    if (ind > -1) {
+                        serv.splice(ind, 1);
+                        serv.push('Wash,' + txt2);
                     }
                 }
                 jQuery("h4[data-service='serviceName']").each(function () {

@@ -1194,8 +1194,7 @@
                                                 <label>Phone <span class="text-danger">*</span></label>
                                                 <input id="phone_number" type="text" class="form-control"
                                                        v-model="phone_number"
-                                                       name="phone_number" value="" placeholder="Phone" required=""
-                                                       autocomplete="email">
+                                                       name="phone_number" value="" placeholder="Phone" required="">
 
                                             </div>
                                         </div>
@@ -1239,7 +1238,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Email address <span class="text-danger">*</span></label>
-                                                <input id="email" type="email" class="form-control" placeholder="Email"
+                                                <input type="email" class="form-control" placeholder="Email"
                                                        name="email" value="" required="" autocomplete="email">
                                             </div>
                                         </div>
@@ -1281,7 +1280,7 @@
                                                 Password.</p>
                                             <div class="form-group">
                                                 <label>Email <span class="text-danger">*</span></label>
-                                                <input id="email" type="text" class="form-control " name="email"
+                                                <input type="text" class="form-control " name="email"
                                                        value="" placeholder="Email">
                                             </div>
                                         </div>
@@ -1524,13 +1523,31 @@
 
 <script>
     $(document).ready(function () {
+        $("#email").on("change",function(){
+            $.ajax({
+                type: "POST",
+                url: "api/customer/customer_availability",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    email: $("#email").val(),
+                },
+                success: function (res) {
+                   
+
+                },
+                error: function (res) {
+                   
+                }
+            })
+        })
         var search_address = $('#search_address').val();
         $("#search_address").on("input", function (e) {
             var val = $(this).val();
             if (val === "") return;
             var opt = ($("#address_description option[value='" + $('#search_address').val() + "']").attr('id'));
             if (opt === '' || opt === undefined) {
-                $.get("https://api.getaddress.io/find/" + val + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967", function (res) {
+                $.get("https://api.getaddress.io/find/" + val + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967", 
+                function (res) {
                     var datalist = $("#address_description");
                     datalist.empty();
                     console.log(res.addresses);

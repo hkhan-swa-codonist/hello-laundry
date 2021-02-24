@@ -605,15 +605,16 @@ class CustomerController extends Controller
     }
 
     public function customer_availability(Request $request){
-        echo "Hello";
-        print_r($request);
         $input = $request->all();
-        print_r($input);
-        // $customer = Customer::where('email',$input['email'])->first();
-        // print_r($customer);
-        // if($customer){
-        //     return array("msg"=>"Customer already Exist");
-        // }
+       
+        $customer = Customer::where('email',$input['email'])->first();
+       
+        if($customer){
+            return array("msg"=>"Customer already exist");
+        }
+        else {
+            return array("msg"=>"Customer doesn't exist");
+        }
 
     }
     

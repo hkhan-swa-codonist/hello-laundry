@@ -475,11 +475,9 @@
         background: #409EFF !important;
         opacity: 0.1 !important;
     }
-
     .v-order-box.disabled {
         position: relative;
     }
-
     .v-order-box.disabled:after {
         content: '';
         position: absolute;
@@ -749,10 +747,10 @@
                                                         <div class="services-container">
                                                             @foreach($categories as $category)
                                                                 @php
-                                                                    if(isset($category->image))
-                                                                     $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
-                                                                     else
-                                                                     $cat_image=$image;
+                                                                        if(isset($category->image))
+                                                                         $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
+                                                                         else
+                                                                         $cat_image=$image;
                                                                 @endphp
                                                                 <div class="service-box shadow-box default"
                                                                      data-subcat={{$category->id}}>
@@ -780,11 +778,11 @@
                                                         </div>
                                                     </div>
                                                     {{--<div class="modal-footer">--}}
-                                                    {{--<button type="button" class="btn btn-blue"--}}
-                                                    {{--@click="washServicePrefer($event,'-','add','')"--}}
-                                                    {{--data-dismiss="modal">--}}
-                                                    {{--Add--}}
-                                                    {{--</button>--}}
+                                                        {{--<button type="button" class="btn btn-blue"--}}
+                                                                {{--@click="washServicePrefer($event,'-','add','')"--}}
+                                                                {{--data-dismiss="modal">--}}
+                                                            {{--Add--}}
+                                                        {{--</button>--}}
                                                     {{--</div>--}}
                                                 </div>
                                             </div>
@@ -948,8 +946,7 @@
                                     <div class="form-group">
                                         <label for="fName">First Name*</label>
                                         <input type="text" class="form-control" id="fName"
-                                               name="fName" v-model="fName"
-                                               value="{{ isset($user->uFName)?$user->uFName:""}}">
+                                               name="fName" v-model="fName" value="{{ isset($user->uFName)?$user->uFName:""}}">
                                         <div id="fNameMsg" class="res-msg" v-if="fName == ''">Please Enter First Name
                                         </div>
                                     </div>
@@ -958,18 +955,17 @@
                                     <div class="form-group">
                                         <label for="lName">Last Name*</label>
                                         <input type="text" class="form-control" id="lName"
-                                               name="lName" v-model="lName"
-                                               value="{{isset($user->uLName)?$user->uLName:""}}">
+                                               name="lName" v-model="lName"  value="{{isset($user->uLName)?$user->uLName:""}}">
                                         <div id="lNameMsg" class="res-msg" v-if="lName == ''">Please Enter Last Name
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
-
+                                   
                                     <div class="form-group">
                                         <label for="cEmail">Email Id*</label>
                                         <input type="email" class="form-control" id="cEmail"
-                                               name="email" v-model="cEmail">
+                                               name="email" v-model="cEmail" >
                                         <div id="cEmailMsg" class="res-msg" v-if="cEmail == ''">Please Enter Email</div>
                                     </div>
                                 </div>
@@ -1004,8 +1000,7 @@
                                     <div class="form-group">
                                         <label for="mobNo">Mobile No*</label>
                                         <input type="text" class="form-control" id="mobNo" placeholder="+44"
-                                               name="phone_number" v-model="mobNo"
-                                               value={{isset($user->phone_number)?$user->phone_number:""}}>
+                                               name="phone_number" v-model="mobNo" value={{isset($user->phone_number)?$user->phone_number:""}}>
                                         <div id="mobNoMsg" class="res-msg" v-if="mobNo == ''">Please Enter Mobile
                                             Number
                                         </div>
@@ -1115,20 +1110,18 @@
                         </div>
                         <hr class="dashed">
                         @if (Auth::check())
-                            <div class="v-order-box">
-                                <div class="order-step">
-                                    <h4 @click="nextStep($event,4)">Personal Details</h4>
-                                </div>
-                                <div class="order-edit" @click="nextStep($event,4)"><i class="fa fa-edit"></i></div>
+                        <div class="v-order-box">
+                            <div class="order-step">
+                                <h4 @click="nextStep($event,4)">Personal Details</h4>
                             </div>
+                            <div class="order-edit" @click="nextStep($event,4)"><i class="fa fa-edit"></i></div>
+                        </div>
                         @else
                             <div class="v-order-box" :class="{ disabled: isFormFilled }">
                                 <div class="order-step">
-                                    <h4 @click="showLogin($event)" data-toggle="modal" data-target="#loginModal">
-                                        Personal Details</h4>
+                                    <h4 @click="showLogin($event)" data-toggle="modal" data-target="#loginModal">Personal Details</h4>
                                 </div>
-                                <div class="order-edit" @click="showLogin($event)" data-toggle="modal"
-                                     data-target="#loginModal"><i class="fa fa-edit"></i></div>
+                                <div class="order-edit" @click="showLogin($event)" data-toggle="modal" data-target="#loginModal"><i class="fa fa-edit"></i></div>
                             </div>
                         @endif
                         <hr class="dashed">
@@ -2448,17 +2441,30 @@
                 } else {
                     var frange = self.colTime;
                     var tflag = false;
-                    if (self.timeSlot.includes(frange)) {
-                        self.timeSlot.filter(function (tslot) {
-                            if (tslot == frange) {
-                                self.delShowTimes.push(tslot);
-                                tflag = true;
-                                return false;
+                    var ind = self.timeSlot.indexOf(frange);
+                    if (ind > -1) {
+                        if (ind == 0 || ind == 1) {
+                            var count = 0;
+                            self.timeSlot.filter(function (tslot) {
+                                if (count >= 2) {
+                                    self.delShowTimes.push(tslot);
+                                }
+                                count++;
+                            });
+                        } else {
+                            if (self.timeSlot.includes(frange)) {
+                                self.timeSlot.filter(function (tslot) {
+                                    if (tslot == frange) {
+                                        self.delShowTimes.push(tslot);
+                                        tflag = true;
+                                        return false;
+                                    }
+                                    if (tflag) {
+                                        self.delShowTimes.push(tslot);
+                                    }
+                                })
                             }
-                            if (tflag) {
-                                self.delShowTimes.push(tslot);
-                            }
-                        })
+                        }
                     }
                 }
             },

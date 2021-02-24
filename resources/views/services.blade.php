@@ -1179,15 +1179,15 @@
                                                        name="uLName" placeholder="Lastname" required="">
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Username<span class="text-danger">*</span></label>
-                                                <input id="customer_name" type="text" class="form-control"
-                                                       v-model="customer_name"
-                                                       name="customer_name" value="" placeholder="Username" required=""
-                                                       autofocus="">
-                                            </div>
-                                        </div>
+                                        {{--<div class="col-lg-12">--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--<label>Username<span class="text-danger">*</span></label>--}}
+                                                {{--<input id="customer_name" type="text" class="form-control"--}}
+                                                       {{--v-model="customer_name"--}}
+                                                       {{--name="customer_name" value="" placeholder="Username" required=""--}}
+                                                       {{--autofocus="">--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
 
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -1205,6 +1205,7 @@
                                                 <input id="email" type="email" class="form-control " name="email"
                                                        v-model="email"
                                                        placeholder="Email" value="" required="" autocomplete="email">
+                                                <div id="emailMsg" class="res-msg"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -1217,7 +1218,7 @@
                                         </div>
 
                                         <div class="col-lg-12 mb-0">
-                                            <button type="submit" class="btn btn-custom w-100"
+                                            <button id="regSubmit" type="submit" class="btn btn-custom w-100"
                                                     @click="formSubmit($event,'reg')">Register
                                             </button>
                                         </div>
@@ -1523,7 +1524,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#email").on("change",function(){
+        $(document).on('change','#email',function(){
             $.ajax({
                 type: "POST",
                 url: "api/customer/customer_availability",
@@ -1532,35 +1533,41 @@
                     email: $("#email").val(),
                 },
                 success: function (res) {
-                   
+                    if (res.msg == "Customer doesn't exist") {
+                        $('#emailMsg').html('');
+                        $('#regSubmit').prop('disabled', false);
+                    } else {
+                        $('#emailMsg').html('Email Already Exist Please Sign In');
+                        $('#regSubmit').prop('disabled', true);
+                    }
 
                 },
                 error: function (res) {
-                   
+
                 }
             })
-        })
+        });
         var search_address = $('#search_address').val();
         $("#search_address").on("input", function (e) {
             var val = $(this).val();
             if (val === "") return;
             var opt = ($("#address_description option[value='" + $('#search_address').val() + "']").attr('id'));
             if (opt === '' || opt === undefined) {
-                $.get("https://api.getaddress.io/find/" + val + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967", 
-                function (res) {
-                    var datalist = $("#address_description");
-                    datalist.empty();
-                    console.log(res.addresses);
-                    if (res.addresses.length) {
-                        for (var i = 0, len = res.addresses.length; i < len; i++) {
-                            var option = $('<option></option>', {
-                                "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
-                                "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
-                            });
-                            datalist.append(option);
+                $.get("https://api.getaddress.io/find/" + val + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967",
+                    function (res) {
+                        var datalist = $("#address_description");
+                        datalist.empty();
+                        console.log(res.addresses);
+                        if (res.addresses.length) {
+                            for (var i = 0, len = res.addresses.length; i < len; i++) {
+                                var option = $('<option></option>', {
+                                    "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
+                                    "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
+                                });
+                                datalist.append(option);
+                            }
                         }
-                    }
-                });
+                    });
             } else if (opt != '') {
                 var optArray = opt.split(',');
                 var city = optArray[0];
@@ -2105,7 +2112,7 @@
             colInstruction: '',
             uFName: '{{isset($user->uFName)?$user->uFName:""}}',
             uLName: '{{isset($user->uLName)?$user->uLName:""}}',
-            customer_name: '{{isset($user->customer_name)?$user->customer_name:""}}',
+            {{--customer_name: '{{isset($user->customer_name)?$user->customer_name:""}}',--}}
             phone_number: '{{isset($user->phone_number)?$user->phone_number:""}}',
             email: '',
             timeSlot: [

@@ -603,6 +603,19 @@ class CustomerController extends Controller
     
           return $ipaddress;
     }
+
+    public function customer_availability(Request $request){
+        echo "Hello";
+        print_r($request);
+        $input = $request->all();
+        print_r($input);
+        // $customer = Customer::where('email',$input['email'])->first();
+        // print_r($customer);
+        // if($customer){
+        //     return array("msg"=>"Customer already Exist");
+        // }
+
+    }
     
     public function check_pincode(Request $request){
 

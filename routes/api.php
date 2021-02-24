@@ -31,6 +31,7 @@ Route::post('customer/reset_password', 'CustomerController@reset_password');
 Route::post('customer/add_card', 'CustomerController@add_card');
 Route::post('customer/get_cards', 'CustomerController@get_cards');
 Route::post('customer/delete_card', 'CustomerController@delete_card');
+Route::get('customer/customer_availability', 'CustomerController@customer_availability');
 Route::post('promo', 'PromoCodeController@index');
 Route::get('app_setting', 'AppSettingController@index');
 Route::post('privacy_policy', 'PrivacyPolicyController@index');

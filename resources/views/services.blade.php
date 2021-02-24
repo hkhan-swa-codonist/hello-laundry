@@ -961,10 +961,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
+                                   
                                     <div class="form-group">
                                         <label for="cEmail">Email Id*</label>
                                         <input type="email" class="form-control" id="cEmail"
-                                               name="email" v-model="cEmail"  value="{{isset($user->email)?$user->email:""}}">
+                                               name="email" v-model="cEmail" >
                                         <div id="cEmailMsg" class="res-msg" v-if="cEmail == ''">Please Enter Email</div>
                                     </div>
                                 </div>
@@ -1200,7 +1201,6 @@
                                                        placeholder="Email" value="" required="" autocomplete="email">
                                             </div>
                                         </div>
-
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Password <span class="text-danger">*</span></label>
@@ -2057,12 +2057,12 @@
             preferance: 'Mixed Wash',
             logPrefer: 'register',
             addressText: '',
-            fName: '',
-            lName: '',
-            cEmail: '',
+            fName: '{{isset($user->uFName)?$user->uFName:""}}',
+            lName: '{{isset($user->uLName)?$user->uLName:""}}',
+            cEmail: '{{isset($user->email)?$user->email:""}}',
             pCode: '',
             addLine: '',
-            mobNo: '',
+            mobNo: '{{isset($user->phone_number)?$user->phone_number:""}}',
             extAdd: '',
             laPostcode: '',
             laAddress: '',
@@ -2078,10 +2078,10 @@
             anyOtherRequest: '',
             delInstruction: '',
             colInstruction: '',
-            uFName: '',
-            uLName: '',
-            customer_name: '',
-            phone_number: '',
+            uFName: '{{isset($user->uFName)?$user->uFName:""}}',
+            uLName: '{{isset($user->uLName)?$user->uLName:""}}',
+            customer_name: '{{isset($user->customer_name)?$user->customer_name:""}}',
+            phone_number: '{{isset($user->phone_number)?$user->phone_number:""}}',
             email: '',
             timeSlot: [
                 '07:00 AM - 09:00 AM',

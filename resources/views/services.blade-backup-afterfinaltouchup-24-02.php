@@ -961,11 +961,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
-                                   
                                     <div class="form-group">
                                         <label for="cEmail">Email Id*</label>
                                         <input type="email" class="form-control" id="cEmail"
-                                               name="email" v-model="cEmail" >
+                                               name="email" v-model="cEmail"  value="{{isset($user->email)?$user->email:""}}">
                                         <div id="cEmailMsg" class="res-msg" v-if="cEmail == ''">Please Enter Email</div>
                                     </div>
                                 </div>
@@ -1201,6 +1200,7 @@
                                                        placeholder="Email" value="" required="" autocomplete="email">
                                             </div>
                                         </div>
+
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Password <span class="text-danger">*</span></label>
@@ -2058,12 +2058,12 @@
             preferance: 'Mixed Wash',
             logPrefer: 'register',
             addressText: '',
-            fName: '{{isset($user->uFName)?$user->uFName:""}}',
-            lName: '{{isset($user->uLName)?$user->uLName:""}}',
-            cEmail: '{{isset($user->email)?$user->email:""}}',
+            fName: '',
+            lName: '',
+            cEmail: '',
             pCode: '',
             addLine: '',
-            mobNo: '{{isset($user->phone_number)?$user->phone_number:""}}',
+            mobNo: '',
             extAdd: '',
             laPostcode: '',
             laAddress: '',
@@ -2079,10 +2079,10 @@
             anyOtherRequest: '',
             delInstruction: '',
             colInstruction: '',
-            uFName: '{{isset($user->uFName)?$user->uFName:""}}',
-            uLName: '{{isset($user->uLName)?$user->uLName:""}}',
-            customer_name: '{{isset($user->customer_name)?$user->customer_name:""}}',
-            phone_number: '{{isset($user->phone_number)?$user->phone_number:""}}',
+            uFName: '',
+            uLName: '',
+            customer_name: '',
+            phone_number: '',
             email: '',
             timeSlot: [
                 '07:00 AM - 09:00 AM',
@@ -2388,7 +2388,7 @@
                     if (self.timeSlot.includes(frange)) {
                         self.timeSlot.filter(function (tslot) {
                             if (tslot == frange) {
-//                                self.colShowTimes.push(tslot);
+                                self.colShowTimes.push(tslot);
                                 tflag = true;
                                 return false;
                             }
@@ -2403,7 +2403,7 @@
                         if (self.timeSlot.includes(frange)) {
                             self.timeSlot.filter(function (tslot) {
                                 if (tslot == frange) {
-//                                    self.colShowTimes.push(tslot);
+                                    self.colShowTimes.push(tslot);
                                     tflag = true;
                                     return false;
                                 }
@@ -2614,11 +2614,28 @@
                 var serv = self.getCookie('services');
                 var servId = self.getCookie('servicesId');
                 var servId = JSON.parse(servId);
+                console.log(servId);
                 serv = serv.split(',');
                 if (serv.includes('Wash')) {
                     var ind = serv.indexOf('Wash');
                     if (ind > -1) {
                         serv.splice(ind, 1);
+                    }
+                }
+                var txt = ' Dry and Fold - Mixed';
+                var txt2 = ' Dry and Fold - Separate Wash';
+                if (serv.includes(txt)) {
+                    var ind = serv.indexOf(txt);
+                    if (ind > -1) {
+                        serv.splice(ind, 1);
+                        serv.push('Wash,' + txt);
+                    }
+                }
+                if (serv.includes(txt2)) {
+                    var ind = serv.indexOf(txt2);
+                    if (ind > -1) {
+                        serv.splice(ind, 1);
+                        serv.push('Wash,' + txt2);
                     }
                 }
                 jQuery("h4[data-service='serviceName']").each(function () {

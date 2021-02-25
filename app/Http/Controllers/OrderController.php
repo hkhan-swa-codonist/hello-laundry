@@ -94,7 +94,8 @@ class OrderController extends Controller
 			$item_names[$key]['service_name_ar'] = Service::where('id',$value['service_id'])->value('service_name_ar');
 		}
 		$input['items'] = json_encode($item_names, JSON_UNESCAPED_SLASHES);
-		$input['items'] = preg_replace('/\\\"/',"\"", $input['items']);*/
+        $input['items'] = preg_replace('/\\\"/',"\"", $input['items']);*/
+        
         $input['delivery_date'] = date('Y-m-d', strtotime($input['delivery_date']));
         $input['pickup_date'] = date('Y-m-d', strtotime($input['pickup_date']));
         $order = Order::create($input);

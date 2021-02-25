@@ -2578,7 +2578,7 @@
                         other_requests: any_other_request,
                         collection_instructions: any_collection_instruction,
                         delivery_instructions: any_delivery_instruction,
-                        services: services,
+                        services,
                     },
                     success: function (data) {
                         if (data == 1) {

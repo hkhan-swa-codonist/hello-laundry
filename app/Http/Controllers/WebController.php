@@ -501,36 +501,50 @@ class WebController extends Controller
                 $input['address_id']=$row->id;
             }
             else{ 
-            echo "No address Present";
             $data['address']=$input['address'];
-            $id = Address::create($data)->id;
+            $input['address_id'] = Address::create($data)->id;
             }
         }
+       $items = $input['services'];
+       
+        
         $input['pickup_date'] = date('Y-m-d', strtotime($input['pickup_date']));
         $input['delivery_date'] = date('Y-m-d', strtotime($input['delivery_date']));
         // $data = json_decode($input['data'], true);
-        $items_data = array();
-        $i=0;
-        foreach (Session::get('cart', []) as $key => $value) {
-            $items_data[$i] = $value;
-            $i++;
-        }
-        $input['items'] = json_encode($items_data,true);
-        $items = json_decode($input['items'], true);
+        // $items_data = array();
+        // $i=0;
+        // foreach (Session::get('cart', []) as $key => $value) {
+        //     $items_data[$i] = $value;
+        //     $i++;
+        // }
+        //$input['items'] = json_encode($items_data,true);
+       // $items = json_decode($input['items'], true);
         $order = Order::create($input);
         $order_id = str_pad($order->id, 5, "0", STR_PAD_LEFT);
         Order::where('id',$order->id)->update([ 'order_id'=>$order_id]);
         $customer_details = Customer::where('id',$input['customer_id'])->first();
         if(is_object($order)) {
-             foreach ($items as $key => $value) {
-                if($value){
-                    $value['order_id'] = $order->id;
-                    unset($value['service_name']);
-                    $value['category_id'] = implode(",",$value['category']);
+            $value = [];
+             foreach ($items as $key => $val) {
+                if($val){
+                    unset($value['category_id']);
+                
+                    if(is_array($val)){
+                        $value['category_id'] = $val['subcat'];
+                        $value['service_id'] = $val['cat'];
+                        $value['order_id'] = $order->id;
+
+                    }
+                    else {
+                        $value['service_id'] = $val;
+                        $value['order_id'] = $order->id;
+                    }
+                    //$value['category_id'] = implode(",",$value['category']);
                     OrderService::create($value);    
                 }
                 
             }
+            exit();
             
             Session::put('cart', []);
             

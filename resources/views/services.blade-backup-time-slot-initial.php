@@ -475,11 +475,9 @@
         background: #409EFF !important;
         opacity: 0.1 !important;
     }
-
     .v-order-box.disabled {
         position: relative;
     }
-
     .v-order-box.disabled:after {
         content: '';
         position: absolute;
@@ -749,10 +747,10 @@
                                                         <div class="services-container">
                                                             @foreach($categories as $category)
                                                                 @php
-                                                                    if(isset($category->image))
-                                                                     $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
-                                                                     else
-                                                                     $cat_image=$image;
+                                                                        if(isset($category->image))
+                                                                         $cat_image =  e(asset(''. env('IMG_URL').$category->image .''));
+                                                                         else
+                                                                         $cat_image=$image;
                                                                 @endphp
                                                                 <div class="service-box shadow-box default"
                                                                      data-subcat={{$category->id}}>
@@ -780,11 +778,11 @@
                                                         </div>
                                                     </div>
                                                     {{--<div class="modal-footer">--}}
-                                                    {{--<button type="button" class="btn btn-blue"--}}
-                                                    {{--@click="washServicePrefer($event,'-','add','')"--}}
-                                                    {{--data-dismiss="modal">--}}
-                                                    {{--Add--}}
-                                                    {{--</button>--}}
+                                                        {{--<button type="button" class="btn btn-blue"--}}
+                                                                {{--@click="washServicePrefer($event,'-','add','')"--}}
+                                                                {{--data-dismiss="modal">--}}
+                                                            {{--Add--}}
+                                                        {{--</button>--}}
                                                     {{--</div>--}}
                                                 </div>
                                             </div>
@@ -948,8 +946,7 @@
                                     <div class="form-group">
                                         <label for="fName">First Name*</label>
                                         <input type="text" class="form-control" id="fName"
-                                               name="fName" v-model="fName"
-                                               value="{{ isset($user->uFName)?$user->uFName:""}}">
+                                               name="fName" v-model="fName" value="{{ isset($user->uFName)?$user->uFName:""}}">
                                         <div id="fNameMsg" class="res-msg" v-if="fName == ''">Please Enter First Name
                                         </div>
                                     </div>
@@ -958,18 +955,17 @@
                                     <div class="form-group">
                                         <label for="lName">Last Name*</label>
                                         <input type="text" class="form-control" id="lName"
-                                               name="lName" v-model="lName"
-                                               value="{{isset($user->uLName)?$user->uLName:""}}">
+                                               name="lName" v-model="lName"  value="{{isset($user->uLName)?$user->uLName:""}}">
                                         <div id="lNameMsg" class="res-msg" v-if="lName == ''">Please Enter Last Name
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
-
+                                   
                                     <div class="form-group">
                                         <label for="cEmail">Email Id*</label>
                                         <input type="email" class="form-control" id="cEmail"
-                                               name="email" v-model="cEmail">
+                                               name="email" v-model="cEmail" >
                                         <div id="cEmailMsg" class="res-msg" v-if="cEmail == ''">Please Enter Email</div>
                                     </div>
                                 </div>
@@ -1004,8 +1000,7 @@
                                     <div class="form-group">
                                         <label for="mobNo">Mobile No*</label>
                                         <input type="text" class="form-control" id="mobNo" placeholder="+44"
-                                               name="phone_number" v-model="mobNo"
-                                               value={{isset($user->phone_number)?$user->phone_number:""}}>
+                                               name="phone_number" v-model="mobNo" value={{isset($user->phone_number)?$user->phone_number:""}}>
                                         <div id="mobNoMsg" class="res-msg" v-if="mobNo == ''">Please Enter Mobile
                                             Number
                                         </div>
@@ -1115,20 +1110,18 @@
                         </div>
                         <hr class="dashed">
                         @if (Auth::check())
-                            <div class="v-order-box">
-                                <div class="order-step">
-                                    <h4 @click="nextStep($event,4)">Personal Details</h4>
-                                </div>
-                                <div class="order-edit" @click="nextStep($event,4)"><i class="fa fa-edit"></i></div>
+                        <div class="v-order-box">
+                            <div class="order-step">
+                                <h4 @click="nextStep($event,4)">Personal Details</h4>
                             </div>
+                            <div class="order-edit" @click="nextStep($event,4)"><i class="fa fa-edit"></i></div>
+                        </div>
                         @else
                             <div class="v-order-box" :class="{ disabled: isFormFilled }">
                                 <div class="order-step">
-                                    <h4 @click="showLogin($event)" data-toggle="modal" data-target="#loginModal">
-                                        Personal Details</h4>
+                                    <h4 @click="showLogin($event)" data-toggle="modal" data-target="#loginModal">Personal Details</h4>
                                 </div>
-                                <div class="order-edit" @click="showLogin($event)" data-toggle="modal"
-                                     data-target="#loginModal"><i class="fa fa-edit"></i></div>
+                                <div class="order-edit" @click="showLogin($event)" data-toggle="modal" data-target="#loginModal"><i class="fa fa-edit"></i></div>
                             </div>
                         @endif
                         <hr class="dashed">
@@ -1179,22 +1172,23 @@
                                                        name="uLName" placeholder="Lastname" required="">
                                             </div>
                                         </div>
-                                        {{--<div class="col-lg-12">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label>Username<span class="text-danger">*</span></label>--}}
-                                                {{--<input id="customer_name" type="text" class="form-control"--}}
-                                                       {{--v-model="customer_name"--}}
-                                                       {{--name="customer_name" value="" placeholder="Username" required=""--}}
-                                                       {{--autofocus="">--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Username<span class="text-danger">*</span></label>
+                                                <input id="customer_name" type="text" class="form-control"
+                                                       v-model="customer_name"
+                                                       name="customer_name" value="" placeholder="Username" required=""
+                                                       autofocus="">
+                                            </div>
+                                        </div>
 
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Phone <span class="text-danger">*</span></label>
                                                 <input id="phone_number" type="text" class="form-control"
                                                        v-model="phone_number"
-                                                       name="phone_number" value="" placeholder="Phone" required="">
+                                                       name="phone_number" value="" placeholder="Phone" required=""
+                                                       autocomplete="email">
 
                                             </div>
                                         </div>
@@ -1205,7 +1199,6 @@
                                                 <input id="email" type="email" class="form-control " name="email"
                                                        v-model="email"
                                                        placeholder="Email" value="" required="" autocomplete="email">
-                                                <div id="emailMsg" class="res-msg"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -1218,7 +1211,7 @@
                                         </div>
 
                                         <div class="col-lg-12 mb-0">
-                                            <button id="regSubmit" type="submit" class="btn btn-custom w-100"
+                                            <button type="submit" class="btn btn-custom w-100"
                                                     @click="formSubmit($event,'reg')">Register
                                             </button>
                                         </div>
@@ -1239,7 +1232,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Email address <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" placeholder="Email"
+                                                <input id="email" type="email" class="form-control" placeholder="Email"
                                                        name="email" value="" required="" autocomplete="email">
                                             </div>
                                         </div>
@@ -1281,7 +1274,7 @@
                                                 Password.</p>
                                             <div class="form-group">
                                                 <label>Email <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control " name="email"
+                                                <input id="email" type="text" class="form-control " name="email"
                                                        value="" placeholder="Email">
                                             </div>
                                         </div>
@@ -1524,50 +1517,26 @@
 
 <script>
     $(document).ready(function () {
-        $(document).on('change','#email',function(){
-            $.ajax({
-                type: "POST",
-                url: "api/customer/customer_availability",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    email: $("#email").val(),
-                },
-                success: function (res) {
-                    if (res.msg == "Customer doesn't exist") {
-                        $('#emailMsg').html('');
-                        $('#regSubmit').prop('disabled', false);
-                    } else {
-                        $('#emailMsg').html('Email Already Exist Please Sign In');
-                        $('#regSubmit').prop('disabled', true);
-                    }
-
-                },
-                error: function (res) {
-
-                }
-            })
-        });
         var search_address = $('#search_address').val();
         $("#search_address").on("input", function (e) {
             var val = $(this).val();
             if (val === "") return;
             var opt = ($("#address_description option[value='" + $('#search_address').val() + "']").attr('id'));
             if (opt === '' || opt === undefined) {
-                $.get("https://api.getaddress.io/find/" + val + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967",
-                    function (res) {
-                        var datalist = $("#address_description");
-                        datalist.empty();
-                        console.log(res.addresses);
-                        if (res.addresses.length) {
-                            for (var i = 0, len = res.addresses.length; i < len; i++) {
-                                var option = $('<option></option>', {
-                                    "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
-                                    "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
-                                });
-                                datalist.append(option);
-                            }
+                $.get("https://api.getaddress.io/find/" + val + "?expand=true&api-key=BDlwYLXECkKRiarfDRiKSw29967", function (res) {
+                    var datalist = $("#address_description");
+                    datalist.empty();
+                    console.log(res.addresses);
+                    if (res.addresses.length) {
+                        for (var i = 0, len = res.addresses.length; i < len; i++) {
+                            var option = $('<option></option>', {
+                                "value": res.addresses[i]['formatted_address'] + ' ' + res['postcode'].split(" ").join(""),
+                                "id": res.addresses[i]['town_or_city'] + ',' + res.addresses[i]['country'] + ',' + res['postcode'] + ',' + res.addresses[i]['formatted_address']
+                            });
+                            datalist.append(option);
                         }
-                    });
+                    }
+                });
             } else if (opt != '') {
                 var optArray = opt.split(',');
                 var city = optArray[0];
@@ -2112,7 +2081,7 @@
             colInstruction: '',
             uFName: '{{isset($user->uFName)?$user->uFName:""}}',
             uLName: '{{isset($user->uLName)?$user->uLName:""}}',
-            {{--customer_name: '{{isset($user->customer_name)?$user->customer_name:""}}',--}}
+            customer_name: '{{isset($user->customer_name)?$user->customer_name:""}}',
             phone_number: '{{isset($user->phone_number)?$user->phone_number:""}}',
             email: '',
             timeSlot: [
@@ -2472,17 +2441,30 @@
                 } else {
                     var frange = self.colTime;
                     var tflag = false;
-                    if (self.timeSlot.includes(frange)) {
-                        self.timeSlot.filter(function (tslot) {
-                            if (tslot == frange) {
-                                self.delShowTimes.push(tslot);
-                                tflag = true;
-                                return false;
+                    var ind = self.timeSlot.indexOf(frange);
+                    if (ind > -1) {
+                        if (ind == 0 || ind == 1) {
+                            var count = 0;
+                            self.timeSlot.filter(function (tslot) {
+                                if (count >= 2) {
+                                    self.delShowTimes.push(tslot);
+                                }
+                                count++;
+                            });
+                        } else {
+                            if (self.timeSlot.includes(frange)) {
+                                self.timeSlot.filter(function (tslot) {
+                                    if (tslot == frange) {
+                                        self.delShowTimes.push(tslot);
+                                        tflag = true;
+                                        return false;
+                                    }
+                                    if (tflag) {
+                                        self.delShowTimes.push(tslot);
+                                    }
+                                })
                             }
-                            if (tflag) {
-                                self.delShowTimes.push(tslot);
-                            }
-                        })
+                        }
                     }
                 }
             },
@@ -2579,7 +2561,7 @@
                         other_requests: any_other_request,
                         collection_instructions: any_collection_instruction,
                         delivery_instructions: any_delivery_instruction,
-                        services,
+                        services: services,
                     },
                     success: function (data) {
                         if (data == 1) {
